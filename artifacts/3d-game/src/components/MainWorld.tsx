@@ -89,7 +89,7 @@ export default function MainWorld() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0, scale: 1.1 }}
-              className="absolute inset-0 flex items-end justify-center overflow-x-auto overflow-y-hidden pb-16 custom-scrollbar px-10"
+              className="absolute inset-0 flex items-end justify-start overflow-x-auto overflow-y-hidden pb-16 custom-scrollbar px-10"
             >
               {/* Floor */}
               <div className="absolute bottom-0 left-0 right-0 h-24 bg-[#4a332a] border-t-8 border-[#2d1f19] z-0" style={{ minWidth: '200%' }} />
