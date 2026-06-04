@@ -1,73 +1,75 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const ACTIVITIES = [
-  { id: "loom", name: "Rainbow Loom", icon: "🌈", color: "bg-red-100" },
-  { id: "stew", name: "Eagle Stew", icon: "🦅", color: "bg-amber-100" },
-  { id: "turtle", name: "Turtle Sandbox", icon: "🐢", color: "bg-green-100" },
-  { id: "butterfly", name: "Butterfly Catching", icon: "🦋", color: "bg-blue-100" },
-  { id: "firefly", name: "Lightning Bugs", icon: "✨", color: "bg-indigo-100" },
-  { id: "rolly", name: "Rolly Pollies", icon: "🪲", color: "bg-slate-200" },
-  { id: "slime", name: "Slime Making", icon: "💧", color: "bg-lime-100" },
-];
-
 export default function HobbyWorkshop() {
-  const [activeGame, setActiveGame] = useState<string | null>(null);
+  const [activeStation, setActiveStation] = useState<string | null>(null);
+
+  const stations = [
+    { id: "loom", name: "Rainbow Loom", color: "bg-red-400" },
+    { id: "slime", name: "Slime Making", color: "bg-green-400" },
+    { id: "bug", name: "Lightning Bugs", color: "bg-indigo-900" }
+  ];
 
   return (
-    <div className="w-full h-full bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] bg-amber-50/90 p-8 flex flex-col relative">
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="font-display text-4xl text-amber-900 drop-shadow-sm">Hobby Workshop 🎨</h2>
-        {activeGame && (
-          <button 
-            onClick={() => setActiveGame(null)}
-            className="bg-amber-200 hover:bg-amber-300 text-amber-900 px-4 py-2 rounded-full font-bold shadow transition-colors"
-          >
-            ← Back to Stations
-          </button>
-        )}
-      </div>
+    <div className="w-full h-full bg-[#fcd34d] relative overflow-hidden flex flex-col items-center p-8">
+      {/* Wood Wall Pattern */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(to right, #d97706, #d97706 40px, #b45309 40px, #b45309 42px)' }} />
+      
+      {/* Floor */}
+      <div className="absolute bottom-0 left-0 right-0 h-1/4 bg-[#92400e] border-t-8 border-[#78350f] z-0" />
 
-      <AnimatePresence mode="wait">
-        {!activeGame ? (
-          <motion.div 
-            key="grid"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 content-start flex-1 overflow-y-auto"
-          >
-            {ACTIVITIES.map((activity) => (
-              <motion.button
-                key={activity.id}
-                whileHover={{ scale: 1.05, rotate: [-1, 1, -1, 0] }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setActiveGame(activity.id)}
-                className={`${activity.color} p-6 rounded-2xl shadow-lg border-2 border-black/10 flex flex-col items-center gap-4 text-center hover:shadow-xl transition-all group`}
+      <h2 className="font-display text-4xl text-[#78350f] z-10 mb-8 bg-white/40 px-6 py-2 rounded-full backdrop-blur-sm">Hobby Workshop</h2>
+
+      <div className="flex-1 w-full max-w-4xl z-10 flex flex-col relative items-center justify-center pb-20">
+        
+        {/* Craft Table */}
+        <div className="w-[600px] h-64 bg-[#fef3c7] border-8 border-[#d97706] rounded-xl shadow-[0_30px_50px_rgba(0,0,0,0.2)] relative flex justify-around items-center px-8 z-20">
+          
+          {stations.map(station => (
+            <motion.div
+              key={station.id}
+              whileHover={{ scale: 1.1, y: -10 }}
+              onClick={() => setActiveStation(station.id)}
+              className="cursor-pointer group flex flex-col items-center gap-4"
+            >
+              <div className={`w-24 h-24 ${station.color} rounded-2xl shadow-lg border-4 border-white flex items-center justify-center relative overflow-hidden`}>
+                 <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+              <span className="font-display text-[#92400e] bg-white/80 px-3 py-1 rounded-full text-sm">{station.name}</span>
+            </motion.div>
+          ))}
+
+          {/* Table Legs */}
+          <div className="absolute -bottom-24 left-10 w-6 h-24 bg-[#d97706] rounded-b-md" />
+          <div className="absolute -bottom-24 right-10 w-6 h-24 bg-[#d97706] rounded-b-md" />
+        </div>
+
+        <AnimatePresence>
+          {activeStation && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              className="absolute inset-[-100px] bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl z-50 flex flex-col items-center justify-center p-8 border-8 border-[#d97706]"
+            >
+              <button 
+                onClick={() => setActiveStation(null)}
+                className="absolute top-6 right-6 bg-red-500 text-white w-10 h-10 rounded-full font-bold shadow hover:bg-red-600"
               >
-                <span className="text-5xl group-hover:scale-110 transition-transform">{activity.icon}</span>
-                <span className="font-display text-lg text-slate-800">{activity.name}</span>
-              </motion.button>
-            ))}
-          </motion.div>
-        ) : (
-          <motion.div
-            key="game"
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            className="flex-1 bg-white rounded-3xl shadow-inner border-4 border-amber-200 p-8 flex flex-col items-center justify-center relative overflow-hidden"
-          >
-            <span className="text-6xl mb-6">{ACTIVITIES.find(a => a.id === activeGame)?.icon}</span>
-            <h3 className="font-display text-3xl text-slate-800 mb-4">{ACTIVITIES.find(a => a.id === activeGame)?.name}</h3>
-            
-            <div className="bg-slate-100 w-full max-w-2xl h-64 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-center p-8 text-center">
-              <p className="text-slate-500 font-bold text-xl italic">
-                Interactive {ACTIVITIES.find(a => a.id === activeGame)?.name} mini-game loads here...
-                <br/><span className="text-sm font-normal mt-2 block">(Imagine dragging items, catching bugs, or mixing slime!)</span>
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                X
+              </button>
+              <h3 className="font-display text-3xl mb-8 text-[#92400e]">
+                {stations.find(s => s.id === activeStation)?.name} Interactive Preview
+              </h3>
+              
+              <div className="w-96 h-64 bg-gray-100 rounded-xl border-4 border-gray-300 flex items-center justify-center">
+                 <p className="text-gray-400 italic">Mini-game interactive area</p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+      </div>
     </div>
   );
 }

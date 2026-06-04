@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Kitchen from "./rooms/Kitchen";
 import MyRoom from "./rooms/MyRoom";
@@ -11,14 +11,14 @@ import PhotoBooth from "./rooms/PhotoBooth";
 import MemoryBox from "./rooms/MemoryBox";
 
 const ROOMS = [
-  { id: "kitchen", title: "Kitchen", icon: "🍽️", component: Kitchen },
-  { id: "myroom", title: "My Room", icon: "🛏️", component: MyRoom },
-  { id: "gameroom", title: "Game Room", icon: "🎮", component: GameRoom },
-  { id: "tvlounge", title: "TV Lounge", icon: "📺", component: TVLounge },
-  { id: "library", title: "Library", icon: "📚", component: Library },
-  { id: "musiccorner", title: "Music Corner", icon: "💿", component: MusicCorner },
-  { id: "hobby", title: "Hobby Workshop", icon: "🎨", component: HobbyWorkshop },
-  { id: "photo", title: "Photo Booth", icon: "📷", component: PhotoBooth },
+  { id: "kitchen", title: "Kitchen", component: Kitchen, color: "bg-teal-600", shape: "rounded-t-full border-t-8 border-x-8 border-teal-800", icon: "🍽️" },
+  { id: "myroom", title: "My Room", component: MyRoom, color: "bg-pink-500", shape: "rounded-t-[40px] border-t-8 border-x-8 border-pink-700", icon: "🛏️" },
+  { id: "gameroom", title: "Game Room", component: GameRoom, color: "bg-blue-800", shape: "rounded-t-lg border-t-8 border-x-8 border-blue-950", icon: "🎮" },
+  { id: "tvlounge", title: "TV Lounge", component: TVLounge, color: "bg-orange-500", shape: "rounded-t-2xl border-t-8 border-x-8 border-orange-700", icon: "📺" },
+  { id: "library", title: "Library", component: Library, color: "bg-[#5c4033]", shape: "rounded-t-md border-t-8 border-x-8 border-[#3d2c23]", icon: "📚" },
+  { id: "musiccorner", title: "Music Corner", component: MusicCorner, color: "bg-purple-800", shape: "rounded-t-[30px] border-t-8 border-x-8 border-purple-950", icon: "💿" },
+  { id: "hobby", title: "Hobby Workshop", component: HobbyWorkshop, color: "bg-[#8b5a2b]", shape: "rounded-t-xl border-t-8 border-x-8 border-[#5c3a21]", icon: "🎨" },
+  { id: "photo", title: "Photo Booth", component: PhotoBooth, color: "bg-fuchsia-500", shape: "rounded-t-3xl border-t-8 border-x-8 border-fuchsia-700", icon: "📷" },
 ];
 
 export default function MainWorld() {
@@ -28,63 +28,103 @@ export default function MainWorld() {
   const activeRoom = ROOMS.find(r => r.id === currentRoom);
   const RoomComponent = activeRoom?.component;
 
+  const particles = useMemo(() => {
+    return Array.from({ length: 30 }).map((_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      delay: Math.random() * 5,
+      duration: 3 + Math.random() * 4,
+    }));
+  }, []);
+
   return (
-    <div className="w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-pink-100 via-purple-100 to-white flex flex-col items-center overflow-hidden">
+    <div className="w-full h-[100dvh] bg-gradient-to-b from-[#2a0845] via-[#6441A5] to-[#ffb88c] flex flex-col items-center overflow-hidden relative">
+      {/* Background Particles */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {particles.map(p => (
+          <motion.div
+            key={p.id}
+            animate={{ y: [0, -100], opacity: [0, 1, 0], scale: [0.5, 1.5, 0.5] }}
+            transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: "linear" }}
+            className="absolute w-2 h-2 bg-yellow-200 rounded-full shadow-[0_0_10px_#fef08a]"
+            style={{ left: p.left, top: p.top }}
+          />
+        ))}
+      </div>
+
       {/* Header */}
-      <div className="w-full p-6 flex justify-between items-center z-10 relative">
-        <h1 className="font-display text-3xl text-primary bg-white/50 px-6 py-2 rounded-full backdrop-blur shadow-sm border border-white">
+      <div className="w-full p-6 flex justify-between items-center z-20 relative">
+        <h1 className="font-display text-4xl text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">
           Jasmyn's World ✨
         </h1>
         <div className="flex gap-4">
-          <button 
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => setBoxOpen(true)}
-            className="bg-amber-100 hover:bg-amber-200 px-6 py-2 rounded-full font-display text-lg text-amber-800 shadow-md transition-all border border-amber-300"
+            className="bg-gradient-to-r from-amber-400 to-amber-600 px-6 py-2 rounded-full font-display text-lg text-amber-950 shadow-[0_0_15px_rgba(251,191,36,0.6)] border-2 border-amber-200"
           >
             📦 Memory Box
-          </button>
+          </motion.button>
           {currentRoom && (
-            <button 
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setCurrentRoom(null)}
-              className="bg-white/80 hover:bg-white px-6 py-2 rounded-full font-display text-lg text-purple-700 shadow-md transition-all border border-purple-200"
+              className="bg-white/20 hover:bg-white/30 backdrop-blur-md px-6 py-2 rounded-full font-display text-lg text-white shadow-md transition-all border border-white/30"
             >
               ← Back to Hub
-            </button>
+            </motion.button>
           )}
         </div>
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 w-full max-w-6xl relative">
+      <div className="flex-1 w-full relative z-10">
         <AnimatePresence mode="wait">
           {!currentRoom ? (
             <motion.div
               key="hub"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.05 }}
-              className="w-full h-full p-8 grid grid-cols-2 md:grid-cols-4 gap-6 items-center content-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, scale: 1.1 }}
+              className="absolute inset-0 flex items-end justify-center overflow-x-auto overflow-y-hidden pb-16 custom-scrollbar px-10"
             >
-              {ROOMS.map((room) => (
-                <motion.button
-                  key={room.id}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setCurrentRoom(room.id)}
-                  className="bg-white/60 backdrop-blur-md p-8 rounded-3xl border-2 border-white/80 shadow-xl shadow-purple-200/50 flex flex-col items-center gap-4 group hover:bg-white/80 transition-colors"
-                >
-                  <span className="text-5xl group-hover:scale-110 transition-transform filter drop-shadow-md">{room.icon}</span>
-                  <span className="font-display text-xl text-purple-900">{room.title}</span>
-                </motion.button>
-              ))}
+              {/* Floor */}
+              <div className="absolute bottom-0 left-0 right-0 h-24 bg-[#4a332a] border-t-8 border-[#2d1f19] z-0" style={{ minWidth: '200%' }} />
+              
+              <div className="flex items-end gap-12 relative z-10 h-full pb-8">
+                {ROOMS.map((room) => (
+                  <motion.div
+                    key={room.id}
+                    whileHover={{ y: -20, filter: "brightness(1.2)" }}
+                    onClick={() => setCurrentRoom(room.id)}
+                    className="relative cursor-pointer group flex flex-col items-center justify-end h-80"
+                  >
+                    {/* Door Sign (Hover) */}
+                    <div className="absolute -top-16 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 text-purple-900 px-4 py-2 rounded-xl font-display whitespace-nowrap shadow-xl border-2 border-purple-200 pointer-events-none z-20">
+                      {room.icon} {room.title}
+                      <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 border-x-8 border-x-transparent border-t-8 border-t-white/90" />
+                    </div>
+
+                    {/* Door Structure */}
+                    <div className={`w-40 h-64 ${room.color} ${room.shape} shadow-[0_10px_30px_rgba(0,0,0,0.5)] flex flex-col items-center justify-center relative overflow-hidden`}>
+                      <div className="w-4 h-4 bg-yellow-400 rounded-full absolute right-4 top-1/2 shadow-[0_0_10px_#facc15]" />
+                      <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </motion.div>
           ) : (
             <motion.div
               key={currentRoom}
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -50 }}
-              transition={{ type: "spring", bounce: 0, duration: 0.6 }}
-              className="w-full h-full bg-white/40 backdrop-blur-lg rounded-t-[3rem] border-t-4 border-x-4 border-white/50 shadow-2xl overflow-hidden"
+              exit={{ opacity: 0, y: 100 }}
+              transition={{ type: "spring", bounce: 0, duration: 0.8 }}
+              className="absolute inset-0 bg-white"
             >
               {RoomComponent && <RoomComponent />}
             </motion.div>

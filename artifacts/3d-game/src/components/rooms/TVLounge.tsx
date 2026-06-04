@@ -1,108 +1,84 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const SHOWS = [
-  "Noddy", "Land Before Time", "Fraggle Rock", "Harold and the Purple Crayon", "Boohbah", "Oobi", "Moose & Zee", "Dragon Tales", "Maggie & the Ferocious Beast", "Oswald", "Wow Wow Wubbzy", "Bear in the Big Blue House", "I Spy", "JoJo's Circus", "Rolie Polie Olie", "Miss Spider's Sunny Patch", "Doodlebops", "Fresh Beat Band", "Franklin", "Little Bear", "Upside Down Show", "Pinky Dinky Doo", "Charlie & Lola", "Higglytown Heroes", "Fish Hooks", "Maya & Miguel", "Little Bill"
-];
-
-const GAMES = [
-  "Dance Central", "MJ Experience", "Just Dance", "Xbox Kinect Sports", "Xbox Kinect Animal Game", "Toy Story Game", "LEGO Movie Game", "Rayman", "Dora Doll Game"
-];
-
 export default function TVLounge() {
-  const [selectedShow, setSelectedShow] = useState<string | null>(null);
+  const [tvOn, setTvOn] = useState(false);
+
+  const shows = [
+    { title: "Noddy", color: "bg-red-500" },
+    { title: "Dragon Tales", color: "bg-green-500" },
+    { title: "Wow Wow Wubbzy", color: "bg-yellow-400" },
+    { title: "I Spy", color: "bg-blue-600" }
+  ];
 
   return (
-    <div className="w-full h-full bg-slate-900 text-slate-200 p-8 flex flex-col relative overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-500/20 blur-[100px] rounded-full pointer-events-none" />
+    <div className="w-full h-full bg-[#5c2e0e] relative overflow-hidden flex flex-col items-center p-8">
+      {/* Ambient Lighting */}
+      <div className="absolute top-10 right-10 w-64 h-64 bg-amber-500/20 blur-[60px] rounded-full pointer-events-none" />
+      
+      {/* Floor */}
+      <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-[#3d1c04] border-t-[12px] border-[#291302] z-0" />
 
-      <h2 className="font-display text-4xl text-blue-300 mb-8 z-10 text-center drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]">TV Lounge 📺</h2>
+      <h2 className="font-display text-4xl text-amber-200 z-10 mb-8 drop-shadow-lg">TV Lounge</h2>
 
-      <div className="flex-1 overflow-y-auto z-10 space-y-12 pb-12 custom-scrollbar">
+      <div className="flex-1 w-full max-w-5xl z-10 flex gap-8 items-end pb-12 relative">
         
-        {/* Shows Section */}
-        <div>
-          <h3 className="text-xl font-bold mb-4 text-slate-400 pl-4 border-l-4 border-blue-500">Favorite Shows</h3>
-          <div className="flex overflow-x-auto gap-4 pb-4 px-4 snap-x">
-            {SHOWS.map(show => (
-              <motion.div
-                key={show}
-                whileHover={{ scale: 1.05 }}
-                onClick={() => setSelectedShow(show)}
-                className="min-w-[160px] h-24 bg-slate-800 rounded-lg border border-slate-700 flex items-center justify-center p-4 text-center cursor-pointer shadow-lg hover:border-blue-400 hover:shadow-blue-500/20 transition-all snap-center relative overflow-hidden group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60" />
-                <span className="relative z-10 font-display text-sm drop-shadow-md">{show}</span>
-              </motion.div>
-            ))}
-          </div>
+        {/* VHS Tapes Collection */}
+        <div className="w-1/4 h-64 bg-[#291302] border-8 border-[#1a0c01] rounded-lg p-4 flex flex-col gap-2 shadow-[inset_0_10px_20px_rgba(0,0,0,0.5)] overflow-y-auto custom-scrollbar">
+          {shows.map(show => (
+             <div key={show.title} className="w-full h-12 bg-black border border-gray-800 rounded-sm flex items-center shadow-md cursor-pointer hover:border-gray-500 transition-colors">
+               <div className={`w-8 h-full ${show.color} rounded-l-sm`} />
+               <span className="text-white text-xs font-bold px-2 truncate font-sans">{show.title}</span>
+             </div>
+          ))}
         </div>
 
-        {/* Games Section */}
-        <div>
-          <h3 className="text-xl font-bold mb-4 text-slate-400 pl-4 border-l-4 border-green-500">Console Games</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 px-4">
-            {GAMES.map(game => (
-              <motion.div
-                key={game}
-                whileHover={{ scale: 1.05 }}
-                className="aspect-[3/4] bg-green-900/20 rounded-md border border-green-700/50 flex flex-col items-center justify-center p-2 text-center cursor-pointer shadow-lg hover:bg-green-800/30 transition-all relative"
-              >
-                <div className="w-full h-4 bg-green-800/50 absolute top-0 rounded-t-md" /> {/* Box art header spine */}
-                <span className="font-sans text-xs font-bold text-green-100">{game}</span>
-              </motion.div>
-            ))}
+        {/* CRT TV */}
+        <div className="flex-1 flex flex-col items-center">
+          <div className="w-[400px] h-[300px] bg-[#d1d5db] border-[16px] border-[#9ca3af] rounded-[40px] shadow-[0_20px_40px_rgba(0,0,0,0.6)] p-4 flex relative cursor-pointer" onClick={() => setTvOn(!tvOn)}>
+            {/* Screen */}
+            <div className={`flex-1 bg-black rounded-[30px] border-8 border-gray-800 relative overflow-hidden transition-colors duration-500 ${tvOn ? 'shadow-[0_0_50px_rgba(59,130,246,0.5)]' : ''}`}>
+              <div className="absolute inset-0 bg-white/5 rounded-[22px] pointer-events-none" style={{ boxShadow: 'inset 0 0 20px rgba(0,0,0,0.8)' }} />
+              {tvOn && (
+                <div className="absolute inset-0 bg-blue-500/20 z-0 animate-pulse">
+                   <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, black 2px, black 4px)' }} />
+                   <div className="w-full h-full flex items-center justify-center text-blue-200 font-display text-2xl animate-bounce">
+                     PLAY ►
+                   </div>
+                </div>
+              )}
+            </div>
+            {/* Control Panel */}
+            <div className="w-16 h-full flex flex-col items-center justify-between py-8 pl-4">
+              <div className="flex flex-col gap-4">
+                <div className="w-8 h-8 rounded-full bg-gray-400 border-b-4 border-gray-500 shadow-sm" />
+                <div className="w-8 h-8 rounded-full bg-gray-400 border-b-4 border-gray-500 shadow-sm" />
+              </div>
+              <div className="w-6 h-12 flex flex-col gap-1">
+                {Array.from({length: 6}).map((_,i) => <div key={i} className="w-full h-1 bg-gray-500 rounded-full" />)}
+              </div>
+            </div>
+            
+            {/* Antennas */}
+            <div className="absolute -top-16 left-1/3 w-2 h-20 bg-gray-400 origin-bottom rotate-[-30deg] border border-gray-500 rounded-full" />
+            <div className="absolute -top-16 right-1/3 w-2 h-20 bg-gray-400 origin-bottom rotate-[30deg] border border-gray-500 rounded-full" />
           </div>
+          
+          {/* TV Stand */}
+          <div className="w-[300px] h-12 bg-[#291302] border-x-8 border-t-8 border-[#1a0c01] mt-0 z-0" />
+        </div>
+
+        {/* Xbox Games */}
+        <div className="w-1/4 h-64 bg-[#291302] border-8 border-[#1a0c01] rounded-lg p-4 grid grid-cols-2 gap-2 shadow-[inset_0_10px_20px_rgba(0,0,0,0.5)]">
+           {['Dance Central', 'Kinect Sports', 'Toy Story'].map(g => (
+             <div key={g} className="bg-green-600 border border-green-800 h-24 rounded-sm flex flex-col items-center pt-1 shadow-md cursor-pointer hover:bg-green-500">
+               <div className="w-full h-3 bg-green-800 mb-1" />
+               <span className="text-white text-[8px] text-center font-bold px-1">{g}</span>
+             </div>
+           ))}
         </div>
 
       </div>
-
-      <AnimatePresence>
-        {selectedShow && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-auto"
-          >
-            {/* CRT TV Frame */}
-            <div className="bg-slate-800 p-8 rounded-[3rem] border-8 border-slate-700 shadow-[0_0_50px_rgba(0,0,0,0.8)] relative">
-              {/* Antenna */}
-              <div className="absolute -top-12 left-1/2 w-1 h-12 bg-slate-500 rotate-12 origin-bottom" />
-              <div className="absolute -top-12 left-1/2 w-1 h-12 bg-slate-500 -rotate-12 origin-bottom" />
-              
-              <div className="bg-slate-900 p-4 rounded-2xl border-4 border-slate-950 relative overflow-hidden shadow-inner">
-                {/* Scanlines */}
-                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjIiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-50 z-10 pointer-events-none" />
-                
-                <div className="w-64 h-48 flex flex-col items-center justify-center text-center p-4 relative z-0">
-                  <span className="font-display text-2xl text-blue-300 mb-4 animate-pulse">{selectedShow}</span>
-                  <p className="text-slate-400 text-sm italic">"I used to watch this all the time."</p>
-                </div>
-              </div>
-
-              {/* Dials */}
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-4">
-                <div className="w-8 h-8 rounded-full bg-slate-700 border-2 border-slate-600 shadow-md" />
-                <div className="w-8 h-8 rounded-full bg-slate-700 border-2 border-slate-600 shadow-md" />
-              </div>
-
-              <button 
-                onClick={() => setSelectedShow(null)}
-                className="absolute -bottom-16 left-1/2 -translate-x-1/2 bg-red-500 text-white px-6 py-2 rounded-full font-bold shadow-lg hover:bg-red-400"
-              >
-                Turn Off
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      
-      {/* Backdrop blur for modal */}
-      {selectedShow && (
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-40" onClick={() => setSelectedShow(null)} />
-      )}
     </div>
   );
 }

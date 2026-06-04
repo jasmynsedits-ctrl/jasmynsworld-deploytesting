@@ -1,108 +1,47 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export default function PhotoBooth() {
-  const [showDVDs, setShowDVDs] = useState(false);
-
   return (
-    <div className="w-full h-full bg-pink-50 p-8 flex flex-col relative overflow-hidden">
-      {/* Decorative stars */}
-      <div className="absolute top-10 left-10 text-3xl opacity-20">✨</div>
-      <div className="absolute bottom-20 right-20 text-4xl opacity-20">✨</div>
-      
-      <div className="flex justify-between items-center mb-8 z-10">
-        <h2 className="font-display text-4xl text-pink-900">Photo Booth 📷</h2>
-        <button 
-          onClick={() => setShowDVDs(!showDVDs)}
-          className="bg-white hover:bg-pink-100 text-pink-600 px-6 py-2 rounded-full font-bold shadow-md transition-colors"
-        >
-          {showDVDs ? "View Photos" : "View Home Videos"}
-        </button>
+    <div className="w-full h-full bg-[#fdf2f8] relative overflow-hidden flex flex-col items-center justify-center p-8">
+      {/* Star pattern */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#ec4899 2px, transparent 2px)', backgroundSize: '40px 40px' }} />
+
+      <h2 className="font-display text-4xl text-pink-900 z-10 mb-8 bg-white/80 px-8 py-2 rounded-full shadow-sm">Photo Booth</h2>
+
+      <div className="z-10 flex w-full max-w-4xl justify-between items-center px-10">
+        
+        {/* Filmstrip Left */}
+        <motion.div whileHover={{ scale: 1.05, rotate: -5 }} className="w-32 bg-black p-2 rounded shadow-2xl rotate-[-10deg] flex flex-col gap-2">
+          {Array.from({length: 3}).map((_, i) => (
+             <div key={i} className="w-full aspect-square bg-gray-200 rounded-sm relative overflow-hidden border border-white/20">
+               <div className="absolute inset-0 bg-pink-100/50 mix-blend-overlay" />
+             </div>
+          ))}
+        </motion.div>
+
+        {/* Booth Machine */}
+        <div className="w-64 h-96 bg-[#db2777] rounded-t-[60px] border-8 border-[#be185d] shadow-[0_20px_50px_rgba(0,0,0,0.4)] flex flex-col items-center p-6 relative">
+           <div className="w-12 h-12 bg-black rounded-full border-4 border-gray-300 shadow-inner mb-6 relative">
+             <div className="absolute top-2 right-2 w-3 h-3 bg-white/40 rounded-full" />
+           </div>
+           
+           <div className="w-full flex-1 bg-[#fce7f3] rounded-xl border-4 border-[#9d174d] shadow-inner mb-6 flex items-center justify-center p-4 text-center">
+             <span className="font-display text-pink-800 text-xl leading-tight">Link Google Photos</span>
+           </div>
+
+           <div className="w-32 h-4 bg-black rounded-full opacity-50" /> {/* Photo output slot */}
+        </div>
+
+        {/* Filmstrip Right */}
+        <motion.div whileHover={{ scale: 1.05, rotate: 5 }} className="w-32 bg-black p-2 rounded shadow-2xl rotate-[10deg] flex flex-col gap-2">
+          {Array.from({length: 3}).map((_, i) => (
+             <div key={i} className="w-full aspect-square bg-gray-200 rounded-sm relative overflow-hidden border border-white/20">
+               <div className="absolute inset-0 bg-pink-100/50 mix-blend-overlay" />
+             </div>
+          ))}
+        </motion.div>
+
       </div>
-
-      <AnimatePresence mode="wait">
-        {!showDVDs ? (
-          <motion.div 
-            key="photos"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className="flex-1 flex flex-col items-center justify-center gap-8"
-          >
-            <div className="flex gap-8 overflow-x-auto p-8 w-full max-w-5xl items-center justify-center">
-              {/* Filmstrip 1 */}
-              <motion.div 
-                whileHover={{ rotate: 2, scale: 1.05 }}
-                className="bg-white p-4 pb-12 rounded-sm shadow-2xl border border-gray-200 rotate-[-3deg] flex flex-col gap-2 min-w-[200px]"
-              >
-                {[1,2,3,4].map(i => (
-                  <div key={i} className="w-full aspect-square bg-gray-200 relative overflow-hidden flex items-center justify-center">
-                    <span className="text-gray-400 text-sm">Empty</span>
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent" />
-                  </div>
-                ))}
-              </motion.div>
-
-              {/* Central instruction */}
-              <div className="bg-pink-100 p-8 rounded-2xl border-4 border-pink-200 text-center max-w-sm shadow-lg z-10">
-                <span className="text-4xl mb-4 block">✨</span>
-                <p className="font-display text-xl text-pink-800 mb-4">Add your photos here</p>
-                <p className="text-pink-600 mb-6 text-sm">Connect your Google Photos to fill in these memories.</p>
-                <a 
-                  href="https://photos.app.goo.gl/rLpdb1MQ46PtXPHK8" 
-                  target="_blank" 
-                  rel="noreferrer"
-                  className="bg-pink-500 hover:bg-pink-400 text-white px-6 py-3 rounded-full font-bold shadow-md inline-block transition-transform hover:scale-105"
-                >
-                  Link Google Photos
-                </a>
-              </div>
-
-              {/* Filmstrip 2 */}
-              <motion.div 
-                whileHover={{ rotate: -2, scale: 1.05 }}
-                className="bg-white p-4 pb-12 rounded-sm shadow-2xl border border-gray-200 rotate-[4deg] flex flex-col gap-2 min-w-[200px]"
-              >
-                {[1,2,3,4].map(i => (
-                  <div key={i} className="w-full aspect-square bg-gray-200 relative overflow-hidden flex items-center justify-center">
-                    <span className="text-gray-400 text-sm">Empty</span>
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent" />
-                  </div>
-                ))}
-              </motion.div>
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="dvds"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            className="flex-1 bg-blue-900 rounded-3xl p-8 flex flex-col shadow-inner"
-          >
-            <h3 className="font-display text-2xl text-blue-200 mb-6 text-center">Home Video Archive</h3>
-            
-            <div className="flex-1 bg-black/40 rounded-xl p-8 flex items-end justify-center gap-4">
-              {["2005", "2006", "2007", "2008"].map((year) => (
-                <motion.div
-                  key={year}
-                  whileHover={{ y: -20 }}
-                  className="w-24 h-48 bg-gradient-to-b from-blue-400 to-blue-600 rounded-sm border border-blue-300 shadow-xl flex items-center justify-center cursor-pointer relative group"
-                >
-                  <span className="text-white font-bold rotate-90 tracking-widest">{year}</span>
-                  {/* Fake Bluray logo */}
-                  <div className="absolute top-2 w-8 h-3 bg-blue-800 rounded-full" />
-                  
-                  {/* Tooltip */}
-                  <div className="absolute -top-16 opacity-0 group-hover:opacity-100 transition-opacity bg-white text-blue-900 text-xs py-1 px-2 rounded whitespace-nowrap pointer-events-none shadow-lg">
-                    Click to view {year}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
