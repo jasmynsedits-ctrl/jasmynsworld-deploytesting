@@ -186,7 +186,7 @@ function ToyGraphic({ id }: { id: string }) {
   }
 }
 
-export default function MyRoom() {
+export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => void }) {
   const [toyboxOpen, setToyboxOpen] = useState(false);
   const [activeToy, setActiveToy] = useState<string | null>(null);
 
@@ -303,7 +303,22 @@ export default function MyRoom() {
       </div>
 
       {/* Desk & Computer */}
-      <div className="absolute" style={{ bottom: "22%", right: "8%", width: "22%", zIndex: 10 }}>
+      <motion.div
+        className="absolute group"
+        style={{ bottom: "22%", right: "8%", width: "22%", zIndex: 10, cursor: onEnterGameRoom ? "pointer" : "default" }}
+        onClick={onEnterGameRoom}
+        whileHover={onEnterGameRoom ? { scale: 1.04 } : {}}
+        whileTap={onEnterGameRoom ? { scale: 0.97 } : {}}
+      >
+        {onEnterGameRoom && (
+          <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+            <span className="bg-white/90 text-blue-800 font-bold text-xs px-2 py-1 rounded-full shadow-md border border-blue-200">
+              💻 Use Computer
+            </span>
+          </div>
+        )}
+      </motion.div>
+      <div className="absolute pointer-events-none" style={{ bottom: "22%", right: "8%", width: "22%", zIndex: 10 }}>
         <div className="mx-auto w-20 h-16 rounded-lg" style={{ background: "#b0b8c8", border: "3px solid #8090a8" }}>
           <div className="m-1 h-10 rounded" style={{ background: "linear-gradient(135deg, #c8e4ff 0%, #88ccff 100%)", border: "2px inset #6699cc" }}>
             <div className="p-0.5 text-[6px] text-center" style={{ fontFamily: "monospace", color: "#003366" }}>Windows XP</div>

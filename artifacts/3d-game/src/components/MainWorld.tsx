@@ -16,7 +16,6 @@ const ROOMS = [
   { id: "library", title: "Library", component: Library, color: "bg-[#714b35]", borderColor: "border-[#4a2e1b]", icon: "books" },
   { id: "musiccorner", title: "Music Corner", component: MusicCorner, color: "bg-purple-700", borderColor: "border-purple-900", icon: "record" },
   { id: "myroom", title: "My Room", component: MyRoom, color: "bg-purple-300", borderColor: "border-purple-500", icon: "bed" },
-  { id: "gameroom", title: "Game Room", component: GameRoom, color: "bg-blue-800", borderColor: "border-blue-950", icon: "pc" },
   { id: "hobby", title: "Hobby Workshop", component: HobbyWorkshop, color: "bg-yellow-400", borderColor: "border-yellow-600", icon: "craft" },
   { id: "photo", title: "Photo Booth", component: PhotoBooth, color: "bg-pink-500", borderColor: "border-pink-700", icon: "camera" },
 ];
@@ -126,7 +125,11 @@ export default function MainWorld() {
                 ← Back to Map
               </button>
             </div>
-            {RoomComponent && <RoomComponent />}
+            {currentRoom === "myroom"
+              ? <MyRoom onEnterGameRoom={() => setCurrentRoom("gameroom")} />
+              : currentRoom === "gameroom"
+              ? <GameRoom />
+              : RoomComponent && <RoomComponent />}
           </motion.div>
         )}
       </AnimatePresence>

@@ -107,7 +107,7 @@ export default function GameRoom() {
               <div className="flex-1 flex min-h-[250px]">
                 <div className="flex-1 bg-white p-2 flex flex-col gap-1">
                   <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm font-bold">Internet Explorer</div>
-                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm font-bold">MSN Messenger</div>
+                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm font-bold">AIM</div>
                   <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm font-bold">Limewire</div>
                   <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm font-bold">Pinball</div>
                   <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm font-bold">Minesweeper</div>
