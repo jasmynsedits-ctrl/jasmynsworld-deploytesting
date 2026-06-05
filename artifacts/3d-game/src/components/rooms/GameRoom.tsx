@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function GameRoom() {
@@ -6,10 +6,13 @@ export default function GameRoom() {
   const [activeWindow, setActiveWindow] = useState<string | null>(null);
 
   const desktopIcons = [
-    { id: 'clubpenguin', name: 'Club Penguin', color: 'bg-blue-400', shape: 'rounded-full' },
-    { id: 'moshimonsters', name: 'Moshi Monsters', color: 'bg-purple-500', shape: 'rounded-tl-full rounded-br-full' },
-    { id: 'moviestarplanet', name: 'MovieStar Planet', color: 'bg-pink-400', shape: 'rotate-45' },
-    { id: 'weeworld', name: 'WeeWorld', color: 'bg-green-400', shape: 'rounded-sm' }
+    { id: 'clubpenguin', name: 'Club Penguin', color: 'bg-blue-500', shape: 'rounded-full', desc: "Waddle around and meet new friends! The pizza parlor was my jam." },
+    { id: 'moshimonsters', name: 'Moshi Monsters', color: 'bg-purple-500', shape: 'rounded-[40%_60%_70%_30%]', desc: "I spent all my Rox on room decorations and planted seeds to catch Moshlings." },
+    { id: 'moviestarplanet', name: 'MovieStar Planet', color: 'bg-pink-400', shape: 'rotate-45', desc: "Making movies, dressing up, and trying to get VIP status." },
+    { id: 'animaljam', name: 'Animal Jam', color: 'bg-green-600', shape: 'rounded-lg', desc: "Trading spiked collars and playing games in Jamaa." },
+    { id: 'weeworld', name: 'WeeWorld', color: 'bg-green-400', shape: 'rounded-sm', desc: "Hanging out in WeeMees and exploring the virtual world." },
+    { id: 'pbskids', name: 'PBS Kids', color: 'bg-green-500', shape: 'rounded-full', desc: "Arthur, Cyberchase, and endless educational mini-games." },
+    { id: 'disneychannel', name: 'Disney Channel', color: 'bg-blue-600', shape: 'rounded-md', desc: "Playing Zack & Cody and Kim Possible games for hours." }
   ];
 
   return (
@@ -25,7 +28,7 @@ export default function GameRoom() {
       </div>
 
       {/* Desktop Icons */}
-      <div className="flex-1 p-4 flex flex-col gap-6 items-start z-10 relative">
+      <div className="flex-1 p-4 flex flex-col gap-6 items-start z-10 relative flex-wrap h-full content-start">
         {desktopIcons.map((icon) => (
           <div key={icon.id} className="flex flex-col items-center gap-1 w-20 cursor-pointer group" onDoubleClick={() => setActiveWindow(icon.id)}>
             <div className={`w-12 h-12 ${icon.color} ${icon.shape} shadow-md border-2 border-white/50 group-hover:border-white transition-all`} />
@@ -42,7 +45,7 @@ export default function GameRoom() {
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-64 bg-[#ece9d8] rounded-t-lg shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-[#0055e5] z-30 flex flex-col overflow-hidden"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[300px] bg-[#ece9d8] rounded-t-lg shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-[#0055e5] z-30 flex flex-col overflow-hidden"
           >
             {/* Title Bar */}
             <div className="h-8 bg-gradient-to-r from-[#0058e6] via-[#3a93ff] to-[#0058e6] flex justify-between items-center px-2">
@@ -50,8 +53,13 @@ export default function GameRoom() {
               <button onClick={() => setActiveWindow(null)} className="w-6 h-6 bg-[#e81123] text-white text-xs font-bold rounded-sm border border-white/50 hover:bg-[#f04b58]">X</button>
             </div>
             {/* Content */}
-            <div className="flex-1 bg-white border-2 border-[#ece9d8] m-1 p-4 flex items-center justify-center">
-              <div className="text-center text-gray-500 italic">
+            <div className="flex-1 bg-white border-2 border-[#ece9d8] m-1 p-6 flex flex-col items-center justify-center gap-4">
+              <div className={`w-20 h-20 ${desktopIcons.find(i => i.id === activeWindow)?.color} ${desktopIcons.find(i => i.id === activeWindow)?.shape} shadow-lg`} />
+              <h3 className="font-bold text-xl text-[#0058e6]">{desktopIcons.find(i => i.id === activeWindow)?.name}</h3>
+              <p className="text-center text-gray-700 italic px-4">
+                "{desktopIcons.find(i => i.id === activeWindow)?.desc}"
+              </p>
+              <div className="mt-4 px-4 py-2 bg-gray-200 rounded border border-gray-300 text-sm text-gray-500">
                 Loading nostalgic flash game...
               </div>
             </div>
@@ -98,11 +106,13 @@ export default function GameRoom() {
               </div>
               <div className="flex-1 flex min-h-[250px]">
                 <div className="flex-1 bg-white p-2 flex flex-col gap-1">
-                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm">Internet Explorer</div>
-                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm">MSN Messenger</div>
-                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm">Limewire</div>
+                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm font-bold">Internet Explorer</div>
+                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm font-bold">MSN Messenger</div>
+                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm font-bold">Limewire</div>
+                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm font-bold">Pinball</div>
+                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm font-bold">Minesweeper</div>
                 </div>
-                <div className="w-1/3 bg-[#d3e5fa] border-l border-[#95bcee] p-2 flex flex-col gap-1 text-xs text-[#00136b]">
+                <div className="w-1/3 bg-[#d3e5fa] border-l border-[#95bcee] p-2 flex flex-col gap-1 text-xs text-[#00136b] font-bold">
                   <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer">My Documents</div>
                   <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer">My Pictures</div>
                   <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer">Control Panel</div>
@@ -113,7 +123,7 @@ export default function GameRoom() {
                   <div className="w-4 h-4 bg-orange-500 rounded-sm" /> Log Off
                 </button>
                 <button className="text-white text-xs flex items-center gap-1 hover:underline">
-                  <div className="w-4 h-4 bg-red-500 rounded-sm" /> Turn Off Computer
+                  <div className="w-4 h-4 bg-red-500 rounded-sm" /> Turn Off
                 </button>
               </div>
             </motion.div>

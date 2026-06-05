@@ -1,20 +1,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-type Station = { id: string; name: string; color: string };
-
-const STATIONS: Station[] = [
-  { id: "loom", name: "Rainbow Loom", color: "#ef4444" },
-  { id: "stew", name: "Eagle Stew", color: "#78350f" },
-  { id: "turtle", name: "Turtle Sandbox", color: "#84cc16" },
-  { id: "butterfly", name: "Butterfly Catching", color: "#60a5fa" },
-  { id: "firefly", name: "Lightning Bugs", color: "#1e1b4b" },
-  { id: "rolly", name: "Rolly Pollies", color: "#64748b" },
-  { id: "slime", name: "Slime Making", color: "#22c55e" },
-];
-
-// --- Mini-game sub-components ---
-
+// Mini-games kept intact
 function LoomGame() {
   const PEGS = useMemo(() => Array.from({ length: 12 }).map((_, i) => ({ id: i, x: (i % 4) * 70 + 30, y: Math.floor(i / 4) * 70 + 30 })), []);
   const COLORS = ["#ef4444","#f97316","#eab308","#22c55e","#3b82f6","#a855f7","#ec4899"];
@@ -87,7 +74,6 @@ function StewGame() {
           </motion.button>
         ))}
       </div>
-      {/* Cauldron */}
       <div className="relative w-40 h-36 flex items-end justify-center">
         <div className="w-36 h-28 bg-gray-800 rounded-b-[50%] border-4 border-gray-700 relative overflow-hidden shadow-2xl">
           <motion.div
@@ -101,13 +87,10 @@ function StewGame() {
             </>
           )}
         </div>
-        {/* Cauldron rim */}
         <div className="absolute top-0 w-40 h-5 bg-gray-700 rounded-full border-2 border-gray-600" />
-        {/* Legs */}
         <div className="absolute bottom-0 left-6 w-3 h-6 bg-gray-800 rounded-b-sm" />
         <div className="absolute bottom-0 right-6 w-3 h-6 bg-gray-800 rounded-b-sm" />
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3 h-6 bg-gray-800 rounded-b-sm" />
-        {/* Steam */}
         {added.length > 0 && [0,1,2].map(i => (
           <motion.div key={i} animate={{ y: [-10,-40], opacity: [0.6,0] }} transition={{ repeat: Infinity, duration: 1.5, delay: i * 0.4 }}
             className="absolute -top-6 rounded-full bg-white/40 w-4 h-8 blur-sm"
@@ -133,7 +116,6 @@ function ButterflyGame() {
     <div className="flex flex-col items-center gap-4">
       <p className="text-sky-800 font-bold">Click to catch the butterflies! ({caught.length}/{butterflies.length})</p>
       <div className="relative w-80 h-48 bg-gradient-to-b from-sky-200 to-green-200 rounded-xl border-4 border-sky-300 overflow-hidden shadow-inner">
-        {/* Grass */}
         <div className="absolute bottom-0 left-0 right-0 h-12 bg-green-400 rounded-t-[40%]" />
         {butterflies.map(b => (
           <AnimatePresence key={b.id}>
@@ -195,7 +177,6 @@ function FireflyGame() {
             )}
           </AnimatePresence>
         ))}
-        {/* Jar (grows as you catch) */}
         {caught.length > 0 && (
           <div className="absolute bottom-3 right-4 w-12 h-16 border-2 border-white/40 rounded-b-xl bg-white/10 overflow-hidden flex flex-col-reverse">
             <motion.div
@@ -240,23 +221,18 @@ function TurtleGame() {
         tabIndex={0} onKeyDown={move} style={{ outline: "none" }}
         onClick={e => (e.currentTarget as HTMLElement).focus()}
       >
-        {/* Sand texture */}
         <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(#d97706 1px, transparent 1px)', backgroundSize: '12px 12px' }} />
         <p className="absolute top-2 left-2 text-xs text-yellow-700 font-bold">click then use arrows</p>
-        {/* Turtle */}
         <motion.div animate={{ x: pos.x, y: pos.y }} transition={{ type: "spring", stiffness: 300 }} className="absolute w-12 h-12" style={{ rotate: dir }}>
-          {/* Shell */}
           <div className="absolute top-1 left-1 w-10 h-10 bg-green-600 rounded-full border-2 border-green-800">
             <div className="absolute inset-1 grid grid-cols-2 gap-0.5">
               <div className="bg-green-500 rounded-tl" /><div className="bg-green-700 rounded-tr" />
               <div className="bg-green-700 rounded-bl" /><div className="bg-green-500 rounded-br" />
             </div>
           </div>
-          {/* Head */}
           <div className="absolute -top-2 left-4 w-5 h-5 bg-green-500 rounded-full border border-green-700">
             <div className="absolute top-1 left-1 w-1.5 h-1.5 bg-black rounded-full" />
           </div>
-          {/* Legs */}
           <div className="absolute top-3 -left-1 w-3 h-3 bg-green-500 rounded-full border border-green-700" />
           <div className="absolute top-3 -right-1 w-3 h-3 bg-green-500 rounded-full border border-green-700" />
           <div className="absolute bottom-1 -left-1 w-3 h-3 bg-green-500 rounded-full border border-green-700" />
@@ -288,7 +264,6 @@ function RollyGame() {
                 {!isRolled && (
                   <>
                     {[20,35,50,65,80].map(x => <div key={x} className="absolute top-1/2 -translate-y-1/2 w-px h-4 bg-gray-500" style={{ left: `${x}%` }} />)}
-                    {/* Legs */}
                     {[-3,3].map((side,j) => [30,50,70].map((x,k) => (
                       <div key={`${j}${k}`} className="absolute w-3 h-px bg-gray-400" style={{ left: `${x}%`, top: side > 0 ? "90%" : "-10%", transform: `rotate(${side * 30}deg)` }} />
                     )))}
@@ -338,11 +313,9 @@ function SlimeGame() {
         <svg width="200" height="140" viewBox="0 0 200 140">
           <ellipse cx="100" cy="80" rx="90" ry="55" fill={color} opacity="0.9" />
           <ellipse cx="100" cy="75" rx="70" ry="35" fill={color} opacity="0.5" />
-          {/* Drips */}
           <ellipse cx="40" cy="125" rx="12" ry="18" fill={color} opacity="0.8" />
           <ellipse cx="160" cy="120" rx="10" ry="15" fill={color} opacity="0.8" />
           <ellipse cx="100" cy="130" rx="15" ry="10" fill={color} opacity="0.7" />
-          {/* Glossy highlight */}
           <ellipse cx="75" cy="60" rx="25" ry="14" fill="white" opacity="0.25" />
         </svg>
       </motion.div>
@@ -364,142 +337,139 @@ function MiniGame({ id }: { id: string }) {
   }
 }
 
-function StationIcon({ id }: { id: string }) {
-  switch (id) {
-    case "loom":
-      return (
-        <div className="relative w-20 h-16">
-          {[0,1,2,3].map(i => <div key={i} className="absolute top-2 w-2 h-12 bg-gray-300 rounded-full border border-gray-400" style={{ left: `${i * 18 + 12}%` }} />)}
-          {["#ef4444","#f97316","#eab308"].map((c,i) => (
-            <div key={i} className="absolute h-1.5 rounded-full" style={{ background: c, top: `${25+i*14}px`, left: "12%", right: "12%", opacity: 0.8 }} />
-          ))}
-        </div>
-      );
-    case "stew":
-      return (
-        <div className="relative w-20 h-16">
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-10 bg-gray-700 rounded-b-[50%] border-2 border-gray-800" />
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-18 h-3 bg-gray-600 rounded-full" />
-          {[0,1,2].map(i => <div key={i} className="absolute bottom-2 w-1 h-3 bg-gray-800 rounded" style={{ left: `${20+i*28}%` }} />)}
-          <div className="absolute top-0 left-[38%] w-1 h-4 bg-white/30 rounded blur-sm" />
-        </div>
-      );
-    case "turtle":
-      return (
-        <div className="relative w-20 h-16">
-          <div className="absolute inset-1 bg-yellow-100 rounded border-2 border-yellow-300" />
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2">
-            <div className="w-10 h-10 bg-green-500 rounded-full border-2 border-green-700 relative">
-              <div className="absolute -top-2 left-3 w-5 h-4 bg-green-400 rounded-full" />
-            </div>
-          </div>
-        </div>
-      );
-    case "butterfly":
-      return (
-        <div className="flex items-center justify-center w-20 h-16">
-          <svg width="56" height="48" viewBox="0 0 56 48">
-            <ellipse cx="14" cy="20" rx="14" ry="18" fill="#60a5fa" opacity="0.9" />
-            <ellipse cx="42" cy="20" rx="14" ry="18" fill="#60a5fa" opacity="0.9" />
-            <ellipse cx="14" cy="36" rx="9" ry="10" fill="#93c5fd" opacity="0.8" />
-            <ellipse cx="42" cy="36" rx="9" ry="10" fill="#93c5fd" opacity="0.8" />
-            <line x1="28" y1="8" x2="28" y2="44" stroke="#1f2937" strokeWidth="2" />
-          </svg>
-        </div>
-      );
-    case "firefly":
-      return (
-        <div className="w-20 h-16 bg-[#1e1b4b] rounded relative overflow-hidden flex items-center justify-center">
-          {[{x:30,y:35},{x:55,y:25},{x:70,y:50},{x:20,y:60}].map((p,i) => (
-            <motion.div key={i} animate={{ opacity: [0.3,1,0.3] }} transition={{ repeat: Infinity, duration: 1.2, delay: i*0.3 }}
-              className="absolute w-3 h-3 bg-yellow-300 rounded-full shadow-[0_0_6px_2px_rgba(253,224,71,0.8)]"
-              style={{ left: `${p.x}%`, top: `${p.y}%` }}
-            />
-          ))}
-        </div>
-      );
-    case "rolly":
-      return (
-        <div className="w-20 h-16 flex items-center justify-center gap-2">
-          {[1,0.7,1].map((s,i) => (
-            <div key={i} className="bg-gray-600 border-2 border-gray-800 rounded-full shadow" style={{ width: `${s*20}px`, height: `${s*12}px` }} />
-          ))}
-        </div>
-      );
-    case "slime":
-      return (
-        <div className="w-20 h-16 flex items-center justify-center">
-          <svg width="60" height="44" viewBox="0 0 60 44">
-            <ellipse cx="30" cy="28" rx="28" ry="14" fill="#22c55e" opacity="0.9" />
-            <ellipse cx="30" cy="26" rx="20" ry="8" fill="#4ade80" opacity="0.6" />
-            <ellipse cx="12" cy="38" rx="6" ry="8" fill="#22c55e" opacity="0.8" />
-            <ellipse cx="50" cy="36" rx="5" ry="7" fill="#22c55e" opacity="0.8" />
-          </svg>
-        </div>
-      );
-    default: return <div className="w-12 h-12 bg-white/50 rounded" />;
-  }
-}
-
 export default function HobbyWorkshop() {
   const [activeStation, setActiveStation] = useState<string | null>(null);
 
+  const STATIONS = [
+    { id: "loom", name: "Rainbow Loom", color: "#ef4444" },
+    { id: "stew", name: "Eagle Stew", color: "#78350f" },
+    { id: "turtle", name: "Turtle Sandbox", color: "#84cc16" },
+    { id: "butterfly", name: "Butterfly Catching", color: "#60a5fa" },
+    { id: "firefly", name: "Lightning Bugs", color: "#1e1b4b" },
+    { id: "rolly", name: "Rolly Pollies", color: "#64748b" },
+    { id: "slime", name: "Slime Making", color: "#22c55e" },
+  ];
+
   return (
-    <div className="w-full h-full bg-[#fde68a] relative overflow-hidden flex flex-col items-center p-6">
-      {/* Wood wall */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(to right, #d97706, #d97706 42px, #b45309 42px, #b45309 44px)' }} />
-      {/* Floor */}
-      <div className="absolute bottom-0 left-0 right-0 h-[22%] bg-[#92400e] border-t-8 border-[#78350f] z-0" />
-
-      <h2 className="font-display text-4xl text-[#78350f] z-10 mb-4 bg-white/40 px-6 py-2 rounded-full backdrop-blur-sm">Hobby Workshop</h2>
-
-      {/* Table with stations */}
-      <div className="relative z-10 w-full flex-1 flex flex-col items-center justify-center pb-20">
-        <div className="relative w-full max-w-4xl">
-          {/* Table surface */}
-          <div className="w-full h-24 bg-[#fef3c7] border-8 border-[#d97706] rounded-xl shadow-2xl relative flex justify-around items-center px-6" style={{ zIndex: 20 }}>
-            {STATIONS.map(station => (
-              <motion.div key={station.id} whileHover={{ scale: 1.08, y: -6 }} whileTap={{ scale: 0.95 }}
-                onClick={() => setActiveStation(station.id)}
-                className="cursor-pointer flex flex-col items-center gap-1 group"
-              >
-                <div className="rounded-xl border-4 border-white shadow-md overflow-hidden" style={{ background: station.color + "33" }}>
-                  <StationIcon id={station.id} />
-                </div>
-                <span className="font-display text-[#92400e] text-[11px] bg-white/80 px-2 py-0.5 rounded-full group-hover:bg-white transition-colors">{station.name}</span>
-              </motion.div>
-            ))}
-          </div>
-          {/* Table legs */}
-          <div className="absolute -bottom-20 left-12 w-5 h-20 bg-[#d97706] rounded-b-sm z-10" />
-          <div className="absolute -bottom-20 right-12 w-5 h-20 bg-[#d97706] rounded-b-sm z-10" />
+    <div className="absolute inset-0 overflow-hidden" style={{ background: "linear-gradient(180deg, #fbbf24 0%, #d97706 100%)" }}>
+      {/* Ceiling / Sky area */}
+      <div className="absolute top-0 left-0 right-0 h-[35%]" style={{ background: "linear-gradient(180deg, #fcd34d 0%, #fbbf24 100%)" }}>
+        {/* String lights / Crafty vibes */}
+        <div className="absolute top-8 left-0 right-0 h-0.5 bg-yellow-600/30" />
+        {[...Array(12)].map((_, i) => (
+           <div key={i} className="absolute top-8 w-4 h-6 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2Y1OThmYSI+PHBhdGggZD0iTTEyIDBMOCAzbDQgNWgtNWw0IDVoLTZsNiA1aC00bDggNCA4LTRoLTRsNi01aC02bDQtNWgtNWw0LTV6Ii8+PC9zdmc+')] bg-no-repeat bg-contain opacity-50" style={{ left: `${8 + i * 8}%` }} />
+        ))}
+        {/* Ambient room glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-full bg-white/20 blur-[50px] rounded-full" />
+        
+        {/* Butterfly net hanging on back wall */}
+        <div className="absolute top-[20%] right-[20%] w-16 h-32 flex flex-col items-center rotate-12 cursor-pointer group hover:scale-105 transition-transform" onClick={() => setActiveStation("butterfly")}>
+           <div className="w-16 h-16 rounded-full border-4 border-gray-400 bg-white/30 relative">
+             <div className="absolute inset-0" style={{ backgroundImage: "repeating-linear-gradient(45deg, transparent 0, transparent 4px, rgba(0,0,0,0.1) 4px, rgba(0,0,0,0.1) 5px)" }} />
+             <div className="absolute inset-0" style={{ backgroundImage: "repeating-linear-gradient(-45deg, transparent 0, transparent 4px, rgba(0,0,0,0.1) 4px, rgba(0,0,0,0.1) 5px)" }} />
+           </div>
+           <div className="w-2 h-16 bg-amber-800 rounded-full" />
+           <span className="absolute -bottom-6 bg-white/80 px-2 py-0.5 rounded text-xs font-bold text-amber-900 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-30">Butterfly Catching</span>
         </div>
       </div>
 
-      {/* Station mini-game modal */}
+      {/* Back Wall */}
+      <div className="absolute top-[35%] bottom-[22%] left-0 right-0" style={{ background: "#d97706" }}>
+        {/* Striped wallpaper effect */}
+        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "repeating-linear-gradient(90deg, transparent 0px, transparent 40px, #b45309 40px, #b45309 80px)" }} />
+      </div>
+
+      {/* Floor */}
+      <div className="absolute bottom-0 left-0 right-0 h-[22%]" style={{ background: "linear-gradient(180deg, #5c3a1e 0%, #3d2410 100%)", borderTop: "3px solid #7a4a2a" }}>
+        {[...Array(8)].map((_, i) => (
+          <div key={i} className="absolute bottom-0 h-full" style={{ left: `${i * 12.5}%`, width: "12.5%", borderRight: "1px solid rgba(0,0,0,0.3)" }} />
+        ))}
+      </div>
+
+      {/* Craft Table (Large table stretching across) */}
+      <div className="absolute bottom-[22%] left-1/2 -translate-x-1/2 w-[80%] h-48 flex flex-col justify-end">
+        {/* Table legs */}
+        <div className="absolute -bottom-8 left-10 w-8 h-12 bg-[#78350f] rounded-b-sm border-r-4 border-[#451a03]" />
+        <div className="absolute -bottom-8 right-10 w-8 h-12 bg-[#78350f] rounded-b-sm border-r-4 border-[#451a03]" />
+        
+        {/* Table Top */}
+        <div className="w-full h-16 bg-[#fef3c7] rounded-t-xl border-b-8 border-[#d97706] shadow-xl relative flex items-end justify-around px-8 z-20">
+          
+          {/* Station 1: Rainbow Loom */}
+          <div className="relative cursor-pointer group w-24 h-12 hover:scale-110 transition-transform flex justify-center items-end" onClick={() => setActiveStation("loom")}>
+            <div className="w-20 h-6 bg-blue-200 border-2 border-blue-400 rounded-sm flex flex-col justify-evenly p-0.5">
+               <div className="w-full flex justify-between px-1"><div className="w-1.5 h-1.5 bg-red-400 rounded-full" /><div className="w-1.5 h-1.5 bg-yellow-400 rounded-full" /><div className="w-1.5 h-1.5 bg-green-400 rounded-full" /></div>
+               <div className="w-full flex justify-between px-1"><div className="w-1.5 h-1.5 bg-purple-400 rounded-full" /><div className="w-1.5 h-1.5 bg-pink-400 rounded-full" /><div className="w-1.5 h-1.5 bg-blue-400 rounded-full" /></div>
+            </div>
+            <span className="absolute -top-8 bg-white/90 px-2 py-1 rounded text-xs font-bold text-amber-900 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-sm">Rainbow Loom</span>
+          </div>
+
+          {/* Station 2: Eagle Stew */}
+          <div className="relative cursor-pointer group w-24 h-20 hover:scale-110 transition-transform flex justify-center items-end -mb-2" onClick={() => setActiveStation("stew")}>
+             <div className="w-16 h-12 bg-gray-800 rounded-b-[50%] border-4 border-gray-700 flex justify-center items-end pb-1 shadow-lg relative">
+                <div className="w-full h-2 bg-green-700/60 absolute top-2 rounded-[50%]" />
+             </div>
+             <div className="absolute -left-2 bottom-0 w-2 h-10 bg-amber-800 rounded-full rotate-45 z-[-1]" />
+             <span className="absolute -top-8 bg-white/90 px-2 py-1 rounded text-xs font-bold text-amber-900 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-sm">Eagle Stew</span>
+          </div>
+
+          {/* Station 3: Turtle Sandbox */}
+          <div className="relative cursor-pointer group w-24 h-16 hover:scale-110 transition-transform flex justify-center items-end" onClick={() => setActiveStation("turtle")}>
+            <div className="w-24 h-8 bg-green-600 rounded border-2 border-green-800 shadow-md relative overflow-hidden">
+               <div className="absolute inset-1 bg-yellow-200 rounded-sm">
+                 <div className="w-4 h-4 bg-green-500 rounded-full border border-green-700 absolute top-1 left-2" />
+               </div>
+            </div>
+            <span className="absolute -top-8 bg-white/90 px-2 py-1 rounded text-xs font-bold text-amber-900 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-sm">Turtle Sandbox</span>
+          </div>
+
+          {/* Station 5: Lightning Bugs */}
+          <div className="relative cursor-pointer group w-20 h-20 hover:scale-110 transition-transform flex justify-center items-end" onClick={() => setActiveStation("firefly")}>
+             <div className="w-12 h-16 bg-white/40 border-2 border-white/60 rounded-b-xl rounded-t-sm shadow-inner relative flex items-center justify-center overflow-hidden">
+                <div className="absolute top-0 w-full h-3 bg-gray-400 rounded-t-sm" />
+                <motion.div animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 1.5, repeat: Infinity }} className="w-3 h-3 bg-yellow-300 rounded-full shadow-[0_0_8px_#fde047]" />
+             </div>
+             <span className="absolute -top-8 bg-white/90 px-2 py-1 rounded text-xs font-bold text-amber-900 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-sm">Lightning Bugs</span>
+          </div>
+
+          {/* Station 6: Rolly Pollies */}
+          <div className="relative cursor-pointer group w-20 h-12 hover:scale-110 transition-transform flex justify-center items-end" onClick={() => setActiveStation("rolly")}>
+             <div className="w-16 h-8 bg-white rounded border-2 border-gray-300 shadow-sm flex items-end justify-evenly pb-1">
+               <div className="w-4 h-3 bg-gray-600 rounded-t-[50%] border-t border-gray-800" />
+               <div className="w-3 h-3 bg-gray-600 rounded-full border border-gray-800" />
+             </div>
+             <span className="absolute -top-8 bg-white/90 px-2 py-1 rounded text-xs font-bold text-amber-900 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-sm">Rolly Pollies</span>
+          </div>
+
+          {/* Station 7: Slime Making */}
+          <div className="relative cursor-pointer group w-24 h-16 hover:scale-110 transition-transform flex justify-center items-end" onClick={() => setActiveStation("slime")}>
+             <div className="w-16 h-10 bg-white/50 border-2 border-white/80 rounded-b-[50%] relative flex justify-center items-end overflow-hidden shadow-sm">
+                <div className="w-[120%] h-8 bg-green-500 rounded-b-[50%] -mb-2" />
+             </div>
+             <div className="absolute top-4 -right-2 w-4 h-6 bg-green-500 rounded-full rotate-12 blur-[1px]" />
+             <span className="absolute -top-8 bg-white/90 px-2 py-1 rounded text-xs font-bold text-amber-900 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-sm">Slime Making</span>
+          </div>
+        </div>
+      </div>
+
       <AnimatePresence>
         {activeStation && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-6"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
             onClick={() => setActiveStation(null)}
           >
             <motion.div
-              initial={{ scale: 0.85, y: 30 }}
+              initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.85, y: 30 }}
-              className="bg-white rounded-3xl shadow-2xl p-8 border-4 max-w-lg w-full relative"
-              style={{ borderColor: STATIONS.find(s => s.id === activeStation)?.color }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-white rounded-2xl shadow-2xl p-6 border-4 border-amber-400 relative max-w-lg w-full flex flex-col items-center"
               onClick={e => e.stopPropagation()}
             >
-              <button onClick={() => setActiveStation(null)}
-                className="absolute top-4 right-4 w-9 h-9 bg-red-500 hover:bg-red-400 text-white rounded-full font-bold shadow"
-              >✕</button>
-              <h3 className="font-display text-2xl mb-6 text-center" style={{ color: STATIONS.find(s => s.id === activeStation)?.color }}>
-                {STATIONS.find(s => s.id === activeStation)?.name}
-              </h3>
+              <button onClick={() => setActiveStation(null)} className="absolute -top-4 -right-4 w-10 h-10 bg-amber-500 text-white rounded-full font-bold shadow-lg border-2 border-white hover:bg-amber-600 transition-colors">X</button>
+              <h3 className="font-display text-2xl text-amber-900 mb-6">{STATIONS.find(s => s.id === activeStation)?.name}</h3>
               <MiniGame id={activeStation} />
             </motion.div>
           </motion.div>
