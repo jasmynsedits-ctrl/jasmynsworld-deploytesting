@@ -28,12 +28,10 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
-        working-directory: artifacts/3d-game
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build
-        run: pnpm build
-        working-directory: artifacts/3d-game
+        run: pnpm --filter ./artifacts/3d-game build
 
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
