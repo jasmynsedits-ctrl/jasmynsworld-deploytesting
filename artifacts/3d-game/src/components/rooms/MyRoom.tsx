@@ -76,71 +76,61 @@ function ToyGraphic({ id }: { id: string }) {
   }
 }
 
-// ── CUSTOM MATERIAL SIMULATION ──
-const comforterMaterial = new THREE.MeshStandardMaterial({
-  color: "#ffffff",
-  roughness: 0.6,
-  metalness: 0.1,
-});
-
-const woodMaterial = new THREE.MeshStandardMaterial({
-  color: "#241407",
-  roughness: 0.7,
-  metalness: 0.1,
-});
-
 // ── HIGH-FIDELITY FURNITURE PIECES ──
 function Bed() {
   return (
     <group position={[1.8, 0, -1.8]}>
       {/* Wooden Headboard */}
-      <mesh position={[-2.1, 1.15, 0]} material={woodMaterial} castShadow>
+      <mesh position={[-2.1, 1.15, 0]} castShadow>
         <boxGeometry args={[0.2, 2.3, 3]} />
+        <meshStandardMaterial color="#241407" roughness={0.7} />
       </mesh>
       
       {/* Bed Base Frame */}
-      <mesh position={[0, 0.25, 0]} material={woodMaterial} castShadow receiveShadow>
+      <mesh position={[0, 0.25, 0]} castShadow receiveShadow>
         <boxGeometry args={[4.4, 0.5, 3]} />
+        <meshStandardMaterial color="#241407" roughness={0.7} />
       </mesh>
       
       {/* Mattress Layer 1: Base Core */}
-      <mesh position={[0.1, 0.8, 0]} material={comforterMaterial} castShadow receiveShadow>
+      <mesh position={[0.1, 0.8, 0]} castShadow receiveShadow>
         <boxGeometry args={[4.1, 0.6, 2.8]} />
+        <meshStandardMaterial color="#ffffff" roughness={0.6} />
       </mesh>
 
       {/* Mattress Layer 2: Main Comforter Overlay Blanket */}
       <mesh position={[0.65, 0.81, 0]} castShadow>
         <boxGeometry args={[3, 0.62, 2.82]} />
-        <meshStandardMaterial color="#fbfbfb" roughness={0.65} emissive="#ff6b8b" emissiveIntensity={0.04} />
+        <meshStandardMaterial color="#ffffff" roughness={0.5} emissive="#ff6b8b" emissiveIntensity={0.1} />
       </mesh>
 
       {/* Procedural Floral Accents Vectors */}
       <mesh position={[0, 1.13, 0.6]}>
         <cylinderGeometry args={[0.05, 0.05, 0.02, 8]} />
-        <meshStandardMaterial color="#e63956" />
+        <meshStandardMaterial color="#e63956" roughness={0.4} />
       </mesh>
       <mesh position={[0.8, 1.13, -0.4]}>
         <cylinderGeometry args={[0.04, 0.04, 0.02, 8]} />
-        <meshStandardMaterial color="#2a9d8f" />
+        <meshStandardMaterial color="#2a9d8f" roughness={0.4} />
       </mesh>
       <mesh position={[1.2, 1.13, 0.5]}>
         <cylinderGeometry args={[0.06, 0.06, 0.02, 8]} />
-        <meshStandardMaterial color="#457b9d" />
+        <meshStandardMaterial color="#457b9d" roughness={0.4} />
       </mesh>
       <mesh position={[0.4, 1.13, -0.8]}>
         <cylinderGeometry args={[0.05, 0.05, 0.02, 8]} />
-        <meshStandardMaterial color="#e63956" />
+        <meshStandardMaterial color="#e63956" roughness={0.4} />
       </mesh>
 
       {/* Pillows */}
       <group position={[-1.4, 1.15, 0]}>
         <mesh position={[0, 0, 0.55]} rotation={[0, 0, 0.15]} castShadow>
           <boxGeometry args={[0.6, 0.22, 1]} />
-          <meshStandardMaterial color="#ffffff" roughness={0.85} />
+          <meshStandardMaterial color="#ffffff" roughness={0.8} />
         </mesh>
         <mesh position={[0, 0, -0.55]} rotation={[0, 0, 0.15]} castShadow>
           <boxGeometry args={[0.6, 0.22, 1]} />
-          <meshStandardMaterial color="#ffffff" roughness={0.85} />
+          <meshStandardMaterial color="#ffffff" roughness={0.8} />
         </mesh>
       </group>
     </group>
@@ -178,7 +168,7 @@ function RetroLamp() {
               </mesh>
               <mesh castShadow>
                 <cylinderGeometry args={[0.12, 0.22, 0.4, 16]} />
-                <meshStandardMaterial color={colorHex} roughness={0.4} metalness={0.1} emissive={colorHex} emissiveIntensity={0.2} />
+                <meshStandardMaterial color={colorHex} roughness={0.4} metalness={0.1} emissive={colorHex} emissiveIntensity={0.4} />
               </mesh>
               <mesh position={[0, -0.18, 0]}>
                 <cylinderGeometry args={[0.06, 0.06, 0.05, 8]} />
@@ -204,7 +194,7 @@ function DeskSetup({ onSelect }: DeskSetupProps) {
         {/* Hot Pink Glass Desk Surface */}
         <mesh position={[0, 1.5, 0]} castShadow receiveShadow>
           <boxGeometry args={[3.8, 0.1, 2.2]} />
-          <meshStandardMaterial color="#ff2a6d" transparent opacity={0.65} roughness={0.1} metalness={0.2} />
+          <meshStandardMaterial color="#ff2a6d" transparent opacity={0.7} roughness={0.1} metalness={0.3} />
         </mesh>
 
         {/* Pull-out Keyboard Shelf Tray */}
@@ -214,7 +204,7 @@ function DeskSetup({ onSelect }: DeskSetupProps) {
         </mesh>
         <mesh position={[0, 1.37, 0.25]}>
           <boxGeometry args={[1.7, 0.03, 0.55]} />
-          <meshStandardMaterial color="#e5e7eb" />
+          <meshStandardMaterial color="#e5e7eb" roughness={0.5} />
         </mesh>
 
         {/* HP All-In-One Desktop Computer Frame */}
@@ -225,7 +215,7 @@ function DeskSetup({ onSelect }: DeskSetupProps) {
           </mesh>
           <mesh position={[0, 0.8, 0.08]}>
             <boxGeometry args={[1.48, 0.82, 0.02]} />
-            <meshStandardMaterial color="#2563eb" emissive="#1d4ed8" intensity={0.7} />
+            <meshStandardMaterial color="#2563eb" emissive="#1d4ed8" intensity={0.8} />
           </mesh>
           <mesh position={[0, 0.14, 0]}>
             <boxGeometry args={[1.6, 0.2, 0.16]} />
@@ -247,7 +237,7 @@ function DeskSetup({ onSelect }: DeskSetupProps) {
             <cylinderGeometry args={[0.04, 0.04, 0.8, 8]} />
             <meshStandardMaterial color="#18181b" />
           </mesh>
-          <mesh position={[0, 0.02, 0]}>
+          <mesh position={[0, 0.02, 0]} castShadow>
             <cylinderGeometry args={[0.45, 0.45, 0.04, 16]} />
             <meshStandardMaterial color="#3f3f46" roughness={0.6} />
           </mesh>
@@ -266,7 +256,7 @@ function DeskSetup({ onSelect }: DeskSetupProps) {
         </mesh>
       </group>
 
-      {/* Desk Chrome Legs Support Framing */}
+      {/* Desk Legs Supporting Framework */}
       <mesh position={[-1.8, 0.75, -0.95]} castShadow>
         <cylinderGeometry args={[0.04, 0.04, 1.5, 8]} />
         <meshStandardMaterial color="#6b7280" metalness={0.6} />
@@ -289,28 +279,27 @@ function RoomWallsAndFloor() {
       {/* Floor Plate */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
         <planeGeometry args={[10, 10]} />
-        <meshStandardMaterial color="#36281c" roughness={0.8} />
+        <meshStandardMaterial color="#403225" roughness={0.8} />
       </mesh>
       
-      {/* Left White Wall */}
+      {/* Left Wall Panel */}
       <mesh position={[-5, 2.5, 0]} receiveShadow>
         <boxGeometry args={[0.1, 5, 10]} />
         <meshStandardMaterial color="#ffffff" roughness={0.9} />
       </mesh>
       
-      {/* Right White Wall */}
+      {/* Right Wall Panel */}
       <mesh position={[0, 2.5, -5]} receiveShadow>
         <boxGeometry args={[10, 5, 0.1]} />
-        <meshStandardMaterial color="#fcfcfc" roughness={0.9} />
+        <meshStandardMaterial color="#ffffff" roughness={0.9} />
       </mesh>
 
-      {/* Grid Matrix Helper Layer */}
+      {/* Grid Overlay Matrix lines */}
       <Grid position={[0, 0.01, 0]} args={[10, 10]} cellSize={0.5} cellThickness={0.5} cellColor="#44355b" sectionSize={5} fadeDistance={30} />
     </group>
   );
 }
 
-// ── EXTRA SCENE ACCENTS ──
 function RoomAccents() {
   return (
     <group>
@@ -365,7 +354,6 @@ function RoomAccents() {
   );
 }
 
-// ── MAIN APPLICATION VIEW ROUTER ──
 export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => void }) {
   const [toyboxOpen, setToyboxOpen] = useState(false);
   const [activeToy, setActiveToy] = useState<string | null>(null);
@@ -396,7 +384,7 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
         </button>
       </div>
 
-      {/* Control Adjustment Panel */}
+      {/* Control Panel */}
       <div className="absolute top-4 right-4 z-50 bg-[#16141c]/90 p-2 rounded-xl border border-[#3e344d] flex items-center gap-2 shadow-2xl backdrop-blur-md">
         <button 
           onClick={() => setRoomRotation(prev => prev + Math.PI / 2)} 
@@ -419,7 +407,7 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
         </button>
       </div>
 
-      {/* ── LIVE INTERACTIVE WEBGL 3D VIEWPORT CANVAS PANEL ── */}
+      {/* ── LIVE INTERACTIVE WEBGL 3D CANVAS PANELS ── */}
       <div className="w-full h-full absolute inset-0 z-10 cursor-grab active:cursor-grabbing">
         <Canvas 
           camera={{ position: [zoomLevel, zoomLevel, zoomLevel], fov: 35 }} 
@@ -427,9 +415,14 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
           shadows 
           key={`${roomRotation}-${zoomLevel}`}
         >
+          {/* Enhanced Room Lighting Environment */}
           <color attach="background" args={["#100c19"]} />
           <fog attach="fog" args={["#100c19", 10, 26]} />
           
+          <ambientLight intensity={1.5} />
+          <directionalLight position={[8, 14, 8]} intensity={1.8} castShadow />
+          <pointLight position={[-2, 3, 2]} intensity={1.2} color="#ffdca3" />
+
           <group rotation={[0, roomRotation, 0]}>
             <RoomWallsAndFloor />
             <RoomAccents />
@@ -448,14 +441,14 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
         </Canvas>
       </div>
 
-      {/* Guide HUD Banner */}
+      {/* Guide Banner HUD */}
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30 bg-[#0e0c14]/95 px-6 py-2.5 rounded-xl border border-[#3b304a] shadow-2xl backdrop-blur-md flex items-center gap-6">
         <p className="text-[11px] font-bold tracking-wide text-[#9d89b8] uppercase">
           🎮 **3D Room Node:** Click & Drag room to spin around manually, use top console controls, or click objects to enter ports.
         </p>
       </div>
 
-      {/* ── TOYS SYSTEM DRAWER SHEET MODAL OVERLAY ── */}
+      {/* ── TOYS DRAWER MODAL OVERLAY SHEET ── */}
       <AnimatePresence>
         {toyboxOpen && (
           <motion.div 
