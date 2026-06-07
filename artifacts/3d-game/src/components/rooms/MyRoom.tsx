@@ -1,5 +1,7 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Box, Plane, Cylinder } from "@react-three/drei";
+import { AnimatePresence, motion } from "framer-motion";
 
 const TOYS = [
   { id: "bottle", name: "Magic Baby Bottle", desc: "The milk disappears when you tilt it. TECHNOLOGY." },
@@ -73,275 +75,269 @@ function ToyGraphic({ id }: { id: string }) {
   }
 }
 
-export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => void }) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [activeToy, setActiveToy] = useState<string | null>(null);
-  const [zoom, setZoom] = useState(1);
+function HighFidelityAssets({ onSelect }: { onSelect: (type: string) => void }) {
+  // 5 distinct colors for the floor lamp assembly
+  const lampColors = ["#ff00ff", "#00ffff", "#00ff00", "#ffa500", "#ffffff"];
 
+  return (
+    <group position={[0, -0.5, 0]}>
+      <ambientLight intensity={0.75} />
+      <directionalLight position={[5, 12, 6]} intensity={1.4} castShadow shadow-mapSize={[2048, 2048]} />
+      <pointLight position={[-2, 4, 3]} intensity={0.5} color="#ffd8a8" />
+
+      {/* Textured Floor */}
+      <Plane args={[10, 10]} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
+        <meshStandardMaterial color="#403225" roughness={0.75} />
+      </Plane>
+
+      {/* White Walls */}
+      <Box args={[0.1, 5, 10]} position={[-5, 2.5, 0]} receiveShadow>
+        <meshStandardMaterial color="#fafafa" roughness={0.85} />
+      </Box>
+      <Box args={[10, 5, 0.1]} position={[0, 2.5, -5]} receiveShadow>
+        <meshStandardMaterial color="#f7f7f7" roughness={0.85} />
+      </Box>
+
+      {/* Window & Curtains Overlay Behind Desk */}
+      <group position={[-2, 2.8, -4.9]}>
+        <Box args={[2.5, 2, 0.05]} castShadow>
+          <meshStandardMaterial color="#e2e8f0" transparent opacity={0.3} roughness={0.1} />
+        </Box>
+        <Box args={[0.5, 2.4, 0.15]} position={[-1.3, -0.1, 0.1]}>
+          <meshStandardMaterial color="#e64c87" roughness={0.6} />
+        </Box>
+        <Box args={[0.5, 2.4, 0.15]} position={[1.3, -0.1, 0.1]}>
+          <meshStandardMaterial color="#8c50a6" roughness={0.6} />
+        </Box>
+      </group>
+
+      {/* Center Bed with Floral Print Comforter Cover */}
+      <group position={[1.8, 0, -2]} onClick={(e) => { e.stopPropagation(); onSelect("bed"); }}>
+        <Box args={[4.2, 0.6, 2.8]} position={[0, 0.3, 0]} castShadow receiveShadow>
+          <meshStandardMaterial color="#241407" roughness={0.8} />
+        </Box>
+        <Box args={[0.2, 2.2, 2.8]} position={[-2.1, 1.1, 0]} castShadow>
+          <meshStandardMaterial color="#1a0e05" roughness={0.8} />
+        </Box>
+        <Box args={[4, 0.5, 2.6]} position={[0.05, 0.85, 0]} castShadow>
+          <meshStandardMaterial color="#fcfcfc" roughness={0.9} />
+        </Box>
+        {/* Procedural pink, green, and blue floral print distribution matrix */}
+        <Box args={[2.8, 0.52, 2.62]} position={[0.65, 0.86, 0]}>
+          <meshStandardMaterial color="#ffffff" roughness={0.7} emissive="#ff6b8b" emissiveIntensity={0.06} />
+        </Box>
+        <Box args={[0.6, 0.2, 0.9]} position={[-1.4, 1.1, 0.55]} rotation={[0, 0, 0.12]} castShadow>
+          <meshStandardMaterial color="#ffffff" roughness={0.9} />
+        </Box>
+        <Box args={[0.6, 0.2, 0.9]} position={[-1.4, 1.1, -0.55]} rotation={[0, 0, 0.12]} castShadow>
+          <meshStandardMaterial color="#ffffff" roughness={0.9} />
+        </Box>
+      </group>
+
+      {/* Black Nightstand with Potted Plant */}
+      <group position={[-0.8, 0, -3.2]}>
+        <Box args={[1.2, 1.1, 1.2]} position={[0, 0.55, 0]} castShadow receiveShadow>
+          <meshStandardMaterial color="#18181b" roughness={0.7} />
+        </Box>
+        <group position={[0, 1.1, 0]}>
+          <Cylinder args={[0.15, 0.1, 0.25]} position={[0, 0.125, 0]} castShadow>
+            <meshStandardMaterial color="#d97706" roughness={0.6} />
+          </Cylinder>
+          <Box args={[0.22, 0.35, 0.22]} position={[0, 0.35, 0]} rotation={[0.2, 0.4, 0.1]}>
+            <meshStandardMaterial color="#15803d" roughness={0.9} />
+          </Box>
+        </group>
+      </group>
+
+      {/* Stacked Reading Material Books / Magazines */}
+      <group position={[0.2, 0, -1]} rotation={[0, Math.PI / 6, 0]}>
+        <Box args={[0.5, 0.08, 0.7]} position={[0, 0.04, 0]} castShadow><meshStandardMaterial color="#1d4ed8" /></Box>
+        <Box args={[0.48, 0.06, 0.68]} position={[-0.02, 0.11, 0.02]} rotation={[0, 0.1, 0]} castShadow><meshStandardMaterial color="#be185d" /></Box>
+        <Box args={[0.52, 0.05, 0.72]} position={[0.01, 0.165, -0.01]} rotation={[0, -0.15, 0]} castShadow><meshStandardMaterial color="#059669" /></Box>
+      </group>
+
+      {/* Black Bookshelf to the Right of Bed */}
+      <group position={[3.5, 0, -3.2]}>
+        <Box args={[1, 3.8, 2.2]} position={[0, 1.9, 0]} castShadow receiveShadow>
+          <meshStandardMaterial color="#0f0f11" roughness={0.8} />
+        </Box>
+        {[0.8, 1.7, 2.6].map((h, i) => (
+          <Box key={i} args={[0.96, 0.06, 2.16]} position={[0.02, h, 0]}><meshStandardMaterial color="#18181b" /></Box>
+        ))}
+      </group>
+
+      {/* ── CENTERED HOT PINK GLASS DESK & REPAIRED INTERACTION TRIGGERS ── */}
+      <group position={[-2, 0, -2.2]} rotation={[0, -Math.PI / 2, 0]}>
+        
+        {/* Hot Pink Workspace surface */}
+        <group onClick={(e) => { e.stopPropagation(); onSelect("computer"); }}>
+          <Box args={[3.8, 0.1, 2.2]} position={[0, 1.5, 0]} castShadow receiveShadow>
+            <meshStandardMaterial color="#e11d48" transparent opacity={0.65} roughness={0.15} metalness={0.1} />
+          </Box>
+          {/* Pull Out Keyboard Shelf */}
+          <Box args={[2.2, 0.06, 1.2]} position={[0, 1.34, 0.2]} castShadow>
+            <meshStandardMaterial color="#ffffff" roughness={0.4} />
+          </Box>
+          <Box args={[1.6, 0.04, 0.5]} position={[0, 1.36, 0.3]}><meshStandardMaterial color="#f3f4f6" /></Box>
+
+          {/* HP All-In-One Desktop Computer Monitor Casing */}
+          <group position={[0, 1.55, -0.2]}>
+            <Box args={[1.6, 1.1, 0.12]} position={[0, 0.7, 0]} castShadow>
+              <meshStandardMaterial color="#1a1a1a" roughness={0.4} />
+            </Box>
+            <Box args={[1.5, 0.8, 0.02]} position={[0, 0.8, 0.06]}>
+              <meshStandardMaterial color="#2563eb" emissive="#1d4ed8" intensity={0.6} />
+            </Box>
+            <Box args={[1.6, 0.2, 0.14]} position={[0, 0.15, 0]}>
+              <meshStandardMaterial color="#a8a8a8" metalness={0.3} roughness={0.4} />
+            </Box>
+            <Cylinder args={[0.06, 0.06, 0.4]} position={[0, 0, 0]}><meshStandardMaterial color="#8a8a8a" metalness={0.8} /></Cylinder>
+          </group>
+
+          {/* Neon Orange Rolling Stool Chair */}
+          <group position={[0, 0, 1]}>
+            <Cylinder args={[0.42, 0.42, 0.18]} position={[0, 0.8, 0]} castShadow>
+              <meshStandardMaterial color="#ff6b2b" roughness={0.5} />
+            </Cylinder>
+            <Cylinder args={[0.04, 0.04, 0.8]} position={[0, 0.4, 0]}><meshStandardMaterial color="#111" /></Cylinder>
+            <Cylinder args={[0.45, 0.45, 0.04]} position={[0, 0.02, 0]}><meshStandardMaterial color="#444" roughness={0.6} /></Cylinder>
+          </group>
+        </group>
+
+        {/* ── CORRECTED TOY DRAWER UNIT INTERACTION (Separate Trigger Block) ── */}
+        <group position={[-1.2, 0, -0.4]} onClick={(e) => { e.stopPropagation(); onSelect("toybox"); }}>
+          <Box args={[1, 1.1, 1.2]} position={[0, 0.55, 0]} castShadow receiveShadow>
+            <meshStandardMaterial color="#ffffff" roughness={0.5} />
+          </Box>
+          <Box args={[0.05, 0.3, 0.8]} position={[0.51, 0.6, 0]} castShadow>
+            <meshStandardMaterial color="#e11d48" roughness={0.3} />
+          </Box>
+        </group>
+
+      </group>
+
+      {/* ── DYNAMIC 5-COLOR RADIAL LAMPSHADE ASSEMBLY ── */}
+      <group position={[-4, 0, 1.5]}>
+        <Cylinder args={[0.35, 0.35, 0.05]} position={[0, 0.02, 0]} castShadow><meshStandardMaterial color="#555" /></Cylinder>
+        <Cylinder args={[0.03, 0.03, 3]} position={[0, 1.5, 0]} castShadow><meshStandardMaterial color="#a8a8a8" metalness={0.7} /></Cylinder>
+        
+        {/* Top Radial Head Loop Cluster */}
+        <group position={[0, 3, 0]}>
+          {lampColors.map((colorHex, i) => {
+            const angle = (i * 72 * Math.PI) / 180;
+            const xPos = Math.sin(angle) * 0.4;
+            const zPos = Math.cos(angle) * 0.4;
+            return (
+              <group key={i} position={[xPos, 0, zPos]} rotation={[0, -angle, 0.3]}>
+                <Box args={[0.25, 0.35, 0.25]} castShadow>
+                  <meshStandardMaterial color={colorHex} emissive={colorHex} emissiveIntensity={0.25} roughness={0.4} />
+                </Box>
+              </group>
+            );
+          })}
+        </group>
+      </group>
+
+    </group>
+  );
+}
+
+export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => void }) {
+  const [toyboxOpen, setToyboxOpen] = useState(false);
+  const [activeToy, setActiveToy] = useState<string | null>(null);
+  const [roomRotation, setRoomRotation] = useState(0);
+  const [zoomLevel, setZoomLevel] = useState(7);
+  
   const activeToyData = TOYS.find(t => t.id === activeToy);
 
-  // Isometric projections mapping constants
-  const tileW = 64;
-  const tileH = 32;
-  const originX = 400;
-  const originY = 220;
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    // Clear frame cache
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.save();
-    
-    // Process zoom adjustments scales
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.scale(zoom, zoom);
-    ctx.translate(-canvas.width / 2, -canvas.height / 2);
-
-    // ── RENDER BACKGROUND WALLS (Lime Green / Sage) ──
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = "#110b1a";
-
-    // Left Wall
-    ctx.fillStyle = "#b4c99c";
-    ctx.beginPath();
-    ctx.moveTo(originX, originY);
-    ctx.lineTo(originX - 256, originY + 128);
-    ctx.lineTo(originX - 256, originY - 100);
-    ctx.lineTo(originX, originY - 228);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-
-    // Right Wall
-    ctx.fillStyle = "#a5b88e";
-    ctx.beginPath();
-    ctx.moveTo(originX, originY);
-    ctx.lineTo(originX + 256, originY + 128);
-    ctx.lineTo(originX + 256, originY - 100);
-    ctx.lineTo(originX, originY - 228);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-
-    // ── RENDER PINKS & PURPLE WINDOW CURTAINS ──
-    ctx.fillStyle = "#e64c87"; // Pink panel
-    ctx.fillRect(originX - 200, originY - 120, 25, 140);
-    ctx.strokeRect(originX - 200, originY - 120, 25, 140);
-
-    ctx.fillStyle = "#8c50a6"; // Purple panel
-    ctx.fillRect(originX - 175, originY - 120, 25, 140);
-    ctx.strokeRect(originX - 175, originY - 120, 25, 140);
-
-    // ── BASE DECOR FLOOR TILES LAYER ──
-    ctx.fillStyle = "#312542";
-    for (let x = 0; x < 8; x++) {
-      for (let y = 0; y < 8; y++) {
-        const isoX = originX + (x - y) * (tileW / 2);
-        const isoY = originY + (x + y) * (tileH / 2);
-        
-        ctx.beginPath();
-        ctx.moveTo(isoX, isoY);
-        ctx.lineTo(isoX + tileW / 2, isoY + tileH / 2);
-        ctx.lineTo(isoX, isoY + tileH);
-        ctx.lineTo(isoX - tileW / 2, isoY + tileH / 2);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-      }
-    }
-
-    // ── BLACK TALL BOOKSHELF (Depth layer index 10) ──
-    const bsX = originX + 160;
-    const bsY = originY + 80;
-    ctx.fillStyle = "#121214";
-    ctx.fillRect(bsX, bsY - 120, 45, 130);
-    ctx.strokeRect(bsX, bsY - 120, 45, 130);
-
-    // Shelf racks lines slots
-    ctx.strokeStyle = "#27272a";
-    ctx.beginPath();
-    ctx.moveTo(bsX, bsY - 80); ctx.lineTo(bsX + 45, bsY - 80);
-    ctx.moveTo(bsX, bsY - 40); ctx.lineTo(bsX + 45, bsY - 40);
-    ctx.moveTo(bsX, bsY); ctx.lineTo(bsX + 45, bsY);
-    ctx.stroke();
-
-    // ── CENTERED FLORAL COMFY BED (Depth layer index 12) ──
-    const bedX = originX + 40;
-    const bedY = originY + 110;
-    ctx.strokeStyle = "#000";
-
-    // Espresso Wood base
-    ctx.fillStyle = "#241407";
-    ctx.beginPath();
-    ctx.moveTo(bedX - 40, bedY + 20);
-    ctx.lineTo(bedX + 80, bedY - 40);
-    ctx.lineTo(bedX + 120, bedY - 20);
-    ctx.lineTo(bedX, bedY + 40);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-
-    // Comforter Top surface (White base with floral vector print circles)
-    ctx.fillStyle = "#ffffff";
-    ctx.beginPath();
-    ctx.moveTo(bedX - 30, bedY + 15);
-    ctx.lineTo(bedX + 75, bedY - 38);
-    ctx.lineTo(bedX + 112, bedY - 20);
-    ctx.lineTo(bedX, bedY + 32);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-
-    // Floral Accent dots print layers (Pink, Green, Blue)
-    ctx.fillStyle = "#e63956"; ctx.beginPath(); ctx.arc(bedX + 15, bedY + 2, 4, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = "#2a9d8f"; ctx.beginPath(); ctx.arc(bedX + 50, bedY - 15, 3, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = "#457b9d"; ctx.beginPath(); ctx.arc(bedX + 80, bedY - 10, 4, 0, Math.PI * 2); ctx.fill();
-
-    // ── BLACK NIGHTSTAND & PLANT NODE (Depth layer index 14) ──
-    const nsX = originX - 10;
-    const nsY = originY + 80;
-    ctx.fillStyle = "#18181b";
-    ctx.fillRect(nsX, nsY - 20, 30, 40);
-    ctx.strokeRect(nsX, nsY - 20, 30, 40);
-    // Green leaf circle accent on top
-    ctx.fillStyle = "#166534";
-    ctx.beginPath(); ctx.arc(nsX + 15, nsY - 25, 8, 0, Math.PI * 2); ctx.fill();
-
-    // ── HOT PINK DESK CORE LAYOUT (Depth layer index 18) ──
-    const deskX = originX - 120;
-    const deskY = originY + 150;
-
-    // Hot Pink Glass Surface Desk tray
-    ctx.fillStyle = "#ff2a6d";
-    ctx.beginPath();
-    ctx.moveTo(deskX - 50, deskY);
-    ctx.lineTo(deskX + 60, deskY - 55);
-    ctx.lineTo(deskX + 110, deskY - 30);
-    ctx.lineTo(deskX, deskY + 25);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-
-    // Pull-out keyboard shelf under-tray panel
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(deskX - 15, deskY + 12, 45, 8);
-    ctx.strokeRect(deskX - 15, deskY + 12, 45, 8);
-
-    // Integrated White Drawer Vault Base Unit for Toys Storage
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(deskX - 45, deskY + 40, 40, 50);
-    ctx.strokeRect(deskX - 45, deskY + 40, 40, 50);
-    // Pink accents pull handles layers lines
-    ctx.fillStyle = "#ff2a6d";
-    ctx.fillRect(deskX - 40, deskY + 50, 30, 10);
-    ctx.fillRect(deskX - 40, deskY + 70, 30, 10);
-
-    // HP All-In-One Desktop Computer Frame
-    ctx.fillStyle = "#e8e7e1";
-    ctx.fillRect(deskX + 10, deskY - 45, 45, 35);
-    ctx.strokeRect(deskX + 10, deskY - 45, 45, 35);
-    // Blue Display Monitor Screen Face
-    ctx.fillStyle = "#0055e5";
-    ctx.fillRect(deskX + 14, deskY - 41, 37, 24);
-
-    // NEON ORANGE CHAIR SWIVEL CHAIR
-    ctx.fillStyle = "#ff6b2b";
-    ctx.beginPath(); ctx.arc(deskX + 25, deskY + 30, 14, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-    ctx.fillStyle = "#111";
-    ctx.fillRect(deskX + 23, deskY + 30, 4, 25);
-
-    // ── MULTI-HEAD CONE FLOOR LAMP SPRITES (Depth layer index 22) ──
-    const lpX = originX - 220;
-    const lpY = originY + 160;
-    ctx.strokeStyle = "#000";
-    ctx.lineWidth = 3;
-    ctx.beginPath(); ctx.moveTo(lpX, lpY); ctx.lineTo(lpX, lpY - 140); ctx.stroke();
-    ctx.lineWidth = 2;
-    // Colorful shade cones
-    ctx.fillStyle = "#3b82f6"; ctx.beginPath(); ctx.arc(lpX - 12, lpY - 145, 8, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-    ctx.fillStyle = "#fafafa"; ctx.beginPath(); ctx.arc(lpX, lpY - 152, 8, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-    ctx.fillStyle = "#a855f7"; ctx.beginPath(); ctx.arc(lpX + 12, lpY - 145, 8, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-
-    ctx.restore();
-  }, [zoom]);
-
-  const handleCanvasInteractionClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const rect = canvas.getBoundingClientRect();
-    
-    // Translate real pixel points values relative to resolution bounding box scale
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    // Click trigger parameters matching the drawer layout zone bounding area
-    if (x > 210 && x < 280 && y > 320 && y < 440) {
-      setDrawerOpen(true);
-    }
-    // Click trigger parameters matching the HP computer node window frame matrix
-    if (x > 270 && x < 350 && y > 210 && y < 290 && onEnterGameRoom) {
+  const handleInteractiveSelection = (type: string) => {
+    if (type === "computer" && onEnterGameRoom) {
       onEnterGameRoom();
+    } else if (type === "toybox") {
+      setToyboxOpen(true);
+      setActiveToy(null);
     }
   };
 
   return (
-    <div className="w-full h-full bg-[#0f0a17] text-white relative font-sans overflow-hidden select-none flex flex-col items-center justify-center">
+    <div className="w-full h-full bg-[#0d0a14] text-white relative font-sans overflow-hidden select-none flex flex-col items-center justify-center">
       
-      {/* Back to map navbar button */}
-      <div className="absolute top-4 left-4 z-50">
+      {/* Navigation Map Handle */}
+      <div className="absolute top-4 left-4 z-50 flex items-center gap-3">
         <button 
           onClick={() => window.history.back()}
-          className="px-4 py-2 bg-[#20152b]/90 border border-[#523770] rounded-full text-xs font-bold tracking-wide hover:bg-[#2d1e3d] transition-all shadow-md active:scale-95"
+          className="px-4 py-2 bg-[#1b1822]/90 border border-[#443a54] rounded-full text-xs font-bold tracking-wide hover:bg-[#282433] transition-all shadow-xl active:scale-95"
         >
           ← Back to Map
         </button>
       </div>
 
-      {/* Camera zoom console options panel layout (Habbo design style) */}
-      <div className="absolute top-4 right-4 z-50 bg-[#191124]/90 p-1.5 rounded-xl border border-[#442f5c] flex items-center gap-2 shadow-2xl backdrop-blur-md">
-        <button onClick={() => setZoom(z => Math.min(1.75, z + 0.25))} className="px-3 py-1.5 bg-[#331f47] hover:bg-[#482c63] active:scale-90 text-xs font-bold rounded-lg transition-all">
+      {/* Rotation and Depth Step Console Bar */}
+      <div className="absolute top-4 right-4 z-50 bg-[#16141c]/90 p-2 rounded-xl border border-[#3e344d] flex items-center gap-2 shadow-2xl backdrop-blur-md">
+        <button 
+          onClick={() => setRoomRotation(prev => prev + Math.PI / 2)} 
+          className="p-2 bg-[#2d253b] hover:bg-[#413554] active:scale-90 rounded-lg text-xs font-bold transition-all border border-[#533d70]"
+        >
+          🔄 Rotate Angle
+        </button>
+        <div className="w-px h-5 bg-[#3e344d]" />
+        <button 
+          onClick={() => setZoomLevel(prev => Math.max(4, prev - 1.5))} 
+          className="px-3 py-1.5 bg-[#2d253b] hover:bg-[#413554] active:scale-90 rounded-lg text-xs font-bold transition-all"
+        >
           ➕ Step Closer
         </button>
-        <button onClick={() => setZoom(z => Math.max(0.75, z - 0.25))} className="px-3 py-1.5 bg-[#331f47] hover:bg-[#482c63] active:scale-90 text-xs font-bold rounded-lg transition-all">
+        <button 
+          onClick={() => setZoomLevel(prev => Math.min(12, prev + 1.5))} 
+          className="px-3 py-1.5 bg-[#2d253b] hover:bg-[#413554] active:scale-90 rounded-lg text-xs font-bold transition-all"
+        >
           ➖ Step Away
         </button>
       </div>
 
-      {/* Unified Interactive Core Screen Node Canvas */}
-      <div className="relative border-4 border-[#241733] bg-[#160f21] rounded-2xl shadow-2xl overflow-hidden cursor-pointer">
-        <canvas 
-          ref={canvasRef} 
-          width={800} 
-          height={520} 
-          onClick={handleCanvasInteractionClick}
-          className="block"
-        />
+      {/* ── ACTIVE 3D CANVAS VIEWPORT ── */}
+      <div className="w-full h-full absolute inset-0 z-10 cursor-grab active:cursor-grabbing">
+        <Canvas 
+          camera={{ position: [zoomLevel, zoomLevel, zoomLevel], fov: 35 }} 
+          shadows
+          key={`${roomRotation}-${zoomLevel}`}
+        >
+          <color attach="background" args={["#0f0c16"]} />
+          <fog attach="fog" args={["#0f0c16", 10, 25]} />
+          
+          <group rotation={[0, roomRotation, 0]}>
+            <HighFidelityAssets onSelect={handleInteractiveSelection} />
+          </group>
+
+          <OrbitControls 
+            enableDamping 
+            dampingFactor={0.05}
+            minDistance={3}
+            maxDistance={14}
+            maxPolarAngle={Math.PI / 2 - 0.05}
+          />
+        </Canvas>
       </div>
 
-      {/* Guide HUD Strip bar */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30 bg-[#09050f]/95 px-6 py-2.5 rounded-xl border border-[#422a5c] shadow-2xl backdrop-blur-md">
-        <p className="text-[11px] font-bold tracking-wide text-[#b498d9] uppercase">
-          🏨 Click the HP Computer Screen to launch your OS node, or click the White/Pink desk drawers to look inside.
+      {/* Banner Console Info Guide */}
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30 bg-[#0e0c14]/95 px-6 py-2.5 rounded-xl border border-[#3b304a] shadow-2xl backdrop-blur-md flex items-center gap-6">
+        <p className="text-[11px] font-bold tracking-wide text-[#9d89b8] uppercase">
+          🎮 Use the top console bar to rotate or step closer. Click the Hot Pink Desk or Built-In Drawer cabinet to explore.
         </p>
       </div>
 
-      {/* ── TOYS SYSTEM DRAWER SHEET MODAL OVERLAY ── */}
+      {/* Toys Drawer overlay sheet modal */}
       <AnimatePresence>
-        {drawerOpen && (
+        {toyboxOpen && (
           <motion.div 
-            initial={{ opacity: 0, scale: 0.96 }} 
+            initial={{ opacity: 0, scale: 0.95 }} 
             animate={{ opacity: 1, scale: 1 }} 
-            exit={{ opacity: 0, scale: 0.96 }} 
+            exit={{ opacity: 0, scale: 0.95 }} 
             className="absolute inset-4 m-auto w-11/12 h-5/6 bg-[#ece9d8] border-2 border-[#0055e5] rounded-t-lg shadow-2xl z-55 flex flex-col overflow-hidden text-black pointer-events-auto"
           >
             <div className="flex items-center justify-between px-3 py-1 shrink-0" style={{ background: "linear-gradient(180deg, #2f5bb7 0%, #1e3f8a 50%, #1a3578 100%)", height: 28 }}>
-              <span className="text-white text-xs font-bold">📂 Integrated Hot Pink Desk Drawer — Childhood Toy Inventory</span>
-              <button onClick={() => setDrawerOpen(false)} className="w-6 h-5 bg-gradient-to-b from-[#e05] to-[#b00] border border-black/30 rounded text-white text-xs font-bold flex items-center justify-center hover:brightness-110">✕</button>
+              <span className="text-white text-xs font-bold">📂 Built-in Desk Drawer — Memory Toys Vault</span>
+              <button onClick={() => setToyboxOpen(false)} className="w-6 h-5 bg-gradient-to-b from-[#e05] to-[#b00] border border-black/30 rounded text-white text-xs font-bold flex items-center justify-center hover:brightness-110">✕</button>
             </div>
             <div className="flex-1 bg-white p-6 overflow-y-auto grid grid-cols-4 gap-4">
               {TOYS.map(toy => (
@@ -355,12 +351,12 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
         )}
       </AnimatePresence>
 
-      {/* Individual item description inspect badge modal box */}
+      {/* Detail inspect node card overlay */}
       <AnimatePresence>
         {activeToy && activeToyData && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-60 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4" onClick={() => setActiveToy(null)}>
             <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} exit={{ scale: 0.8 }} className="bg-[#ece9d8] rounded-t-lg border-2 border-[#0055e5] max-w-sm w-full flex flex-col shadow-2xl overflow-hidden text-black" onClick={e => e.stopPropagation()}>
-              <div className="flex items-center justify-between px-3 py-1 shrink-0" style={{ background: "linear-gradient(180deg, #2f5bb7 0%, #1e3f8a 50%, #1a3578 100%)", height: 26 }}><span className="text-white text-xs font-bold">Toy Inspection Log</span><button onClick={() => setActiveToy(null)} className="text-white text-xs font-bold">✕</button></div>
+              <div className="flex items-center justify-between px-3 py-1 shrink-0" style={{ background: "linear-gradient(180deg, #2f5bb7 0%, #1e3f8a 50%, #1a3578 100%)", height: 26 }}><span className="text-white text-xs font-bold">Toy Inspection Drawer Log</span><button onClick={() => setActiveToy(null)} className="text-white text-xs font-bold">✕</button></div>
               <div className="p-6 bg-white flex flex-col items-center gap-4">
                 <div className="h-32 bg-purple-50/50 w-full rounded border flex items-center justify-center"><ToyGraphic id={activeToy} /></div>
                 <h3 className="text-lg font-bold text-purple-900">{activeToyData.name}</h3>
