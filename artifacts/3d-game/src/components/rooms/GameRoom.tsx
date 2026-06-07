@@ -37,55 +37,55 @@ const SIDEBAR: Record<string, SidebarEntry[]> = {
 
 const LINKS_BAR: { category: string; icon: string; items: BookmarkItem[] }[] = [
   { category: "Noggin", icon: "🎠", items: [
-    { name: "Upside Down Show: Schmancy Schmashup", url: "https://www.numuki.com/game/embed/the-upside-down-show-schmancy-schmashup/" },
-    { name: "The Missing Scribble Sticks", url: "https://www.numuki.com/game/embed/the-missing-scribble-sticks/" },
+    { name: "Upside Down Show: Schmancy Schmashup", url: "https://web.archive.org/web/20151127074613if_/http://www.nickjr.com/the-upside-down-show/games/schmancy-schmashup/" },
+    { name: "The Missing Scribble Sticks", url: "https://web.archive.org/web/20120101000000if_/http://www.noggin.com/games/scribble-sticks.php" },
   ]},
   { category: "Starfall", icon: "⭐", items: [
     { name: "Starfall Me", url: "https://web.archive.org/web/20121102000000if_/https://www.starfall.com/h/me/" },
   ]},
   { category: "Girls Go Games", icon: "👗", items: [
-    { name: "Shopaholic Models", url: "https://www.numuki.com/game/embed/shopaholic-models/" },
-    { name: "Snail Bob", url: "https://www.numuki.com/game/embed/snail-bob/" },
-    { name: "Frizzle Fraz", url: "https://www.numuki.com/game/embed/frizzle-fraz/" },
-    { name: "Love Tester", url: "https://www.numuki.com/game/embed/love-tester/" },
+    { name: "Shopaholic Models", url: "https://web.archive.org/web/20150801083101if_/http://www.girlsgogames.com/game/shopaholic_models.html" },
+    { name: "Snail Bob", url: "https://web.archive.org/web/20150801083101if_/http://www.girlsgogames.com/game/snail_bob.html" },
+    { name: "Frizzle Fraz", url: "https://web.archive.org/web/20150801083101if_/http://www.girlsgogames.com/game/frizzle_fraz.html" },
+    { name: "Love Tester", url: "https://web.archive.org/web/20150801083101if_/https://www.girlsgogames.com/game/love-tester" },
   ]},
   { category: "CoolMath", icon: "🧮", items: [
     { name: "Run", url: "https://web.archive.org/web/20121002000245if_/https://www.coolmathgames.com/0-run" },
   ]},
   { category: "PBS Kids", icon: "🐾", items: [
-    { name: "Alien Assembly Required (Cyberchase)", url: "https://www.numuki.com/game/embed/alien-assembly-required/" },
-    { name: "Binky's Facts & Opinions (Arthur)", url: "https://www.numuki.com/game/embed/binkys-facts-and-opinions/" },
-    { name: "Lunch-o-Matic", url: "https://www.numuki.com/game/embed/lunch-o-matic/" },
-    { name: "Supermarket Adventure (Arthur)", url: "https://www.numuki.com/game/embed/supermarket-adventure/" },
+    { name: "Alien Assembly Required (Cyberchase)", url: "https://web.archive.org/web/20101010000000if_/http://pbskids.org/cyberchase/games/alienassembly/" },
+    { name: "Binky's Facts & Opinions (Arthur)", url: "https://web.archive.org/web/20101010000000if_/http://pbskids.org/arthur/games/factsopinions/" },
+    { name: "Lunch-o-Matic", url: "https://web.archive.org/web/20151127074613if_/https://pbskids.org/games/play/lunch-o-matic/8517" },
+    { name: "Supermarket Adventure (Arthur)", url: "https://web.archive.org/web/20101010000000if_/http://pbskids.org/arthur/games/supermarket/" },
   ]},
   { category: "Disney Jr", icon: "🏰", items: [
-    { name: "Zooter's Zippin Zip Along", url: "https://www.numuki.com/game/embed/zooters-zippin-zip-along/" },
-    { name: "Bungo's Silly Sign Shop", url: "https://www.numuki.com/game/embed/bungos-silly-sign-shop/" },
-    { name: "Oso's Digi Medal Painter", url: "https://www.numuki.com/game/embed/osos-digi-medal-painter/" },
+    { name: "Zooter's Zippin Zip Along", url: "https://web.archive.org/web/20120101000000if_/http://disney.go.com/disneyjunior/jungle-junction/games/" },
+    { name: "Bungo's Silly Sign Shop", url: "https://web.archive.org/web/20120101000000if_/http://disney.go.com/disneyjunior/special-agent-oso/games/" },
+    { name: "Oso's Digi Medal Painter", url: "https://web.archive.org/web/20120101000000if_/http://disney.go.com/disneyjunior/special-agent-oso/games/digi-medal-painter.html" },
   ]},
   { category: "Disney", icon: "✨", items: [
-    { name: "Hannah Montana: Photo Pro", url: "https://www.numuki.com/game/embed/hot-shot-photo-pro/" },
-    { name: "Wizards: Maze of Destiny", url: "https://www.numuki.com/game/embed/maze-of-destiny/" },
-    { name: "Phineas & Ferb: Vacation Vehicles", url: "https://www.numuki.com/game/embed/vacation-vehicles/" },
+    { name: "Hannah Montana: Hot Shot Photo Pro", url: "https://web.archive.org/web/20100101000000if_/http://disney.go.com/hannahmontana/games/" },
+    { name: "Wizards: Maze of Destiny", url: "https://web.archive.org/web/20100101000000if_/http://disney.go.com/wizards/games/" },
+    { name: "Good Luck Charlie: Vacation Vehicles", url: "https://web.archive.org/web/20110401000000if_/http://disney.go.com/disneychannel/originalmovies/goodluckcharlie/games/" },
   ]},
   { category: "Nick Jr", icon: "🟠", items: [
-    { name: "Kai-Lan's Great Trip to China", url: "https://www.numuki.com/game/kai-lan-s-great-trip-to-china/" },
+    { name: "Kai-Lan's Great Trip to China", url: "https://web.archive.org/web/20101010000000if_/http://www.nickjr.com/ni-hao-kai-lan/games/kai-lans-great-trip-to-china/" },
   ]},
   { category: "Nickelodeon", icon: "🎬", items: [
     { name: "iCarly (2012 Archive)", url: "https://web.archive.org/web/20120831030248if_/http://www.icarly.com/" },
     { name: "The Slap (2014 Archive)", url: "https://web.archive.org/web/20140531193706if_/http://www.theslap.com/" },
-    { name: "iCarly: The Ultimate Game", url: "https://www.numuki.com/game/embed/icarly-the-ultimate-icarly-game/" },
-    { name: "Nick Block Party", url: "https://www.numuki.com/game/embed/nick-block-party/" },
+    { name: "iCarly: The Ultimate Game", url: "https://web.archive.org/web/20120831030248if_/http://www.icarly.com/games/ultimate-game.html" },
+    { name: "Nick Block Party", url: "https://web.archive.org/web/20140101000000if_/http://www.nick.com/games/nick-block-party.html" },
     { name: "Ask the Magic Meatball", url: "https://archive.org/embed/ask-the-magic-meatball" },
   ]},
   { category: "Classics", icon: "🍕", items: [
-    { name: "Papa's Pizzeria", url: "https://www.numuki.com/game/embed/papa-s-pizzeria/" },
-    { name: "Sara's Cooking Class", url: "https://www.numuki.com/game/embed/saras-cooking-class-cherry-cheesecake/" },
-    { name: "Fireboy & Watergirl", url: "https://www.numuki.com/game/embed/fireboy-and-watergirl-1-the-forest-temple/" },
+    { name: "Papa's Pizzeria", url: "https://web.archive.org/web/20130101000000if_/http://www.coolmathgames.com/0-papas-pizzeria" },
+    { name: "Sara's Cooking Class", url: "https://web.archive.org/web/20150801083101if_/http://www.girlsgogames.com/game/saras_cooking_class_cherry_cheesecake.html" },
+    { name: "Fireboy & Watergirl", url: "https://web.archive.org/web/20130101000000if_/http://www.coolmathgames.com/0-fireboy-watergirl-forest-temple" },
   ]},
   { category: "Videos", icon: "📹", items: [
-    { name: "Oh California (Starfall)", url: "https://www.youtube.com/embed/GG_KO-UnXBU", isEmbed: true },
-    { name: "Moose & Zee: I Don't Like Candy Corn", url: "https://player.vimeo.com/video/20307100?h=a98f92cbf7", isEmbed: true },
+    { name: "Oh California (Starfall)", url: "https://www.youtube.com/embed/GG_KO-UnXBU" , isEmbed: true },
+    { name: "Moose & Zee: I Don't Like Candy Corn", url: "https://player.vimeo.com/video/20307100?h=a98f92cbf7" , isEmbed: true },
   ]},
 ];
 
@@ -389,8 +389,8 @@ export default function GameRoom() {
                       { name: "Poptropica", url: "https://web.archive.org/web/20130815000000if_/https://www.poptropica.com/", icon: "🏝️" },
                       { name: "PBS Kids Games", url: "https://web.archive.org/web/20131127074613if_/http://pbskids.org/games/", icon: "🐾" },
                       { name: "CoolMath: Run", url: "https://web.archive.org/web/20121002000245if_/https://www.coolmathgames.com/0-run", icon: "🧮" },
-                      { name: "Papa's Pizzeria", url: "https://www.numuki.com/game/embed/papa-s-pizzeria/", icon: "🍕" },
-                      { name: "Fireboy & Watergirl", url: "https://www.numuki.com/game/embed/fireboy-and-watergirl-1-the-forest-temple/", icon: "🔥" },
+                      { name: "Papa's Pizzeria", url: "https://web.archive.org/web/20130101000000if_/http://www.coolmathgames.com/0-papas-pizzeria", icon: "🍕" },
+                      { name: "Fireboy & Watergirl", url: "https://web.archive.org/web/20130101000000if_/http://www.coolmathgames.com/0-fireboy-watergirl-forest-temple", icon: "🔥" },
                       { name: "Boohbah", url: "https://archive.org/embed/boohbah_zone_flash", icon: "🟣" },
                     ].map(item => (
                       <button
