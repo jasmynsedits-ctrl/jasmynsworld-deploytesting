@@ -6,7 +6,7 @@ type SidebarEntry = BookmarkItem & { locked?: boolean };
 
 const SIDEBAR: Record<string, SidebarEntry[]> = {
   "🎮 Online Games": [
-    { name: "Boohbah Zone (Flash Archive)", url: "https://archive.org/embed/boobah_zone_flash" },
+    { name: "Boohbah Zone (Flash Archive)", url: "https://archive.org/embed/boohbah_zone_flash" },
     { name: "Starfall", url: "https://web.archive.org/web/20121102000000if_/https://www.starfall.com/h/" },
     { name: "JibJab (2010 Archive)", url: "https://web.archive.org/web/20100930163107if_/http://sendables.jibjab.com/" },
     { name: "Moshi Monsters", url: "https://moshionline.net/" },
@@ -224,10 +224,10 @@ export default function GameRoom() {
         </div>
       </div>
 
-      {/* ── LINKS BAR ── */}
+      {/* ── LINKS BAR (Fixed Overflow Property) ── */}
       <div
-        className="flex items-center gap-0.5 px-2 shrink-0 overflow-x-auto relative z-40"
-        style={{ background: "linear-gradient(180deg,#eeeae2,#dbd6ca)", borderBottom: "1px solid #aca899", height: 24, scrollbarWidth: "none" }}
+        className="flex items-center gap-0.5 px-2 shrink-0 overflow-visible relative z-40"
+        style={{ background: "linear-gradient(180deg,#eeeae2,#dbd6ca)", borderBottom: "1px solid #aca899", height: 24 }}
         onClick={e => e.stopPropagation()}
       >
         <span className="text-[10px] text-[#555] mr-1 whitespace-nowrap">Links:</span>
