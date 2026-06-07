@@ -111,6 +111,7 @@ function ToyGraphic({ id }: { id: string }) {
   }
 }
 
+// Isometric coordinate transformation function
 const getIsoCoords = (x: number, y: number, tileWidth = 64, tileHeight = 32) => {
   const screenX = (x - y) * (tileWidth / 2);
   const screenY = (x + y) * (tileHeight / 2);
@@ -127,28 +128,40 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
   const activeToyData = TOYS.find(t => t.id === activeToy);
 
   return (
-    <div className="w-full h-full bg-[#160f24] text-white relative font-sans overflow-hidden select-none flex items-center justify-center">
+    <div className="w-full h-full bg-[#1c1224] text-white relative font-sans overflow-hidden select-none flex flex-col items-center justify-center">
       
-      {/* ── INTERACTIVE RETRO ISOMETRIC BEDROOM LAYOUT ── */}
-      <div className="relative scale-110 transform translate-y-[-20px]" style={{ width: gridSize * tileW, height: gridSize * tileH * 2.5 }}>
+      {/* ── TOP NAV BAR ── */}
+      <div className="absolute top-4 left-4 z-50">
+        <button 
+          onClick={() => window.history.back()}
+          className="px-4 py-2 bg-[#2b1b3a]/90 border border-[#5c3e7a] rounded-full text-xs font-bold tracking-wide hover:bg-[#3d2752] transition-all shadow-md active:scale-95"
+        >
+          ← Back to Map
+        </button>
+      </div>
+
+      {/* ── HIGH-FIDELITY ISOMETRIC VECTOR VIEWPORT (Woozworld/Habbo style) ── */}
+      <div className="relative scale-110 transform translate-y-[-10px]" style={{ width: gridSize * tileW, height: gridSize * tileH * 2.5 }}>
         
-        {/* Lime Green / Sage Walls from Photo Reference */}
+        {/* Crisp Isometric Walls (Lime Green from References) */}
         <div 
-          className="absolute origin-top-left bg-[#b4c99c] border-r-4 border-t-4 border-[#12051c]"
+          className="absolute origin-top-left bg-[#b4c99c] border-r-2 border-t-2 border-[#12051c] shadow-2xl overflow-hidden"
           style={{ width: gridSize * tileW / Math.sqrt(2), height: 220, transform: "rotate(30deg) skewX(-30deg) translate(-218px, -114px)", zIndex: 1 }}
         >
-          {/* Pink & Purple Curtain Overlays */}
+          {/* Pink & Purple Curtains Overlay Sprites */}
           <div className="absolute top-0 left-4 w-12 h-full bg-[#e64c87] border-r-2 border-black/30 opacity-90" />
           <div className="absolute top-0 left-16 w-14 h-full bg-[#8c50a6] border-r-2 border-black/30 opacity-90" />
-          <div className="absolute bottom-12 right-6 font-serif italic text-[#394f25] text-xs font-bold opacity-60">Joy 🌸</div>
+          {/* Defined Retro Decal ("Joy" Text) */}
+          <div className="absolute bottom-12 right-6 font-serif italic text-[#394f25] text-xs font-bold transparency-60">Joy 🌸</div>
         </div>
 
+        {/* Right Iso Wall */}
         <div 
-          className="absolute origin-top-right bg-[#a5b88e] border-l-4 border-t-4 border-[#12051c]"
+          className="absolute origin-top-right bg-[#a5b88e] border-l-2 border-t-2 border-[#12051c] shadow-2xl"
           style={{ width: gridSize * tileW / Math.sqrt(2), height: 220, transform: "rotate(-30deg) skewX(30deg) translate(218px, -114px)", zIndex: 1 }}
         />
 
-        {/* Room Floorboard Coordinate Grid */}
+        {/* Isometric Coordinate Floor Grid */}
         <div className="absolute top-[180px] left-1/2 transform translate-x-[-50%] relative">
           {Array.from({ length: gridSize }).map((_, x) =>
             Array.from({ length: gridSize }).map((_, y) => {
@@ -156,34 +169,37 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
               return (
                 <div
                   key={`${x}-${y}`}
-                  className="absolute border border-[#1b0f30] bg-[#312542] hover:bg-[#3b2d4f]"
+                  className="absolute border border-[#1b0d26] bg-[#312542] hover:bg-[#3b2d4f] transition-colors duration-150"
                   style={{ width: tileW, height: tileH, left: coords.left, top: coords.top, transform: "rotateX(60deg) rotateZ(45deg)", zIndex: 2 }}
                 />
               );
             })
           )}
 
-          {/* ── BED LAYER WITH FLORAL PATTERNED COMFORTER (Slots 1,2) ── */}
+          {/* ── HIGH-FIDELITY ISOMETRIC BED: THE FLORAL PATTERN (Slots 1,2) ── */}
           {(() => {
             const coords = getIsoCoords(1, 2, tileW, tileH);
             return (
               <div className="absolute" style={{ left: coords.left - 20, top: coords.top + 35, zIndex: 12 }}>
-                <div className="relative w-36 h-28">
+                <div className="relative w-36 h-28 transform transition-transform duration-200 hover:translate-y-[-2px]">
+                  {/* Bed Frame & Headboard Structure (Espresso wood) */}
                   <div className="absolute top-0 left-2 w-4 h-20 bg-[#1a0e05] border-2 border-black rounded-xs" />
                   <div className="absolute bottom-0 left-2 w-full h-10 bg-[#241407] border-2 border-black rounded-xs shadow-lg" />
-                  {/* Floral Print Comforter */}
+                  {/* Mattress wrapped in detailed Floral Pattern Comforter (Based on User Reference) */}
                   <div className="absolute bottom-2 left-4 w-[124px] h-14 bg-[#ffffff] border-2 border-black rounded-sm overflow-hidden p-1">
+                    {/* Retro Floral Print (Pink, Green, Blue on white) */}
                     <div className="w-full h-full opacity-80" style={{
                       backgroundImage: "radial-gradient(circle at 20% 30%, #e63956 6px, transparent 7px), radial-gradient(circle at 60% 70%, #2a9d8f 5px, transparent 6px), radial-gradient(circle at 80% 20%, #457b9d 6px, transparent 7px)"
                     }} />
                   </div>
-                  <div className="absolute top-4 left-6 w-10 h-7 bg-white border-2 border-black rounded-sm transform rotate-[-6deg]" style={{ backgroundImage: "radial-gradient(circle at 50% 50%, #e63956 4px, transparent 5px)" }} />
+                  {/* Custom Floral Pillows */}
+                  <div className="absolute top-4 left-6 w-10 h-7 bg-white border-2 border-black rounded-sm transform rotate-[-6deg] shadow-xs" style={{ backgroundImage: "radial-gradient(circle at 50% 50%, #e63956 4px, transparent 5px)" }} />
                 </div>
               </div>
             );
           })()}
 
-          {/* ── GLASS TOP COMPUTER DESK STATION & CHAIR (Slots 5,2) ── */}
+          {/* ── HIGH-FIDELITY GLASS DESK WORKSTATION (HP AIO & ORANGE STOOL) (Slots 5,2) ── */}
           {(() => {
             const coords = getIsoCoords(5, 2, tileW, tileH);
             return (
@@ -192,28 +208,30 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
                 className="absolute cursor-pointer group"
                 style={{ left: coords.left + 16, top: coords.top + 30, zIndex: 18 }}
               >
-                <div className="relative w-24 h-36 flex flex-col items-center justify-end transform transition-transform duration-200 group-hover:translate-y-[-4px]">
-                  {/* HP All-In-One Desktop Computer Frame */}
+                <div className="relative w-28 h-36 flex flex-col items-center justify-end transform transition-transform duration-200 group-hover:translate-y-[-4px]">
+                  {/* HP All-In-One Desktop Computer Frame with metallic U-stand */}
                   <div className="w-18 h-15 bg-[#1a1a1a] border-2 border-black rounded-md shadow-2xl p-0.5 flex flex-col items-center justify-between relative mb-2 z-10">
                     <div className="w-full h-11 bg-black p-0.5 rounded-t-sm">
                       <div className="w-full h-full bg-gradient-to-br from-[#1d4ed8] to-[#1e1b4b] rounded-xs flex flex-col items-center justify-center">
                         <span className="text-[7px] font-bold text-[#93c5fd] animate-pulse">BOOT_TERMINAL</span>
                       </div>
                     </div>
+                    {/* Metallic lower bezel grill section */}
                     <div className="w-full h-2.5 bg-[#a8a8a8] rounded-b-xs border-t border-black" />
+                    {/* The Metallic U-stand frame */}
                     <div className="absolute -bottom-2 w-12 h-3 border-x-2 border-b-2 border-[#8a8a8a] rounded-b-md" />
                   </div>
 
-                  {/* Glass Top Surface */}
+                  {/* GLASS TOP Surface Layer (Cyan/Blue translucent gradient) */}
                   <div className="w-24 h-3 bg-gradient-to-b from-[#22d3ee]/20 to-[#0891b2]/30 border-2 border-[#222] rounded-xs shadow-md z-0" />
 
-                  {/* Metal Framework Legs with Side Cross Braces */}
+                  {/* Geometric Metal Legs & side cross braces (Silver/Grey) */}
                   <div className="flex justify-between w-22 h-14 px-1 relative z-0">
                     <div className="w-1.5 h-full bg-gray-600 border border-black" />
                     <div className="w-1.5 h-full bg-gray-600 border border-black" />
                   </div>
 
-                  {/* Neon Orange Swivel Cushion Stool */}
+                  {/* THE ICONIC ORANGE BRIGHT SWIVEL CUSHION STOOL */}
                   <div className="absolute bottom-[-16px] left-6 w-10 h-14 flex flex-col items-center z-25 pointer-events-none">
                     <div className="w-9 h-4 bg-[#ff6b2b] border-2 border-black rounded-full shadow-md" />
                     <div className="w-1.5 h-5 bg-black" />
@@ -224,7 +242,7 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
             );
           })()}
 
-          {/* ── RETRO ACCENT CHEST TOYBOX STORAGE NODE (Slots 1,5) ── */}
+          {/* ── HIGH-FIDELITY RETRO TOY CHEST STORAGE NODE (Slots 1,5) ── */}
           {(() => {
             const coords = getIsoCoords(1, 5, tileW, tileH);
             return (
@@ -234,7 +252,9 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
                 style={{ left: coords.left + 12, top: coords.top + 65, zIndex: 16 }}
               >
                 <div className="w-20 h-16 bg-[#9c6233] border-2 border-[#1f1105] shadow-xl relative flex flex-col items-center justify-start rounded-xs transform transition-transform duration-200 group-hover:translate-y-[-4px]">
+                  {/* Detailed wooden lid plank texture simulation */}
                   <div className="w-[84px] h-4 bg-[#bd7e4a] border-b-2 border-t border-x border-[#1f1105] rounded-t-xs" />
+                  {/* Metallic gold hardware/padlock latch */}
                   <div className="w-4 h-5 bg-[#e0b434] border border-[#1f1105] rounded-xs mt-1 relative flex items-center justify-center">
                     <div className="w-1 h-2 bg-black rounded-full" />
                   </div>
@@ -244,15 +264,17 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
             );
           })()}
 
-          {/* ── MULTI-HEAD CONE SHADE FLOOR LAMP (Slots 4,5) ── */}
+          {/* ── HIGH-FIDELITY MULTI-HEAD CONE LAMP (Slots 4,5) ── */}
           {(() => {
             const coords = getIsoCoords(4, 5, tileW, tileH);
             return (
               <div className="absolute" style={{ left: coords.left + 22, top: coords.top + 10, zIndex: 16 }}>
                 <div className="relative w-16 h-40 flex flex-col items-center justify-end">
+                  {/* Multi-Head colored cone shades (Based on Reference) */}
                   <div className="absolute top-2 left-[-12px] w-5 h-5 bg-[#3b82f6] border border-black rounded-b-xl transform -rotate-45" />
                   <div className="absolute top-0 left-4 w-5 h-5 bg-[#ffffff] border border-black rounded-b-xl" />
                   <div className="absolute top-3 right-[-10px] w-5 h-5 bg-[#a855f7] border border-black rounded-b-xl transform rotate-45" />
+                  {/* Sleek metallic main support column */}
                   <div className="w-1 h-32 bg-[#a8a8a8] border-x border-black" />
                   <div className="w-8 h-2.5 bg-[#555] rounded-full border border-black" />
                 </div>
@@ -263,14 +285,14 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
         </div>
       </div>
 
-      {/* ── TOYS MODAL GRID PORTAL ── */}
+      {/* ── INTERACTIVE TOYS DRAWER MODAL ── */}
       <AnimatePresence>
         {toyboxOpen && (
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }} 
             animate={{ opacity: 1, scale: 1 }} 
             exit={{ opacity: 0, scale: 0.95 }} 
-            className="absolute inset-4 m-auto w-11/12 h-5/6 bg-[#ece9d8] border-2 border-[#0055e5] rounded-t-lg shadow-2xl z-55 flex flex-col overflow-hidden text-black"
+            className="absolute inset-4 m-auto w-11/12 h-5/6 bg-[#ece9d8] border-2 border-[#0055e5] rounded-t-lg shadow-2xl z-55 flex flex-col overflow-hidden text-black pointer-events-auto"
           >
             <div className="flex items-center justify-between px-3 py-1 shrink-0" style={{ background: "linear-gradient(180deg, #2f5bb7 0%, #1e3f8a 50%, #1a3578 100%)", height: 28 }}>
               <span className="text-white text-xs font-bold">📂 Jasmyn's Interactive Toy Box Drawer</span>
@@ -288,7 +310,7 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
         )}
       </AnimatePresence>
 
-      {/* ── TOY INDIVIDUAL DETAIL OVERLAY ── */}
+      {/* ── INDIVIDUAL TOY INSPECTION DETAIL OVERLAY ── */}
       <AnimatePresence>
         {activeToy && activeToyData && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-60 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4" onClick={() => setActiveToy(null)}>
