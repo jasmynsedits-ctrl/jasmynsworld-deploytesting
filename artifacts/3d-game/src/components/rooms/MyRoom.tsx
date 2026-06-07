@@ -1,4 +1,6 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Box, Plane, Cylinder } from "@react-three/drei";
 import { motion, AnimatePresence } from "framer-motion";
 
 const TOYS = [
@@ -69,223 +71,221 @@ function ToyGraphic({ id }: { id: string }) {
         </div>
       </div>
     );
-    case "journal": return (
-      <div className="relative w-16 h-22">
-        <div className="w-16 h-20 bg-pink-400 rounded-r-lg border-l-4 border-gray-400 shadow-md relative">
-          <div className="absolute top-1/2 right-3 -translate-y-1/2 w-5 h-7 bg-pink-200 rounded border border-pink-500" />
-        </div>
-      </div>
-    );
-    case "playdoh": return (
-      <div className="flex gap-1">
-        {["bg-red-500", "bg-yellow-400", "bg-blue-500", "bg-green-500"].map((c, i) => (
-          <div key={i} className={`w-8 h-10 ${c} rounded-t-full border-2 border-white/50 shadow-md`} />
-        ))}
-      </div>
-    );
-    case "easybake": return (
-      <div className="w-24 h-16 bg-pink-400 rounded-md border-2 border-pink-600 shadow-md relative" />
-    );
-    case "wagon": return (
-      <div className="relative w-24 h-16">
-        <div className="absolute top-0 left-4 right-0 h-9 bg-red-500 rounded-sm border-2 border-red-700 shadow-md" />
-      </div>
-    );
-    case "wand": return (
-      <div className="relative w-10 h-28 flex flex-col items-center">
-        <div className="w-4 h-4 bg-yellow-300 rounded-full border-2 border-yellow-500 z-10" />
-        <div className="w-1.5 h-20 bg-gradient-to-b from-yellow-400 to-yellow-600 rounded-full" />
-      </div>
-    );
-    case "remote": return (
-      <div className="w-12 h-20 bg-gray-700 rounded-xl border-2 border-gray-600 shadow-md relative p-2" />
-    );
-    case "shopkins": return (
-      <div className="flex flex-wrap gap-1 w-20">
-        {["bg-red-400","bg-pink-400","bg-yellow-400"].map((c,i) => (
-          <div key={i} className={`w-7 h-8 ${c} rounded-xl border border-white/50 shadow-sm`} />
-        ))}
-      </div>
-    );
-    default: return <div className="w-12 h-12 bg-purple-400 rounded-lg" />;
+    default: return <div className="w-12 h-12 bg-pink-400 rounded-lg" />;
   }
 }
 
-// Isometric coordinate transformation function
-const getIsoCoords = (x: number, y: number, tileWidth = 64, tileHeight = 32) => {
-  const screenX = (x - y) * (tileWidth / 2);
-  const screenY = (x + y) * (tileHeight / 2);
-  return { left: screenX, top: screenY };
-};
+// ── DETAILED ISOMETRIC GAME ASSETS ──
+function HighFidelityAssets({ onSelect }: { onSelect: (type: string) => void }) {
+  return (
+    <group position={[0, -0.5, 0]}>
+      {/* Dynamic Ambient Room Lights */}
+      <ambientLight intensity={0.7} />
+      <directionalLight position={[6, 10, 4]} intensity={1.3} castShadow shadow-mapSize={[2048, 2048]} />
+      <pointLight position={[3, 4, 3]} intensity={0.6} color="#ffeaa7" />
+
+      {/* Textured Wooden Floor */}
+      <Plane args={[10, 10]} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
+        <meshStandardMaterial color="#4a3525" roughness={0.7} />
+      </Plane>
+      {/* Lime Green / Sage Wall Panels */}
+      <Box args={[0.1, 5, 10]} position={[-5, 2.5, 0]} receiveShadow>
+        <meshStandardMaterial color="#b4c99c" roughness={0.9} />
+      </Box>
+      <Box args={[10, 5, 0.1]} position={[0, 2.5, -5]} receiveShadow>
+        <meshStandardMaterial color="#a5b88e" roughness={0.9} />
+      </Box>
+
+      {/* ── COZY FLORAL BED SETUP ── */}
+      <group position={[-2.5, 0, -2.5]} onClick={(e) => { e.stopPropagation(); onSelect("bed"); }}>
+        {/* Espresso wood base */}
+        <Box args={[4.2, 0.6, 2.8]} position={[0, 0.3, 0]} castShadow receiveShadow>
+          <meshStandardMaterial color="#241407" roughness={0.8} />
+        </Box>
+        {/* Headboard */}
+        <Box args={[0.2, 2.2, 2.8]} position={[-2, 1.1, 0]} castShadow>
+          <meshStandardMaterial color="#1a0e05" roughness={0.8} />
+        </Box>
+        {/* Mattress Sheet Wrapper */}
+        <Box args={[4, 0.5, 2.6]} position={[0.05, 0.85, 0]} castShadow>
+          <meshStandardMaterial color="#ffffff" roughness={0.9} />
+        </Box>
+        {/* Custom Floral Comforter Node Layer */}
+        <Box args={[2.5, 0.52, 2.62]} position={[0.8, 0.86, 0]}>
+          <meshStandardMaterial color="#f0f0f0" roughness={0.6} emissive="#e63956" emissiveIntensity={0.05} />
+        </Box>
+        {/* Soft Bed Pillows */}
+        <Box args={[0.6, 0.2, 1]} position={[-1.4, 1.1, 0.6]} rotation={[0, 0, 0.1]} castShadow>
+          <meshStandardMaterial color="#fff" roughness={0.9} />
+        </Box>
+        <Box args={[0.6, 0.2, 1]} position={[-1.4, 1.1, -0.6]} rotation={[0, 0, 0.1]} castShadow>
+          <meshStandardMaterial color="#fff" roughness={0.9} />
+        </Box>
+      </group>
+
+      {/* ── PHOTO-ACCURATE GLASS COMPUTER DESK ── */}
+      <group position={[2.5, 0, -2]} rotation={[0, -Math.PI / 2, 0]} onClick={(e) => { e.stopPropagation(); onSelect("computer"); }}>
+        {/* Translucent Cyan Glass Tabletop */}
+        <Box args={[3.8, 0.1, 2]} position={[0, 1.5, 0]} castShadow receiveShadow>
+          <meshStandardMaterial color="#22d3ee" transparent opacity={0.6} roughness={0.1} metalness={0.1} />
+        </Box>
+        {/* Chrome Framework Desk Edges */}
+        <Box args={[3.8, 0.08, 0.08]} position={[0, 1.45, 0.95]}><meshStandardMaterial color="#8a8a8a" metalness={0.8} /></Box>
+        <Box args={[3.8, 0.08, 0.08]} position={[0, 1.45, -0.95]}><meshStandardMaterial color="#8a8a8a" metalness={0.8} /></Box>
+        {/* Structural Cross-Braced Metal Legs */}
+        <Cylinder args={[0.05, 0.05, 1.5]} position={[-1.8, 0.75, -0.8]} castShadow><meshStandardMaterial color="#666" metalness={0.7} /></Cylinder>
+        <Cylinder args={[0.05, 0.05, 1.5]} position={[1.8, 0.75, -0.8]} castShadow><meshStandardMaterial color="#666" metalness={0.7} /></Cylinder>
+        <Cylinder args={[0.05, 0.05, 1.5]} position={[-1.8, 0.75, 0.8]} castShadow><meshStandardMaterial color="#666" metalness={0.7} /></Cylinder>
+        <Cylinder args={[0.05, 0.05, 1.5]} position={[1.8, 0.75, 0.8]} castShadow><meshStandardMaterial color="#666" metalness={0.7} /></Cylinder>
+
+        {/* HP All-In-One Desktop Computer Monitor */}
+        <group position={[0, 1.55, -0.2]}>
+          <Box args={[1.6, 1.1, 0.12]} position={[0, 0.7, 0]} castShadow>
+            <meshStandardMaterial color="#1a1a1a" roughness={0.4} />
+          </Box>
+          {/* Glowing Terminal Face */}
+          <Box args={[1.5, 0.8, 0.02]} position={[0, 0.8, 0.06]}>
+            <meshStandardMaterial color="#2563eb" emissive="#1d4ed8" intensity={0.6} />
+          </Box>
+          {/* Lower Silver Speaker Strip */}
+          <Box args={[1.6, 0.2, 0.14]} position={[0, 0.15, 0]}>
+            <meshStandardMaterial color="#a8a8a8" metalness={0.3} roughness={0.4} />
+          </Box>
+          {/* Silver U-Stand Base */}
+          <Cylinder args={[0.06, 0.06, 0.4]} position={[0, 0, 0]}><meshStandardMaterial color="#8a8a8a" metalness={0.8} /></Cylinder>
+        </group>
+
+        {/* ── THE ICONIC NEON ORANGE STOOL CHAIR ── */}
+        <group position={[0, 0, 0.8]}>
+          {/* Bright Orange Swivel Seat Cushion */}
+          <Cylinder args={[0.42, 0.42, 0.18]} position={[0, 0.8, 0]} castShadow>
+            <meshStandardMaterial color="#ff6b2b" roughness={0.5} />
+          </Cylinder>
+          {/* Core Support Center Column Column */}
+          <Cylinder args={[0.04, 0.04, 0.8]} position={[0, 0.4, 0]}><meshStandardMaterial color="#111" /></Cylinder>
+          {/* Star Feet Base Base */}
+          <Cylinder args={[0.45, 0.45, 0.04]} position={[0, 0.02, 0]}><meshStandardMaterial color="#444" roughness={0.6} /></Cylinder>
+        </group>
+ group>
+
+      {/* ── RETRO PLANK WOOD TOY CHEST ── */}
+      <group position={[-3.2, 0, 2]} rotation={[0, Math.PI / 5, 0]} onClick={(e) => { e.stopPropagation(); onSelect("toybox"); }}>
+        <Box args={[1.8, 1.2, 1.3]} position={[0, 0.6, 0]} castShadow receiveShadow>
+          <meshStandardMaterial color="#9c6233" roughness={0.8} />
+        </Box>
+        <Box args={[1.86, 0.2, 1.36]} position={[0, 1.2, 0]} castShadow>
+          <meshStandardMaterial color="#bd7e4a" roughness={0.7} />
+        </Box>
+        {/* Golden Padlock hardware lock latch */}
+        <Box args={[0.2, 0.3, 0.05]} position={[0, 0.8, 0.66]}><meshStandardMaterial color="#e0b434" metalness={0.8} roughness={0.2} /></Box>
+      </group>
+
+      {/* ── DYNAMIC MULTI-HEAD CONE FLOOR LAMP ── */}
+      <group position={[3.5, 0, 2.5]}>
+        {/* Base Plate */}
+        <Cylinder args={[0.35, 0.35, 0.05]} position={[0, 0.02, 0]} castShadow><meshStandardMaterial color="#555" /></Cylinder>
+        {/* Main Silver Stem */}
+        <Cylinder args={[0.03, 0.03, 3]} position={[0, 1.5, 0]} castShadow><meshStandardMaterial color="#a8a8a8" metalness={0.7} /></Cylinder>
+        {/* Individual Colorful Adjustable Cone Shades */}
+        <group position={[0, 3, 0]}>
+          <Box args={[0.3, 0.4, 0.3]} position={[-0.4, 0.2, -0.2]} rotation={[0.4, 0, -0.5]}><meshStandardMaterial color="#3b82f6" emissive="#1d4ed8" emissiveIntensity={0.3} /></Box>
+          <Box args={[0.3, 0.4, 0.3]} position={[0, 0.4, 0]}><meshStandardMaterial color="#ffffff" emissive="#fff" emissiveIntensity={0.2} /></Box>
+          <Box args={[0.3, 0.4, 0.3]} position={[0.4, 0.2, 0.2]} rotation={[-0.4, 0, 0.5]}><meshStandardMaterial color="#a855f7" emissive="#7c3aed" emissiveIntensity={0.3} /></Box>
+        </group>
+      </group>
+    </group>
+  );
+}
 
 export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => void }) {
   const [toyboxOpen, setToyboxOpen] = useState(false);
   const [activeToy, setActiveToy] = useState<string | null>(null);
+  const [roomRotation, setRoomRotation] = useState(0);
+  const [zoomLevel, setZoomLevel] = useState(7);
   
-  const gridSize = 8;
-  const tileW = 64;
-  const tileH = 32;
   const activeToyData = TOYS.find(t => t.id === activeToy);
 
+  const handleInteractiveSelection = (type: string) => {
+    if (type === "computer" && onEnterGameRoom) {
+      onEnterGameRoom();
+    } else if (type === "toybox") {
+      setToyboxOpen(true);
+      setActiveToy(null);
+    }
+  };
+
   return (
-    <div className="w-full h-full bg-[#1c1224] text-white relative font-sans overflow-hidden select-none flex flex-col items-center justify-center">
+    <div className="w-full h-full bg-[#110a1a] text-white relative font-sans overflow-hidden select-none flex flex-col items-center justify-center">
       
-      {/* ── TOP NAV BAR ── */}
-      <div className="absolute top-4 left-4 z-50">
+      {/* ── MAP CORE NAVIGATION HEADER ── */}
+      <div className="absolute top-4 left-4 z-50 flex items-center gap-3">
         <button 
           onClick={() => window.history.back()}
-          className="px-4 py-2 bg-[#2b1b3a]/90 border border-[#5c3e7a] rounded-full text-xs font-bold tracking-wide hover:bg-[#3d2752] transition-all shadow-md active:scale-95"
+          className="px-4 py-2 bg-[#231730]/90 border border-[#53396c] rounded-full text-xs font-bold tracking-wide hover:bg-[#342249] transition-all shadow-xl active:scale-95"
         >
           ← Back to Map
         </button>
       </div>
 
-      {/* ── HIGH-FIDELITY ISOMETRIC VECTOR VIEWPORT (Woozworld/Habbo style) ── */}
-      <div className="relative scale-110 transform translate-y-[-10px]" style={{ width: gridSize * tileW, height: gridSize * tileH * 2.5 }}>
-        
-        {/* Crisp Isometric Walls (Lime Green from References) */}
-        <div 
-          className="absolute origin-top-left bg-[#b4c99c] border-r-2 border-t-2 border-[#12051c] shadow-2xl overflow-hidden"
-          style={{ width: gridSize * tileW / Math.sqrt(2), height: 220, transform: "rotate(30deg) skewX(-30deg) translate(-218px, -114px)", zIndex: 1 }}
+      {/* ── CAMERA AND VIEW CONSOLE CONTROLS BAR (Habbo style) ── */}
+      <div className="absolute top-4 right-4 z-50 bg-[#1f162e]/90 p-2 rounded-xl border border-[#4d326b] flex items-center gap-2 shadow-2xl backdrop-blur-md">
+        <button 
+          onClick={() => setRoomRotation(prev => prev + Math.PI / 2)} 
+          className="p-2 bg-[#3c2554] hover:bg-[#533575] active:scale-90 rounded-lg text-xs font-bold transition-all border border-[#663f8c]"
+          title="Rotate Room 90°"
         >
-          {/* Pink & Purple Curtains Overlay Sprites */}
-          <div className="absolute top-0 left-4 w-12 h-full bg-[#e64c87] border-r-2 border-black/30 opacity-90" />
-          <div className="absolute top-0 left-16 w-14 h-full bg-[#8c50a6] border-r-2 border-black/30 opacity-90" />
-          {/* Defined Retro Decal ("Joy" Text) */}
-          <div className="absolute bottom-12 right-6 font-serif italic text-[#394f25] text-xs font-bold transparency-60">Joy 🌸</div>
-        </div>
-
-        {/* Right Iso Wall */}
-        <div 
-          className="absolute origin-top-right bg-[#a5b88e] border-l-2 border-t-2 border-[#12051c] shadow-2xl"
-          style={{ width: gridSize * tileW / Math.sqrt(2), height: 220, transform: "rotate(-30deg) skewX(30deg) translate(218px, -114px)", zIndex: 1 }}
-        />
-
-        {/* Isometric Coordinate Floor Grid */}
-        <div className="absolute top-[180px] left-1/2 transform translate-x-[-50%] relative">
-          {Array.from({ length: gridSize }).map((_, x) =>
-            Array.from({ length: gridSize }).map((_, y) => {
-              const coords = getIsoCoords(x, y, tileW, tileH);
-              return (
-                <div
-                  key={`${x}-${y}`}
-                  className="absolute border border-[#1b0d26] bg-[#312542] hover:bg-[#3b2d4f] transition-colors duration-150"
-                  style={{ width: tileW, height: tileH, left: coords.left, top: coords.top, transform: "rotateX(60deg) rotateZ(45deg)", zIndex: 2 }}
-                />
-              );
-            })
-          )}
-
-          {/* ── HIGH-FIDELITY ISOMETRIC BED: THE FLORAL PATTERN (Slots 1,2) ── */}
-          {(() => {
-            const coords = getIsoCoords(1, 2, tileW, tileH);
-            return (
-              <div className="absolute" style={{ left: coords.left - 20, top: coords.top + 35, zIndex: 12 }}>
-                <div className="relative w-36 h-28 transform transition-transform duration-200 hover:translate-y-[-2px]">
-                  {/* Bed Frame & Headboard Structure (Espresso wood) */}
-                  <div className="absolute top-0 left-2 w-4 h-20 bg-[#1a0e05] border-2 border-black rounded-xs" />
-                  <div className="absolute bottom-0 left-2 w-full h-10 bg-[#241407] border-2 border-black rounded-xs shadow-lg" />
-                  {/* Mattress wrapped in detailed Floral Pattern Comforter (Based on User Reference) */}
-                  <div className="absolute bottom-2 left-4 w-[124px] h-14 bg-[#ffffff] border-2 border-black rounded-sm overflow-hidden p-1">
-                    {/* Retro Floral Print (Pink, Green, Blue on white) */}
-                    <div className="w-full h-full opacity-80" style={{
-                      backgroundImage: "radial-gradient(circle at 20% 30%, #e63956 6px, transparent 7px), radial-gradient(circle at 60% 70%, #2a9d8f 5px, transparent 6px), radial-gradient(circle at 80% 20%, #457b9d 6px, transparent 7px)"
-                    }} />
-                  </div>
-                  {/* Custom Floral Pillows */}
-                  <div className="absolute top-4 left-6 w-10 h-7 bg-white border-2 border-black rounded-sm transform rotate-[-6deg] shadow-xs" style={{ backgroundImage: "radial-gradient(circle at 50% 50%, #e63956 4px, transparent 5px)" }} />
-                </div>
-              </div>
-            );
-          })()}
-
-          {/* ── HIGH-FIDELITY GLASS DESK WORKSTATION (HP AIO & ORANGE STOOL) (Slots 5,2) ── */}
-          {(() => {
-            const coords = getIsoCoords(5, 2, tileW, tileH);
-            return (
-              <div 
-                onClick={onEnterGameRoom}
-                className="absolute cursor-pointer group"
-                style={{ left: coords.left + 16, top: coords.top + 30, zIndex: 18 }}
-              >
-                <div className="relative w-28 h-36 flex flex-col items-center justify-end transform transition-transform duration-200 group-hover:translate-y-[-4px]">
-                  {/* HP All-In-One Desktop Computer Frame with metallic U-stand */}
-                  <div className="w-18 h-15 bg-[#1a1a1a] border-2 border-black rounded-md shadow-2xl p-0.5 flex flex-col items-center justify-between relative mb-2 z-10">
-                    <div className="w-full h-11 bg-black p-0.5 rounded-t-sm">
-                      <div className="w-full h-full bg-gradient-to-br from-[#1d4ed8] to-[#1e1b4b] rounded-xs flex flex-col items-center justify-center">
-                        <span className="text-[7px] font-bold text-[#93c5fd] animate-pulse">BOOT_TERMINAL</span>
-                      </div>
-                    </div>
-                    {/* Metallic lower bezel grill section */}
-                    <div className="w-full h-2.5 bg-[#a8a8a8] rounded-b-xs border-t border-black" />
-                    {/* The Metallic U-stand frame */}
-                    <div className="absolute -bottom-2 w-12 h-3 border-x-2 border-b-2 border-[#8a8a8a] rounded-b-md" />
-                  </div>
-
-                  {/* GLASS TOP Surface Layer (Cyan/Blue translucent gradient) */}
-                  <div className="w-24 h-3 bg-gradient-to-b from-[#22d3ee]/20 to-[#0891b2]/30 border-2 border-[#222] rounded-xs shadow-md z-0" />
-
-                  {/* Geometric Metal Legs & side cross braces (Silver/Grey) */}
-                  <div className="flex justify-between w-22 h-14 px-1 relative z-0">
-                    <div className="w-1.5 h-full bg-gray-600 border border-black" />
-                    <div className="w-1.5 h-full bg-gray-600 border border-black" />
-                  </div>
-
-                  {/* THE ICONIC ORANGE BRIGHT SWIVEL CUSHION STOOL */}
-                  <div className="absolute bottom-[-16px] left-6 w-10 h-14 flex flex-col items-center z-25 pointer-events-none">
-                    <div className="w-9 h-4 bg-[#ff6b2b] border-2 border-black rounded-full shadow-md" />
-                    <div className="w-1.5 h-5 bg-black" />
-                    <div className="w-10 h-2 bg-[#444] border border-black rounded-full" />
-                  </div>
-                </div>
-              </div>
-            );
-          })()}
-
-          {/* ── HIGH-FIDELITY RETRO TOY CHEST STORAGE NODE (Slots 1,5) ── */}
-          {(() => {
-            const coords = getIsoCoords(1, 5, tileW, tileH);
-            return (
-              <div 
-                onClick={() => { setToyboxOpen(true); setActiveToy(null); }}
-                className="absolute cursor-pointer group"
-                style={{ left: coords.left + 12, top: coords.top + 65, zIndex: 16 }}
-              >
-                <div className="w-20 h-16 bg-[#9c6233] border-2 border-[#1f1105] shadow-xl relative flex flex-col items-center justify-start rounded-xs transform transition-transform duration-200 group-hover:translate-y-[-4px]">
-                  {/* Detailed wooden lid plank texture simulation */}
-                  <div className="w-[84px] h-4 bg-[#bd7e4a] border-b-2 border-t border-x border-[#1f1105] rounded-t-xs" />
-                  {/* Metallic gold hardware/padlock latch */}
-                  <div className="w-4 h-5 bg-[#e0b434] border border-[#1f1105] rounded-xs mt-1 relative flex items-center justify-center">
-                    <div className="w-1 h-2 bg-black rounded-full" />
-                  </div>
-                  <span className="absolute bottom-1 text-[8px] font-bold text-[#ffd966] tracking-widest uppercase">Toys</span>
-                </div>
-              </div>
-            );
-          })()}
-
-          {/* ── HIGH-FIDELITY MULTI-HEAD CONE LAMP (Slots 4,5) ── */}
-          {(() => {
-            const coords = getIsoCoords(4, 5, tileW, tileH);
-            return (
-              <div className="absolute" style={{ left: coords.left + 22, top: coords.top + 10, zIndex: 16 }}>
-                <div className="relative w-16 h-40 flex flex-col items-center justify-end">
-                  {/* Multi-Head colored cone shades (Based on Reference) */}
-                  <div className="absolute top-2 left-[-12px] w-5 h-5 bg-[#3b82f6] border border-black rounded-b-xl transform -rotate-45" />
-                  <div className="absolute top-0 left-4 w-5 h-5 bg-[#ffffff] border border-black rounded-b-xl" />
-                  <div className="absolute top-3 right-[-10px] w-5 h-5 bg-[#a855f7] border border-black rounded-b-xl transform rotate-45" />
-                  {/* Sleek metallic main support column */}
-                  <div className="w-1 h-32 bg-[#a8a8a8] border-x border-black" />
-                  <div className="w-8 h-2.5 bg-[#555] rounded-full border border-black" />
-                </div>
-              </div>
-            );
-          })()}
-
-        </div>
+          🔄 Rotate Angle
+        </button>
+        <div className="w-px h-5 bg-[#4d326b]" />
+        <button 
+          onClick={() => setZoomLevel(prev => Math.max(4, prev - 1.5))} 
+          className="px-3 py-1.5 bg-[#3c2554] hover:bg-[#533575] active:scale-90 rounded-lg text-xs font-bold transition-all"
+          title="Step Closer"
+        >
+          ➕ Step Closer
+        </button>
+        <button 
+          onClick={() => setZoomLevel(prev => Math.min(12, prev + 1.5))} 
+          className="px-3 py-1.5 bg-[#3c2554] hover:bg-[#533575] active:scale-90 rounded-lg text-xs font-bold transition-all"
+          title="Step Away"
+        >
+          ➖ Step Away
+        </button>
       </div>
 
-      {/* ── INTERACTIVE TOYS DRAWER MODAL ── */}
+      {/* ── REAL-TIME 3D WEGL ISOMETRIC VIEWPORT CANVAS ── */}
+      <div className="w-full h-full absolute inset-0 z-10 cursor-grab active:cursor-grabbing">
+        <Canvas 
+          camera={{ position: [zoomLevel, zoomLevel, zoomLevel], fov: 35 }} 
+          shadows
+          key={`${roomRotation}-${zoomLevel}`} // Forces frame snap reload on view shifts
+        >
+          <color attach="background" args={["#130c1c"]} />
+          <fog attach="fog" args={["#130c1c", 10, 25]} />
+          
+          {/* Rotatable Scene Anchor Group */}
+          <group rotation={[0, roomRotation, 0]}>
+            <HighFidelityAssets onSelect={handleInteractiveSelection} />
+          </group>
+
+          <OrbitControls 
+            enableDamping 
+            dampingFactor={0.05}
+            minDistance={3}
+            maxDistance={14}
+            maxPolarAngle={Math.PI / 2 - 0.05} // Blocks cam from dipping underneath floor line
+          />
+        </Canvas>
+      </div>
+
+      {/* Ambient Console HUD Strip */}
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30 bg-[#120a1c]/95 px-6 py-2.5 rounded-xl border border-[#4a2e6b] shadow-2xl backdrop-blur-md flex items-center gap-6">
+        <p className="text-[11px] font-bold tracking-wide text-[#b195db] uppercase">
+          🎮 **Virtual Node:** Click & Drag room to spin manually, use top console controls, or click objects to enter ports.
+        </p>
+      </div>
+
+      {/* ── INTERACTIVE TOY DRAWER MODAL SHEET ── */}
       <AnimatePresence>
         {toyboxOpen && (
           <motion.div 
@@ -310,7 +310,7 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
         )}
       </AnimatePresence>
 
-      {/* ── INDIVIDUAL TOY INSPECTION DETAIL OVERLAY ── */}
+      {/* ── TOY INDIVIDUAL DETAIL OVERLAY CARD ── */}
       <AnimatePresence>
         {activeToy && activeToyData && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-60 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4" onClick={() => setActiveToy(null)}>
