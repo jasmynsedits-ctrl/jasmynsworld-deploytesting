@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Box, Plane, Cylinder, Grid } from "@react-three/drei";
+import { OrbitControls, Box, Plane, Cylinder } from "@react-three/drei";
 import { AnimatePresence, motion } from "framer-motion";
 import * as THREE from 'three';
 
@@ -76,278 +76,202 @@ function ToyGraphic({ id }: { id: string }) {
   }
 }
 
-// ── HIGH-FIDELITY FURNITURE PIECES ──
-function Bed() {
-  return (
-    <group position={[1.8, 0, -1.8]}>
-      {/* Wooden Headboard */}
-      <mesh position={[-2.1, 1.15, 0]} castShadow>
-        <boxGeometry args={[0.2, 2.3, 3]} />
-        <meshStandardMaterial color="#241407" roughness={0.7} />
-      </mesh>
-      
-      {/* Bed Base Frame */}
-      <mesh position={[0, 0.25, 0]} castShadow receiveShadow>
-        <boxGeometry args={[4.4, 0.5, 3]} />
-        <meshStandardMaterial color="#241407" roughness={0.7} />
-      </mesh>
-      
-      {/* Mattress Layer 1: Base Core */}
-      <mesh position={[0.1, 0.8, 0]} castShadow receiveShadow>
-        <boxGeometry args={[4.1, 0.6, 2.8]} />
-        <meshStandardMaterial color="#ffffff" roughness={0.6} />
-      </mesh>
-
-      {/* Mattress Layer 2: Main Comforter Overlay Blanket */}
-      <mesh position={[0.65, 0.81, 0]} castShadow>
-        <boxGeometry args={[3, 0.62, 2.82]} />
-        <meshStandardMaterial color="#ffffff" roughness={0.5} emissive="#ff6b8b" emissiveIntensity={0.1} />
-      </mesh>
-
-      {/* Procedural Floral Accents Vectors */}
-      <mesh position={[0, 1.13, 0.6]}>
-        <cylinderGeometry args={[0.05, 0.05, 0.02, 8]} />
-        <meshStandardMaterial color="#e63956" roughness={0.4} />
-      </mesh>
-      <mesh position={[0.8, 1.13, -0.4]}>
-        <cylinderGeometry args={[0.04, 0.04, 0.02, 8]} />
-        <meshStandardMaterial color="#2a9d8f" roughness={0.4} />
-      </mesh>
-      <mesh position={[1.2, 1.13, 0.5]}>
-        <cylinderGeometry args={[0.06, 0.06, 0.02, 8]} />
-        <meshStandardMaterial color="#457b9d" roughness={0.4} />
-      </mesh>
-      <mesh position={[0.4, 1.13, -0.8]}>
-        <cylinderGeometry args={[0.05, 0.05, 0.02, 8]} />
-        <meshStandardMaterial color="#e63956" roughness={0.4} />
-      </mesh>
-
-      {/* Pillows */}
-      <group position={[-1.4, 1.15, 0]}>
-        <mesh position={[0, 0, 0.55]} rotation={[0, 0, 0.15]} castShadow>
-          <boxGeometry args={[0.6, 0.22, 1]} />
-          <meshStandardMaterial color="#ffffff" roughness={0.8} />
-        </mesh>
-        <mesh position={[0, 0, -0.55]} rotation={[0, 0, 0.15]} castShadow>
-          <boxGeometry args={[0.6, 0.22, 1]} />
-          <meshStandardMaterial color="#ffffff" roughness={0.8} />
-        </mesh>
-      </group>
-    </group>
-  );
-}
-
-function RetroLamp() {
-  const lampColors = ["#ff00ff", "#00ffff", "#00ff00", "#ffa500", "#ffffff"]; // Pink, Cyan, Lime, Orange, White
-
-  return (
-    <group position={[-4, 0, 2]}>
-      {/* Base Plate */}
-      <mesh position={[0, 0.03, 0]} castShadow>
-        <cylinderGeometry args={[0.35, 0.35, 0.06, 24]} />
-        <meshStandardMaterial color="#6b7280" metalness={0.8} roughness={0.2} />
-      </mesh>
-      
-      {/* Main Silver Stem */}
-      <mesh position={[0, 1.6, 0]} castShadow>
-        <cylinderGeometry args={[0.03, 0.03, 3.2, 12]} />
-        <meshStandardMaterial color="#9ca3af" metalness={0.8} roughness={0.2} />
-      </mesh>
-      
-      {/* Multi-headed Cones */}
-      <group position={[0, 3.2, 0]}>
-        {lampColors.map((colorHex, i) => {
-          const angle = (i * 72 * Math.PI) / 180;
-          const xPos = Math.sin(angle) * 0.45;
-          const zPos = Math.cos(angle) * 0.45;
-          return (
-            <group key={i} position={[xPos, 0, zPos]} rotation={[0, -angle, 0.35]}>
-              <mesh position={[0, -0.1, 0]} rotation={[0, 0, -0.2]}>
-                <cylinderGeometry args={[0.015, 0.015, 0.3, 8]} />
-                <meshStandardMaterial color="#9ca3af" metalness={0.8} />
-              </mesh>
-              <mesh castShadow>
-                <cylinderGeometry args={[0.12, 0.22, 0.4, 16]} />
-                <meshStandardMaterial color={colorHex} roughness={0.4} metalness={0.1} emissive={colorHex} emissiveIntensity={0.4} />
-              </mesh>
-              <mesh position={[0, -0.18, 0]}>
-                <cylinderGeometry args={[0.06, 0.06, 0.05, 8]} />
-                <meshBasicMaterial color="#fff" />
-              </mesh>
-            </group>
-          );
-        })}
-      </group>
-    </group>
-  );
-}
-
-interface DeskSetupProps {
+interface SceneProps {
   onSelect: (type: string) => void;
 }
 
-function DeskSetup({ onSelect }: DeskSetupProps) {
+function PhotoAccurateScene({ onSelect }: SceneProps) {
+  const lampColors = [0xff00ff, 0x00ffff, 0x00ff00, 0xffa500, 0xffffff];
+
   return (
-    <group position={[-2.2, 0, -2]} rotation={[0, -Math.PI / 2, 0]}>
-      {/* COMPUTER INTERACTION ZONE */}
-      <group onClick={(e) => { e.stopPropagation(); onSelect("computer"); }} className="cursor-pointer">
-        {/* Hot Pink Glass Desk Surface */}
-        <mesh position={[0, 1.5, 0]} castShadow receiveShadow>
-          <boxGeometry args={[3.8, 0.1, 2.2]} />
-          <meshStandardMaterial color="#ff2a6d" transparent opacity={0.7} roughness={0.1} metalness={0.3} />
-        </mesh>
+    <group position={[0, -1, 0]}>
+      {/* Targeted Ambient & Accent Lighting */}
+      <ambientLight intensity={1.6} />
+      <directionalLight position={[0, 10, 8]} intensity={1.5} castShadow />
+      <pointLight position={[1.5, 2.5, -2.5]} intensity={1.5} color="#ffdca3" />
 
-        {/* Pull-out Keyboard Shelf Tray */}
-        <mesh position={[0, 1.35, 0.15]} castShadow>
-          <boxGeometry args={[2.2, 0.06, 1.3]} />
-          <meshStandardMaterial color="#ffffff" roughness={0.4} />
-        </mesh>
-        <mesh position={[0, 1.37, 0.25]}>
-          <boxGeometry args={[1.7, 0.03, 0.55]} />
-          <meshStandardMaterial color="#e5e7eb" roughness={0.5} />
-        </mesh>
+      {/* Tan Carpet Flooring */}
+      <Plane args={[12, 12]} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
+        <meshStandardMaterial color="#dcd5c7" roughness={0.9} />
+      </Plane>
 
-        {/* HP All-In-One Desktop Computer Frame */}
-        <group position={[0, 1.55, -0.25]}>
-          <mesh position={[0, 0.7, 0]} castShadow>
-            <boxGeometry args={[1.6, 1.1, 0.14]} />
-            <meshStandardMaterial color="#1f1f1f" roughness={0.4} />
-          </mesh>
-          <mesh position={[0, 0.8, 0.08]}>
-            <boxGeometry args={[1.48, 0.82, 0.02]} />
-            <meshStandardMaterial color="#2563eb" emissive="#1d4ed8" intensity={0.8} />
-          </mesh>
-          <mesh position={[0, 0.14, 0]}>
-            <boxGeometry args={[1.6, 0.2, 0.16]} />
-            <meshStandardMaterial color="#a1a1aa" metalness={0.4} roughness={0.3} />
-          </mesh>
-          <mesh position={[0, -0.05, 0]}>
-            <cylinderGeometry args={[0.05, 0.05, 0.4, 12]} />
-            <meshStandardMaterial color="#9ca3af" metalness={0.7} />
-          </mesh>
-        </group>
-
-        {/* Bright Neon Orange Swivel Stool */}
-        <group position={[0, 0, 1.1]}>
-          <mesh position={[0, 0.8, 0]} castShadow>
-            <cylinderGeometry args={[0.42, 0.42, 0.18, 24]} />
-            <meshStandardMaterial color="#ff6b2b" roughness={0.4} />
-          </mesh>
-          <mesh position={[0, 0.4, 0]}>
-            <cylinderGeometry args={[0.04, 0.04, 0.8, 8]} />
-            <meshStandardMaterial color="#18181b" />
-          </mesh>
-          <mesh position={[0, 0.02, 0]} castShadow>
-            <cylinderGeometry args={[0.45, 0.45, 0.04, 16]} />
-            <meshStandardMaterial color="#3f3f46" roughness={0.6} />
-          </mesh>
-        </group>
-      </group>
-
-      {/* PULL-OUT TOY DRAWER UNIT INTERACTION ZONE */}
-      <group position={[-1.25, 0, -0.4]} onClick={(e) => { e.stopPropagation(); onSelect("toybox"); }} className="cursor-pointer">
-        <mesh position={[0, 0.575, 0]} castShadow receiveShadow>
-          <boxGeometry args={[1.05, 1.15, 1.25]} />
-          <meshStandardMaterial color="#ffffff" roughness={0.5} />
-        </mesh>
-        <mesh position={[0.54, 0.62, 0]} castShadow>
-          <boxGeometry args={[0.04, 0.32, 0.9]} />
-          <meshStandardMaterial color="#ff2a6d" roughness={0.35} />
-        </mesh>
-      </group>
-
-      {/* Desk Legs Supporting Framework */}
-      <mesh position={[-1.8, 0.75, -0.95]} castShadow>
-        <cylinderGeometry args={[0.04, 0.04, 1.5, 8]} />
-        <meshStandardMaterial color="#6b7280" metalness={0.6} />
-      </mesh>
-      <mesh position={[1.8, 0.75, -0.95]} castShadow>
-        <cylinderGeometry args={[0.04, 0.04, 1.5, 8]} />
-        <meshStandardMaterial color="#6b7280" metalness={0.6} />
-      </mesh>
-      <mesh position={[1.8, 0.75, 0.95]} castShadow>
-        <cylinderGeometry args={[0.04, 0.04, 1.5, 8]} />
-        <meshStandardMaterial color="#6b7280" metalness={0.6} />
-      </mesh>
-    </group>
-  );
-}
-
-function RoomWallsAndFloor() {
-  return (
-    <group position={[0, -0.5, 0]}>
-      {/* Floor Plate */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
-        <planeGeometry args={[10, 10]} />
-        <meshStandardMaterial color="#403225" roughness={0.8} />
-      </mesh>
-      
-      {/* Left Wall Panel */}
-      <mesh position={[-5, 2.5, 0]} receiveShadow>
-        <boxGeometry args={[0.1, 5, 10]} />
+      {/* Back Wall - White with Joy Decals */}
+      <Box args={[12, 6, 0.1]} position={[0, 3, -4]} receiveShadow>
         <meshStandardMaterial color="#ffffff" roughness={0.9} />
-      </mesh>
-      
-      {/* Right Wall Panel */}
-      <mesh position={[0, 2.5, -5]} receiveShadow>
-        <boxGeometry args={[10, 5, 0.1]} />
+      </Box>
+      {/* Left Wall - White */}
+      <Box args={[0.1, 6, 12]} position={[-4, 3, 0]} receiveShadow>
         <meshStandardMaterial color="#ffffff" roughness={0.9} />
-      </mesh>
+      </Box>
 
-      {/* Grid Overlay Matrix lines */}
-      <Grid position={[0, 0.01, 0]} args={[10, 10]} cellSize={0.5} cellThickness={0.5} cellColor="#44355b" sectionSize={5} fadeDistance={30} />
-    </group>
-  );
-}
-
-function RoomAccents() {
-  return (
-    <group>
-      {/* Black Nightstand with Potted Plant */}
-      <group position={[-0.8, -0.5, -3.2]}>
-        <mesh position={[0, 0.6, 0]} castShadow receiveShadow>
-          <boxGeometry args={[1.2, 1.2, 1.2]} />
-          <meshStandardMaterial color="#18181b" roughness={0.7} />
-        </mesh>
-        <group position={[0, 1.2, 0]}>
-          <mesh position={[0, 0.14, 0]} castShadow>
-            <cylinderGeometry args={[0.16, 0.11, 0.28, 12]} />
-            <meshStandardMaterial color="#c2410c" roughness={0.5} />
-          </mesh>
-          <mesh position={[0, 0.38, 0]} rotation={[0.2, 0.4, 0.1]}>
-            <cylinderGeometry args={[0.25, 0.25, 0.3, 8]} />
-            <meshStandardMaterial color="#166534" roughness={0.9} />
-          </mesh>
-        </group>
-      </group>
-
-      {/* Black Tall Bookshelf right of the bed */}
-      <group position={[3.6, -0.5, -3.2]}>
-        <mesh position={[0, 2, 0]} castShadow receiveShadow>
-          <boxGeometry args={[1.1, 4, 2.2]} />
-          <meshStandardMaterial color="#09090b" roughness={0.85} />
-        </mesh>
-        {[0.9, 1.8, 2.7].map((h, i) => (
-          <mesh key={i} position={[0.01, h, 0]}>
-            <boxGeometry args={[1.06, 0.06, 2.16]} />
-            <meshStandardMaterial color="#1c1c1f" />
-          </mesh>
-        ))}
-      </group>
-
-      {/* Window and Curtain panels overlay */}
-      <group position={[-2, 2.3, -4.92]}>
-        <mesh castShadow>
-          <boxGeometry args={[2.6, 1.8, 0.05]} />
-          <meshStandardMaterial color="#e2e8f0" transparent opacity={0.4} roughness={0.2} />
-        </mesh>
-        <mesh position={[-1.4, -0.1, 0.1]}>
-          <boxGeometry args={[0.6, 2.4, 0.12]} />
+      {/* ── WINDOW & CURTAINS (Centered on Back Wall) ── */}
+      <group position={[0, 3.2, -3.94]}>
+        <Box args={[3.5, 2.2, 0.05]} castShadow>
+          <meshStandardMaterial color="#c0dcf7" transparent opacity={0.3} roughness={0.1} />
+        </Box>
+        {/* Pink Left Curtain Panel */}
+        <Box args={[0.8, 3.2, 0.12]} position={[-2.1, -0.2, 0.1]}>
           <meshStandardMaterial color="#e64c87" roughness={0.6} />
-        </mesh>
-        <mesh position={[1.4, -0.1, 0.1]}>
-          <boxGeometry args={[0.6, 2.4, 0.12]} />
+        </Box>
+        {/* Purple Right Curtain Panel */}
+        <Box args={[0.8, 3.2, 0.12]} position={[2.1, -0.2, 0.1]}>
           <meshStandardMaterial color="#8c50a6" roughness={0.6} />
+        </Box>
+      </group>
+
+      {/* ── PHOTO-ACCURATE COMPUTER DESK SETUP (Centered Against Back Wall Window) ── */}
+      <group position={[0, 0, -2.2]}>
+        {/* Click Target Zone for Desktop Browser port */}
+        <group onClick={(e) => { e.stopPropagation(); onSelect("computer"); }} className="cursor-pointer">
+          {/* Hot Pink Glass Desk Surface */}
+          <mesh position={[0, 1.4, 0]} castShadow receiveShadow>
+            <boxGeometry args={[3.6, 0.08, 1.8]} />
+            <meshStandardMaterial color="#ff2a6d" transparent opacity={0.75} roughness={0.15} metalness={0.2} />
+          </mesh>
+          
+          {/* White Keyboard Pull-out Tray */}
+          <mesh position={[0, 1.25, 0.2]} castShadow>
+            <boxGeometry args={[2.0, 0.05, 1.1]} />
+            <meshStandardMaterial color="#ffffff" roughness={0.5} />
+          </mesh>
+
+          {/* HP All-In-One Desktop Computer Frame */}
+          <group position={[0, 1.44, -0.2]}>
+            <mesh position={[0, 0.6, 0]} castShadow>
+              <boxGeometry args={[1.5, 1.0, 0.12]} />
+              <meshStandardMaterial color="#1f1f1f" roughness={0.4} />
+            </mesh>
+            {/* Glowing Blue Active Display Screen */}
+            <mesh position={[0, 0.68, 0.07]}>
+              <boxGeometry args={[1.4, 0.78, 0.02]} />
+              <meshStandardMaterial color="#2563eb" emissive="#1d4ed8" intensity={0.9} />
+            </mesh>
+            {/* Lower Silver Bezel Section */}
+            <mesh position={[0, 0.15, 0]}>
+              <boxGeometry args={[1.5, 0.16, 0.14]} />
+              <meshStandardMaterial color="#a1a1aa" metalness={0.5} roughness={0.3} />
+            </mesh>
+            {/* Base Stand Neck */}
+            <mesh position={[0, -0.02, 0]}>
+              <cylinderGeometry args={[0.04, 0.04, 0.2, 12]} />
+              <meshStandardMaterial color="#9ca3af" metalness={0.8} />
+            </mesh>
+          </group>
+
+          {/* Bright Neon Orange Swivel Stool Tucked Behind Desk */}
+          <group position={[0, 0, 1.2]}>
+            <mesh position={[0, 0.75, 0]} castShadow>
+              <cylinderGeometry args={[0.38, 0.38, 0.15, 24]} />
+              <meshStandardMaterial color="#ff6b2b" roughness={0.4} />
+            </mesh>
+            <mesh position={[0, 0.38, 0]}>
+              <cylinderGeometry args={[0.04, 0.04, 0.7, 8]} />
+              <meshStandardMaterial color="#1c1c1e" />
+            </mesh>
+            <mesh position={[0, 0.02, 0]}>
+              <cylinderGeometry args={[0.4, 0.4, 0.04, 16]} />
+              <meshStandardMaterial color="#3f3f46" roughness={0.6} />
+            </mesh>
+          </group>
+        </group>
+
+        {/* PULL-OUT TOY DRAWER UNIT INTERACTION ZONE */}
+        <group position={[-1.3, 0, -0.2]} onClick={(e) => { e.stopPropagation(); onSelect("toybox"); }} className="cursor-pointer">
+          <mesh position={[0, 0.55, 0]} castShadow receiveShadow>
+            <boxGeometry args={[0.85, 1.1, 1.1]} />
+            <meshStandardMaterial color="#ffffff" roughness={0.5} />
+          </mesh>
+          {/* Hot Pink Trim Accent Panels */}
+          <mesh position={[0.44, 0.6, 0]} castShadow>
+            <boxGeometry args={[0.04, 0.3, 0.8]} />
+            <meshStandardMaterial color="#ff2a6d" roughness={0.4} />
+          </mesh>
+        </group>
+
+        {/* Structural Desk Chrome Framing Legs */}
+        <mesh position={[1.4, 0.7, -0.7]} castShadow><cylinderGeometry args={[0.03, 0.03, 1.4, 8]} /><meshStandardMaterial color="#9ca3af" metalness={0.7} /></mesh>
+        <mesh position={[1.4, 0.7, 0.7]} castShadow><cylinderGeometry args={[0.03, 0.03, 1.4, 8]} /><meshStandardMaterial color="#9ca3af" metalness={0.7} /></mesh>
+        <mesh position={[-1.4, 0.7, 0.7]} castShadow><cylinderGeometry args={[0.03, 0.03, 1.4, 8]} /><meshStandardMaterial color="#9ca3af" metalness={0.7} /></mesh>
+      </group>
+
+      {/* ── FIVE-HEAD DYNAMIC LAMP (Standing Right of the Desk Monitor) ── */}
+      <group position={[1.5, 0, -2.4]}>
+        <mesh position={[0, 0.03, 0]} castShadow>
+          <cylinderGeometry args={[0.3, 0.3, 0.06, 24]} />
+          <meshStandardMaterial color="#6b7280" metalness={0.8} />
+        </mesh>
+        <mesh position={[0, 1.6, 0]} castShadow>
+          <cylinderGeometry args={[0.03, 0.03, 3.2, 12]} />
+          <meshStandardMaterial color="#9ca3af" metalness={0.8} />
+        </mesh>
+        
+        {/* Radial Branching Gooseneck Lamp Heads */}
+        <group position={[0, 3.2, 0]}>
+          {lampColors.map((colorHex, i) => {
+            const angle = (i * 72 * Math.PI) / 180;
+            const xPos = Math.sin(angle) * 0.4;
+            const zPos = Math.cos(angle) * 0.4;
+            return (
+              <group key={i} position={[xPos, 0, zPos]} rotation={[0, -angle, 0.3]}>
+                <mesh castShadow>
+                  <cylinderGeometry args={[0.1, 0.2, 0.38, 16]} />
+                  <meshStandardMaterial color={colorHex} roughness={0.4} emissive={colorHex} emissiveIntensity={0.3} />
+                </mesh>
+                <mesh position={[0, -0.16, 0]}>
+                  <cylinderGeometry args={[0.05, 0.05, 0.04, 8]} />
+                  <meshBasicMaterial color="#fff" />
+                </mesh>
+              </group>
+            );
+          })}
+        </group>
+      </group>
+
+      {/* ── THE FLORAL COMFY BED (Positioned Against the Left Wall Frame) ── */}
+      <group position={[-2.4, 0, 1.2]} rotation={[0, Math.PI / 2, 0]}>
+        {/* Espresso Frame Bed Foundation */}
+        <mesh position={[0, 0.25, 0]} castShadow receiveShadow>
+          <boxGeometry args={[4.4, 0.5, 2.8]} />
+          <meshStandardMaterial color="#241407" roughness={0.7} />
+        </mesh>
+        <mesh position={[-2.1, 1.15, 0]} castShadow>
+          <boxGeometry args={[0.2, 2.1, 2.8]} />
+          <meshStandardMaterial color="#1a0e05" roughness={0.7} />
+        </mesh>
+        {/* Mattress Sheet Core */}
+        <mesh position={[0.1, 0.75, 0]} castShadow receiveShadow>
+          <boxGeometry args={[4.1, 0.5, 2.6]} />
+          <meshStandardMaterial color="#ffffff" roughness={0.7} />
+        </mesh>
+        {/* Floral Comforter Blanket with Custom Mapped Printing Nodes */}
+        <mesh position={[0.6, 0.77, 0]} castShadow>
+          <boxGeometry args={[3.0, 0.54, 2.64]} />
+          <meshStandardMaterial color="#ffffff" roughness={0.6} emissive="#ff6b8b" emissiveIntensity={0.05} />
+        </mesh>
+        {/* Decorative Mapped Patterns (Pink, Teal/Green, Soft Blue dots) */}
+        <mesh position={[0, 1.05, 0.5]}><cylinderGeometry args={[0.05, 0.05, 0.02, 8]} /><meshStandardMaterial color="#e63956" /></mesh>
+        <mesh position={[0.6, 1.05, -0.4]}><cylinderGeometry args={[0.04, 0.04, 0.02, 8]} /><meshStandardMaterial color="#2a9d8f" /></mesh>
+        <mesh position={[1.0, 1.05, 0.3]}><cylinderGeometry args={[0.06, 0.06, 0.02, 8]} /><meshStandardMaterial color="#457b9d" /></mesh>
+        {/* Double White Bed Pillows */}
+        <mesh position={[-1.4, 1.05, 0.5]} rotation={[0, 0, 0.12]} castShadow><boxGeometry args={[0.6, 0.2, 0.8]} /><meshStandardMaterial color="#ffffff" /></mesh>
+        <mesh position={[-1.4, 1.05, -0.5]} rotation={[0, 0, 0.12]} castShadow><boxGeometry args={[0.6, 0.2, 0.8]} /><meshStandardMaterial color="#ffffff" /></mesh>
+      </group>
+
+      {/* ── ACCENT FURNITURE (Nightstand & Bookshelf Behind Bed Line) ── */}
+      {/* Black Nightstand */}
+      <group position={[-3.2, 0, -2.5]}>
+        <mesh position={[0, 0.55, 0]} castShadow receiveShadow>
+          <boxGeometry args={[1.1, 1.1, 1.1]} />
+          <meshStandardMaterial color="#1c1c1e" roughness={0.7} />
+        </mesh>
+        <mesh position={[0, 1.1, 0]} castShadow><cylinderGeometry args={[0.15, 0.1, 0.25, 12]} /><meshStandardMaterial color="#c2410c" /></mesh>
+        <mesh position={[0, 1.35, 0]}><sphereGeometry args={[0.2, 16, 16]} /><meshStandardMaterial color="#166534" /></mesh>
+      </group>
+      {/* Black Tall Bookshelf Unit */}
+      <group position={[-3.3, 0, -1.0]}>
+        <mesh position={[0, 1.8, 0]} castShadow receiveShadow>
+          <boxGeometry args={[0.9, 3.6, 1.8]} />
+          <meshStandardMaterial color="#0f0f11" roughness={0.8} />
         </mesh>
       </group>
     </group>
@@ -357,25 +281,14 @@ function RoomAccents() {
 export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => void }) {
   const [toyboxOpen, setToyboxOpen] = useState(false);
   const [activeToy, setActiveToy] = useState<string | null>(null);
-  const [roomRotation, setRoomRotation] = useState(0);
-  const [zoomLevel, setZoomLevel] = useState(7.5);
   
   const activeToyData = TOYS.find(t => t.id === activeToy);
-
-  const handleInteractiveSelection = (type: string) => {
-    if (type === "computer" && onEnterGameRoom) {
-      onEnterGameRoom();
-    } else if (type === "toybox") {
-      setToyboxOpen(true);
-      setActiveToy(null);
-    }
-  };
 
   return (
     <div className="w-full h-full bg-[#0d0a14] text-white relative font-sans overflow-hidden select-none flex flex-col items-center justify-center">
       
       {/* Top Map Action HUD Bar */}
-      <div className="absolute top-4 left-4 z-50 flex items-center gap-3">
+      <div className="absolute top-4 left-4 z-50">
         <button 
           onClick={() => window.history.back()}
           className="px-4 py-2 bg-[#1b1822]/90 border border-[#443a54] rounded-full text-xs font-bold tracking-wide hover:bg-[#282433] transition-all shadow-xl active:scale-95"
@@ -384,71 +297,39 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
         </button>
       </div>
 
-      {/* Control Panel */}
-      <div className="absolute top-4 right-4 z-50 bg-[#16141c]/90 p-2 rounded-xl border border-[#3e344d] flex items-center gap-2 shadow-2xl backdrop-blur-md">
-        <button 
-          onClick={() => setRoomRotation(prev => prev + Math.PI / 2)} 
-          className="p-2 bg-[#2d253b] hover:bg-[#413554] active:scale-90 rounded-lg text-xs font-bold transition-all border border-[#533d70]"
-        >
-          🔄 Rotate Angle
-        </button>
-        <div className="w-px h-5 bg-[#3e344d]" />
-        <button 
-          onClick={() => setZoomLevel(prev => Math.max(4, prev - 1.5))} 
-          className="px-3 py-1.5 bg-[#2d253b] hover:bg-[#413554] active:scale-90 rounded-lg text-xs font-bold transition-all"
-        >
-          ➕ Step Closer
-        </button>
-        <button 
-          onClick={() => setZoomLevel(prev => Math.min(13, prev + 1.5))} 
-          className="px-3 py-1.5 bg-[#2d253b] hover:bg-[#413554] active:scale-90 rounded-lg text-xs font-bold transition-all"
-        >
-          ➖ Step Away
-        </button>
-      </div>
-
-      {/* ── LIVE INTERACTIVE WEBGL 3D CANVAS PANELS ── */}
+      {/* ── PHOTO-ACCURATE VIEWPORT CANVAS PANEL ── */}
       <div className="w-full h-full absolute inset-0 z-10 cursor-grab active:cursor-grabbing">
         <Canvas 
-          camera={{ position: [zoomLevel, zoomLevel, zoomLevel], fov: 35 }} 
+          camera={{ position: [0, 3.5, 4.8], fov: 50 }} 
           gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping }}
           shadows 
-          key={`${roomRotation}-${zoomLevel}`}
         >
-          {/* Enhanced Room Lighting Environment */}
           <color attach="background" args={["#100c19"]} />
-          <fog attach="fog" args={["#100c19", 10, 26]} />
+          <fog attach="fog" args={["#100c19", 8, 22]} />
           
-          <ambientLight intensity={1.5} />
-          <directionalLight position={[8, 14, 8]} intensity={1.8} castShadow />
-          <pointLight position={[-2, 3, 2]} intensity={1.2} color="#ffdca3" />
-
-          <group rotation={[0, roomRotation, 0]}>
-            <RoomWallsAndFloor />
-            <RoomAccents />
-            <Bed />
-            <RetroLamp />
-            <DeskSetup onSelect={handleInteractiveSelection} />
-          </group>
+          <PhotoAccurateScene onSelect={(type) => {
+            if (type === "computer" && onEnterGameRoom) onEnterGameRoom();
+            if (type === "toybox") { setToyboxOpen(true); setActiveToy(null); }
+          }} />
 
           <OrbitControls 
             enableDamping 
             dampingFactor={0.06} 
-            minDistance={3.5} 
-            maxDistance={14} 
+            minDistance={2} 
+            maxDistance={10} 
             maxPolarAngle={Math.PI / 2 - 0.05} 
           />
         </Canvas>
       </div>
 
-      {/* Guide Banner HUD */}
+      {/* Banner Interface HUD */}
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30 bg-[#0e0c14]/95 px-6 py-2.5 rounded-xl border border-[#3b304a] shadow-2xl backdrop-blur-md flex items-center gap-6">
         <p className="text-[11px] font-bold tracking-wide text-[#9d89b8] uppercase">
-          🎮 **3D Room Node:** Click & Drag room to spin around manually, use top console controls, or click objects to enter ports.
+          🎮 Click & Drag to inspect angles. Click the Blue HP Screen to open your system, or select the White Desk Drawer cabinet to explore toys.
         </p>
       </div>
 
-      {/* ── TOYS DRAWER MODAL OVERLAY SHEET ── */}
+      {/* TOYS MODAL OVERLAY SHEET */}
       <AnimatePresence>
         {toyboxOpen && (
           <motion.div 
@@ -473,7 +354,7 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
         )}
       </AnimatePresence>
 
-      {/* Individual Toy Detail Inspection Card Modal */}
+      {/* Toy Detail Modal Box */}
       <AnimatePresence>
         {activeToy && activeToyData && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-60 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4" onClick={() => setActiveToy(null)}>
