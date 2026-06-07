@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Box, Plane, Cylinder } from "@react-three/drei";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const TOYS = [
   { id: "bottle", name: "Magic Baby Bottle", desc: "The milk disappears when you tilt it. TECHNOLOGY." },
@@ -75,255 +73,188 @@ function ToyGraphic({ id }: { id: string }) {
   }
 }
 
-function HighFidelityAssets({ onSelect }: { onSelect: (type: string) => void }) {
-  return (
-    <group position={[0, -0.5, 0]}>
-      <ambientLight intensity={0.75} />
-      <directionalLight position={[5, 12, 6]} intensity={1.4} castShadow shadow-mapSize={[2048, 2048]} />
-      <pointLight position={[-2, 4, 3]} intensity={0.5} color="#ffd8a8" />
-
-      {/* Textured Floor */}
-      <Plane args={[10, 10]} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
-        <meshStandardMaterial color="#403225" roughness={0.75} />
-      </Plane>
-
-      {/* ── WHITE ROOM WALLS ── */}
-      <Box args={[0.1, 5, 10]} position={[-5, 2.5, 0]} receiveShadow>
-        <meshStandardMaterial color="#fafafa" roughness={0.85} />
-      </Box>
-      <Box args={[10, 5, 0.1]} position={[0, 2.5, -5]} receiveShadow>
-        <meshStandardMaterial color="#f7f7f7" roughness={0.85} />
-      </Box>
-
-      {/* ── WINDOW & CURTAINS ON THE COMPUTER DESK WALL ── */}
-      <group position={[-2, 2.8, -4.9]}>
-        {/* Glass Frame window panel */}
-        <Box args={[2.5, 2, 0.05]} castShadow>
-          <meshStandardMaterial color="#e2e8f0" transparent opacity={0.3} roughness={0.1} />
-        </Box>
-        <Box args={[2.6, 2.1, 0.02]}><meshStandardMaterial color="#1a1a1a" wireframe /></Box>
-        {/* Photo Reference Curtains Overlay: Pink & Purple */}
-        <Box args={[0.5, 2.4, 0.15]} position={[-1.3, -0.1, 0.1]}>
-          <meshStandardMaterial color="#e64c87" roughness={0.6} />
-        </Box>
-        <Box args={[0.5, 2.4, 0.15]} position={[1.3, -0.1, 0.1]}>
-          <meshStandardMaterial color="#8c50a6" roughness={0.6} />
-        </Box>
-      </group>
-
-      {/* ── CENTERED COZY FLORAL BED SETUP ── */}
-      <group position={[1.8, 0, -2]} onClick={(e) => { e.stopPropagation(); onSelect("bed"); }}>
-        {/* Dark Espresso Bed Frame */}
-        <Box args={[4.2, 0.6, 2.8]} position={[0, 0.3, 0]} castShadow receiveShadow>
-          <meshStandardMaterial color="#241407" roughness={0.8} />
-        </Box>
-        <Box args={[0.2, 2.2, 2.8]} position={[-2.1, 1.1, 0]} castShadow>
-          <meshStandardMaterial color="#1a0e05" roughness={0.8} />
-        </Box>
-        {/* Mattress Base sheet */}
-        <Box args={[4, 0.5, 2.6]} position={[0.05, 0.85, 0]} castShadow>
-          <meshStandardMaterial color="#fcfcfc" roughness={0.9} />
-        </Box>
-        {/* Patterned Floral Comforter Layer */}
-        <Box args={[2.8, 0.52, 2.62]} position={[0.65, 0.86, 0]}>
-          <meshStandardMaterial color="#ffffff" roughness={0.7} emissive="#ff6b8b" emissiveIntensity={0.06} />
-        </Box>
-        {/* Plump Pillows */}
-        <Box args={[0.6, 0.2, 0.9]} position={[-1.4, 1.1, 0.55]} rotation={[0, 0, 0.12]} castShadow>
-          <meshStandardMaterial color="#ffffff" roughness={0.9} />
-        </Box>
-        <Box args={[0.6, 0.2, 0.9]} position={[-1.4, 1.1, -0.55]} rotation={[0, 0, 0.12]} castShadow>
-          <meshStandardMaterial color="#ffffff" roughness={0.9} />
-        </Box>
-      </group>
-
-      {/* ── BLACK MINIMALIST NIGHTSTAND WITH POTTED PLANT ── */}
-      <group position={[-0.8, 0, -3.2]}>
-        <Box args={[1.2, 1.1, 1.2]} position={[0, 0.55, 0]} castShadow receiveShadow>
-          <meshStandardMaterial color="#18181b" roughness={0.7} />
-        </Box>
-        {/* Small Potted Plant Setup */}
-        <group position={[0, 1.1, 0]}>
-          <Cylinder args={[0.15, 0.1, 0.25]} position={[0, 0.125, 0]} castShadow>
-            <meshStandardMaterial color="#d97706" roughness={0.6} />
-          </Cylinder>
-          <Box args={[0.22, 0.35, 0.22]} position={[0, 0.35, 0]} rotation={[0.2, 0.4, 0.1]}>
-            <meshStandardMaterial color="#15803d" roughness={0.9} />
-          </Box>
-        </group>
-      </group>
-
-      {/* ── BOOKS & MAGAZINES STACKED IN MIDDLE SECTION ── */}
-      <group position={[0.2, 0, -1]} rotation={[0, Math.PI / 6, 0]}>
-        <Box args={[0.5, 0.08, 0.7]} position={[0, 0.04, 0]} castShadow><meshStandardMaterial color="#1d4ed8" /></Box>
-        <Box args={[0.48, 0.06, 0.68]} position={[-0.02, 0.11, 0.02]} rotation={[0, 0.1, 0]} castShadow><meshStandardMaterial color="#be185d" /></Box>
-        <Box args={[0.52, 0.05, 0.72]} position={[0.01, 0.165, -0.01]} rotation={[0, -0.15, 0]} castShadow><meshStandardMaterial color="#059669" /></Box>
-      </group>
-
-      {/* ── BLACK BOOKSHELF TO THE RIGHT OF THE BED ── */}
-      <group position={[3.5, 0, -3.2]}>
-        {/* Main Bookshelf Outer Framework Shell */}
-        <Box args={[1, 3.8, 2.2]} position={[0, 1.9, 0]} castShadow receiveShadow>
-          <meshStandardMaterial color="#0f0f11" roughness={0.8} />
-        </Box>
-        {/* Layered Shelf cutout divisions lines */}
-        {[0.8, 1.7, 2.6].map((h, i) => (
-          <Box key={i} args={[0.96, 0.06, 2.16]} position={[0.02, h, 0]}><meshStandardMaterial color="#18181b" /></Box>
-        ))}
-      </group>
-
-      {/* ── CENTERED HOT PINK GLASS DESK & INTEGRATED TOY DRAWER SYSTEM ── */}
-      <group position={[-2, 0, -2.2]} rotation={[0, -Math.PI / 2, 0]}>
-        
-        {/* Translucent Hot Pink Glass Desk Surface */}
-        <group onClick={(e) => { e.stopPropagation(); onSelect("computer"); }}>
-          <Box args={[3.8, 0.1, 2.2]} position={[0, 1.5, 0]} castShadow receiveShadow>
-            <meshStandardMaterial color="#e11d48" transparent opacity={0.65} roughness={0.15} metalness={0.1} />
-          </Box>
-          {/* Under-Desk Pull Out Keyboard Shelf Frame Tray */}
-          <Box args={[2.2, 0.06, 1.2]} position={[0, 1.34, 0.2]} castShadow>
-            <meshStandardMaterial color="#ffffff" roughness={0.4} />
-          </Box>
-          <Box args={[1.6, 0.04, 0.5]} position={[0, 1.36, 0.3]}><meshStandardMaterial color="#f3f4f6" /></Box>
-
-          {/* Core HP All-In-One Computer Base Console Monitor */}
-          <group position={[0, 1.55, -0.2]}>
-            <Box args={[1.6, 1.1, 0.12]} position={[0, 0.7, 0]} castShadow>
-              <meshStandardMaterial color="#1a1a1a" roughness={0.4} />
-            </Box>
-            <Box args={[1.5, 0.8, 0.02]} position={[0, 0.8, 0.06]}>
-              <meshStandardMaterial color="#2563eb" emissive="#1d4ed8" intensity={0.6} />
-            </Box>
-            <Box args={[1.6, 0.2, 0.14]} position={[0, 0.15, 0]}>
-              <meshStandardMaterial color="#a8a8a8" metalness={0.3} roughness={0.4} />
-            </Box>
-            <Cylinder args={[0.06, 0.06, 0.4]} position={[0, 0, 0]}><meshStandardMaterial color="#8a8a8a" metalness={0.8} /></Cylinder>
-          </group>
-
-          {/* Neon Orange Cushion Swivel Chair */}
-          <group position={[0, 0, 1]}>
-            <Cylinder args={[0.42, 0.42, 0.18]} position={[0, 0.8, 0]} castShadow>
-              <meshStandardMaterial color="#ff6b2b" roughness={0.5} />
-            </Cylinder>
-            <Cylinder args={[0.04, 0.04, 0.8]} position={[0, 0.4, 0]}><meshStandardMaterial color="#111" /></Cylinder>
-            <Cylinder args={[0.45, 0.45, 0.04]} position={[0, 0.02, 0]}><meshStandardMaterial color="#444" roughness={0.6} /></Cylinder>
-          </group>
-        </group>
-
-        {/* ── INTEGRATED PULL OUT TOY DRAWER UNIT ── */}
-        <group position={[-1.2, 0, -0.4]} onClick={(e) => { e.stopPropagation(); onSelect("toybox"); }}>
-          {/* Main White Casing Drawer Block Cabinet */}
-          <Box args={[1, 1.1, 1.2]} position={[0, 0.55, 0]} castShadow receiveShadow>
-            <meshStandardMaterial color="#ffffff" border-2 border-black roughness={0.5} />
-          </Box>
-          {/* Decorative Drawer Handles panel border */}
-          <Box args={[0.05, 0.3, 0.8]} position={[0.51, 0.6, 0]} castShadow>
-            <meshStandardMaterial color="#e11d48" roughness={0.3} />
-          </Box>
-        </group>
-
-      </group>
-
-      {/* ── MULTI-HEAD CONE LIGHT FIXTURE LAMP ── */}
-      <group position={[-4, 0, 1.5]}>
-        <Cylinder args={[0.35, 0.35, 0.05]} position={[0, 0.02, 0]} castShadow><meshStandardMaterial color="#555" /></Cylinder>
-        <Cylinder args={[0.03, 0.03, 3]} position={[0, 1.5, 0]} castShadow><meshStandardMaterial color="#a8a8a8" metalness={0.7} /></Cylinder>
-        <group position={[0, 3, 0]}>
-          <Box args={[0.3, 0.4, 0.3]} position={[-0.4, 0.2, -0.2]} rotation={[0.4, 0, -0.5]}><meshStandardMaterial color="#3b82f6" emissive="#1d4ed8" emissiveIntensity={0.3} /></Box>
-          <Box args={[0.3, 0.4, 0.3]} position={[0, 0.4, 0]}><meshStandardMaterial color="#ffffff" emissive="#fff" emissiveIntensity={0.2} /></Box>
-          <Box args={[0.3, 0.4, 0.3]} position={[0.4, 0.2, 0.2]} rotation={[-0.4, 0, 0.5]}><meshStandardMaterial color="#a855f7" emissive="#7c3aed" emissiveIntensity={0.3} /></Box>
-        </group>
-      </group>
-
-    </group>
-  );
-}
+const getIsoCoords = (x: number, y: number, tileWidth = 64, tileHeight = 32) => {
+  const screenX = (x - y) * (tileWidth / 2);
+  const screenY = (x + y) * (tileHeight / 2);
+  return { left: screenX, top: screenY };
+};
 
 export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => void }) {
   const [toyboxOpen, setToyboxOpen] = useState(false);
   const [activeToy, setActiveToy] = useState<string | null>(null);
-  const [roomRotation, setRoomRotation] = useState(0);
-  const [zoomLevel, setZoomLevel] = useState(7);
   
+  const gridSize = 8;
+  const tileW = 64;
+  const tileH = 32;
   const activeToyData = TOYS.find(t => t.id === activeToy);
 
-  const handleInteractiveSelection = (type: string) => {
-    if (type === "computer" && onEnterGameRoom) {
-      onEnterGameRoom();
-    } else if (type === "toybox") {
-      setToyboxOpen(true);
-      setActiveToy(null);
-    }
-  };
-
   return (
-    <div className="w-full h-full bg-[#0d0a14] text-white relative font-sans overflow-hidden select-none flex flex-col items-center justify-center">
+    <div className="w-full h-full bg-[#14111a] text-white relative font-sans overflow-hidden select-none flex flex-col items-center justify-center">
       
       {/* Navigation */}
-      <div className="absolute top-4 left-4 z-50 flex items-center gap-3">
+      <div className="absolute top-4 left-4 z-50">
         <button 
           onClick={() => window.history.back()}
-          className="px-4 py-2 bg-[#1b1822]/90 border border-[#443a54] rounded-full text-xs font-bold tracking-wide hover:bg-[#282433] transition-all shadow-xl active:scale-95"
+          className="px-4 py-2 bg-[#221c2e]/90 border border-[#4d3f66] rounded-full text-xs font-bold tracking-wide hover:bg-[#322942] transition-all shadow-md active:scale-95"
         >
           ← Back to Map
         </button>
       </div>
 
-      {/* Control Strip UI */}
-      <div className="absolute top-4 right-4 z-50 bg-[#16141c]/90 p-2 rounded-xl border border-[#3e344d] flex items-center gap-2 shadow-2xl backdrop-blur-md">
-        <button 
-          onClick={() => setRoomRotation(prev => prev + Math.PI / 2)} 
-          className="p-2 bg-[#2d253b] hover:bg-[#413554] active:scale-90 rounded-lg text-xs font-bold transition-all border border-[#533d70]"
+      {/* ── DESIGN WINDOW VIEWPORT CONTAINER ── */}
+      <div className="relative scale-125 transform translate-y-[-10px]" style={{ width: gridSize * tileW, height: gridSize * tileH * 2.5 }}>
+        
+        {/* White Walls */}
+        <div 
+          className="absolute origin-top-left bg-[#f2f2f2] border-r-4 border-t-4 border-[#120a1c]"
+          style={{ width: gridSize * tileW / Math.sqrt(2), height: 220, transform: "rotate(30deg) skewX(-30deg) translate(-218px, -114px)", zIndex: 1 }}
         >
-          🔄 Rotate Angle
-        </button>
-        <div className="w-px h-5 bg-[#3e344d]" />
-        <button 
-          onClick={() => setZoomLevel(prev => Math.max(4, prev - 1.5))} 
-          className="px-3 py-1.5 bg-[#2d253b] hover:bg-[#413554] active:scale-90 rounded-lg text-xs font-bold transition-all"
-        >
-          ➕ Step Closer
-        </button>
-        <button 
-          onClick={() => setZoomLevel(prev => Math.min(12, prev + 1.5))} 
-          className="px-3 py-1.5 bg-[#2d253b] hover:bg-[#413554] active:scale-90 rounded-lg text-xs font-bold transition-all"
-        >
-          ➖ Step Away
-        </button>
+          {/* Windows with Pink & Purple Curtains behind Desk */}
+          <div className="absolute top-6 left-16 w-24 h-20 bg-[#e2e8f0]/40 border-2 border-black/80 flex items-center justify-center">
+            <div className="w-full h-0.5 bg-black/60 absolute" />
+            <div className="h-full w-0.5 bg-black/60 absolute" />
+          </div>
+          <div className="absolute top-2 left-10 w-8 h-40 bg-[#e64c87] border border-black/20" />
+          <div className="absolute top-2 left-40 w-8 h-40 bg-[#8c50a6] border border-black/20" />
+        </div>
+
+        <div 
+          className="absolute origin-top-right bg-[#e8e8e8] border-l-4 border-t-4 border-[#120a1c]"
+          style={{ width: gridSize * tileW / Math.sqrt(2), height: 220, transform: "rotate(-30deg) skewX(30deg) translate(218px, -114px)", zIndex: 1 }}
+        />
+
+        {/* Floorboard Grid Area */}
+        <div className="absolute top-[180px] left-1/2 transform translate-x-[-50%] relative">
+          {Array.from({ length: gridSize }).map((_, x) =>
+            Array.from({ length: gridSize }).map((_, y) => {
+              const coords = getIsoCoords(x, y, tileW, tileH);
+              return (
+                <div
+                  key={`${x}-${y}`}
+                  className="absolute border border-[#1b1226] bg-[#3a2f4c]"
+                  style={{ width: tileW, height: tileH, left: coords.left, top: coords.top, transform: "rotateX(60deg) rotateZ(45deg)", zIndex: 2 }}
+                />
+              );
+            })
+          )}
+
+          {/* ── CENTERED BED WITH FLORAL COMFORTER (Slots 2,2) ── */}
+          {(() => {
+            const coords = getIsoCoords(2, 2, tileW, tileH);
+            return (
+              <div className="absolute" style={{ left: coords.left - 10, top: coords.top + 30, zIndex: 12 }}>
+                <div className="relative w-36 h-28">
+                  <div className="absolute top-0 left-2 w-4 h-22 bg-[#1a0e05] border-2 border-black rounded-xs" />
+                  <div className="absolute bottom-0 left-2 w-full h-10 bg-[#241407] border-2 border-black rounded-xs shadow-lg" />
+                  {/* Floral Pattern Comforter Bed Cover */}
+                  <div className="absolute bottom-2 left-4 w-[124px] h-15 bg-[#ffffff] border-2 border-black rounded-sm overflow-hidden p-1">
+                    <div className="w-full h-full opacity-90" style={{
+                      backgroundImage: "radial-gradient(circle at 20% 30%, #e63956 6px, transparent 7px), radial-gradient(circle at 60% 70%, #2a9d8f 5px, transparent 6px), radial-gradient(circle at 80% 20%, #457b9d 6px, transparent 7px)"
+                    }} />
+                  </div>
+                  <div className="absolute top-3 left-6 w-10 h-7 bg-white border-2 border-black rounded-sm transform rotate-[-6deg]" style={{ backgroundImage: "radial-gradient(circle at 50% 50%, #e63956 4px, transparent 5px)" }} />
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* ── BLACK BOOKSHELF RIGHT OF BED (Slots 1,4) ── */}
+          {(() => {
+            const coords = getIsoCoords(1, 4, tileW, tileH);
+            return (
+              <div className="absolute" style={{ left: coords.left + 24, top: coords.top, zIndex: 11 }}>
+                <div className="w-14 h-40 bg-[#121214] border-2 border-black rounded-xs flex flex-col justify-between p-1 shadow-xl">
+                  <div className="w-full h-8 border-b border-gray-800" />
+                  <div className="w-full h-8 border-b border-gray-800" />
+                  <div className="w-full h-8 border-b border-gray-800" />
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* ── BLACK NIGHTSTAND WITH PLANT, BOOKS, & MAGAZINES (Slots 4,1) ── */}
+          {(() => {
+            const coords = getIsoCoords(4, 1, tileW, tileH);
+            return (
+              <div className="absolute" style={{ left: coords.left, top: coords.top + 45, zIndex: 13 }}>
+                <div className="relative w-14 h-16 bg-[#18181b] border-2 border-black rounded-sm shadow-md flex flex-col items-center justify-start pt-1">
+                  {/* Potted Plant */}
+                  <div className="w-5 h-4 bg-amber-700 rounded-b-md border border-black relative flex items-center justify-center">
+                    <div className="w-7 h-5 bg-green-600 rounded-full absolute -top-3 border border-green-800" />
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* Stained Reading Material Layer on Floor */}
+          {(() => {
+            const coords = getIsoCoords(4, 2, tileW, tileH);
+            return (
+              <div className="absolute" style={{ left: coords.left + 10, top: coords.top + 50, zIndex: 14 }}>
+                <div className="relative w-8 h-4 bg-blue-600 border border-black shadow-xs transform rotate-12" />
+                <div className="relative w-7 h-4 bg-pink-600 border border-black shadow-xs -mt-2 ml-1" />
+              </div>
+            );
+          })()}
+
+          {/* ── CENTERED HOT PINK GLASS DESK & DRAWERS (Slots 5,4) ── */}
+          {(() => {
+            const coords = getIsoCoords(5, 4, tileW, tileH);
+            return (
+              <div className="absolute" style={{ left: coords.left + 12, top: coords.top + 40, zIndex: 18 }}>
+                <div className="relative w-28 h-36 flex flex-col items-center justify-end">
+                  
+                  {/* HP All-In-One Computer Screen Monitor */}
+                  <div onClick={onEnterGameRoom} className="w-20 h-16 bg-[#1a1a1a] border-2 border-black rounded-md shadow-2xl p-0.5 flex flex-col items-center justify-between relative mb-2 z-30 cursor-pointer hover:scale-105 transition-transform">
+                    <div className="w-full h-11 bg-black p-0.5 rounded-t-sm">
+                      <div className="w-full h-full bg-gradient-to-br from-[#1d4ed8] to-[#1e1b4b] rounded-xs flex flex-col items-center justify-center">
+                        <span className="text-[7px] font-bold text-[#93c5fd] animate-pulse">BOOT_COMPUTER</span>
+                      </div>
+                    </div>
+                    <div className="w-full h-2.5 bg-[#a8a8a8] rounded-b-xs border-t border-black" />
+                    <div className="absolute -bottom-2 w-12 h-3 border-x-2 border-b-2 border-[#8a8a8a] rounded-b-md" />
+                  </div>
+
+                  {/* Hot Pink Glass Desktop Surface with Pull-out Tray casing */}
+                  <div className="w-26 h-4 bg-[#e11d48] border-2 border-[#12051c] relative rounded-xs shadow-md z-10 flex flex-col justify-end">
+                    {/* Keyboard Pull out tray accent */}
+                    <div className="w-16 h-1 bg-white mx-auto border-x border-t border-black rounded-t-xs" />
+                  </div>
+
+                  {/* Metal Framework Desk Legs */}
+                  <div className="flex justify-between w-22 h-14 px-1 relative z-0">
+                    <div className="w-1.5 h-full bg-gray-600 border border-black" />
+                    {/* INTEGRATED WHITE DRAWER VAULT CHEST LAYER */}
+                    <div onClick={() => setToyboxOpen(true)} className="w-12 h-12 bg-white border-2 border-black rounded-xs shadow-md absolute bottom-0 left-5 flex flex-col p-1 gap-1 cursor-pointer hover:bg-gray-100 transition-colors z-20">
+                      <div className="w-full h-3 bg-[#e11d48] rounded-xs border border-black" />
+                      <div className="w-full h-3 bg-[#e11d48] rounded-xs border border-black" />
+                    </div>
+                    <div className="w-1.5 h-full bg-gray-600 border border-black" />
+                  </div>
+
+                  {/* Orange Cushion Swivel Seat Stool */}
+                  <div className="absolute bottom-[-14px] left-8 w-10 h-14 flex flex-col items-center z-25 pointer-events-none">
+                    <div className="w-8 h-3 bg-[#ff6b2b] border-2 border-black rounded-full shadow-md" />
+                    <div className="w-1 h-5 bg-black" />
+                    <div className="w-8 h-1.5 bg-[#444] border border-black rounded-full" />
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
+        </div>
       </div>
 
-      {/* 3D Viewport Canvas */}
-      <div className="w-full h-full absolute inset-0 z-10 cursor-grab active:cursor-grabbing">
-        <Canvas 
-          camera={{ position: [zoomLevel, zoomLevel, zoomLevel], fov: 35 }} 
-          shadows
-          key={`${roomRotation}-${zoomLevel}`}
-        >
-          <color attach="background" args={["#0f0c16"]} />
-          <fog attach="fog" args={["#0f0c16", 10, 25]} />
-          
-          <group rotation={[0, roomRotation, 0]}>
-            <HighFidelityAssets onSelect={handleInteractiveSelection} />
-          </group>
-
-          <OrbitControls 
-            enableDamping 
-            dampingFactor={0.05}
-            minDistance={3}
-            maxDistance={14}
-            maxPolarAngle={Math.PI / 2 - 0.05}
-          />
-        </Canvas>
-      </div>
-
-      {/* HUD Bar */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30 bg-[#0e0c14]/95 px-6 py-2.5 rounded-xl border border-[#3b304a] shadow-2xl backdrop-blur-md flex items-center gap-6">
-        <p className="text-[11px] font-bold tracking-wide text-[#9d89b8] uppercase">
-          🎮 Drag to slide camera view. Click your custom Hot Pink Desk or Built-In Drawer base to explore your spaces.
+      {/* Manual User Guide Notification HUD banner */}
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30 bg-[#120c1a]/95 px-6 py-2.5 rounded-xl border border-[#4c3563] shadow-2xl backdrop-blur-md flex items-center gap-6">
+        <p className="text-[11px] font-bold tracking-wide text-[#c0a2e0] uppercase">
+          📷 Click the HP All-In-One Monitor to boot the browser, or click the Built-In Desk Drawer to view toys.
         </p>
       </div>
 
-      {/* Integrated Toy Drawer Component Sheet Overlay */}
+      {/* ── TOYS MODAL GRID OVERLAY ── */}
       <AnimatePresence>
         {toyboxOpen && (
           <motion.div 
@@ -348,12 +279,12 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
         )}
       </AnimatePresence>
 
-      {/* Toy Detail Inspection Card Modal */}
+      {/* Toy detail modal box overlay */}
       <AnimatePresence>
         {activeToy && activeToyData && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-60 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4" onClick={() => setActiveToy(null)}>
             <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} exit={{ scale: 0.8 }} className="bg-[#ece9d8] rounded-t-lg border-2 border-[#0055e5] max-w-sm w-full flex flex-col shadow-2xl overflow-hidden text-black" onClick={e => e.stopPropagation()}>
-              <div className="flex items-center justify-between px-3 py-1 shrink-0" style={{ background: "linear-gradient(180deg, #2f5bb7 0%, #1e3f8a 50%, #1a3578 100%)", height: 26 }}><span className="text-white text-xs font-bold">Toy Inspection Drawer Log</span><button onClick={() => setActiveToy(null)} className="text-white text-xs font-bold">✕</button></div>
+              <div className="flex items-center justify-between px-3 py-1 shrink-0" style={{ background: "linear-gradient(180deg, #2f5bb7 0%, #1e3f8a 50%, #1a3578 100%)", height: 26 }}><span className="text-white text-xs font-bold">Toy Inspection Log</span><button onClick={() => setActiveToy(null)} className="text-white text-xs font-bold">✕</button></div>
               <div className="p-6 bg-white flex flex-col items-center gap-4">
                 <div className="h-32 bg-purple-50/50 w-full rounded border flex items-center justify-center"><ToyGraphic id={activeToy} /></div>
                 <h3 className="text-lg font-bold text-purple-900">{activeToyData.name}</h3>
