@@ -339,13 +339,15 @@ export default function GameRoom() {
                 </div>
               )}
               <iframe
-                key={currentUrl}
-                src={currentUrl}
-                className="w-full h-full border-none relative z-0"
-                title={currentTitle}
-                sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"
-                onLoad={() => setLoading(false)}
-              />
+  key={currentUrl}
+  src={currentUrl}
+  className="w-full h-full border-none relative z-0"
+  title={currentTitle}
+  // Added allow rules and lifted tight sandbox restrictions for emulator scripting
+  allow="autoplay; encrypted-media; fullscreen; gamepad; screen-wake-lock"
+  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"
+  onLoad={() => setLoading(false)}
+/>
             </>
           ) : (
             <div className="w-full h-full overflow-y-auto" style={{ background: "linear-gradient(135deg, #e8f4ff 0%, #f0e8ff 100%)" }}>
