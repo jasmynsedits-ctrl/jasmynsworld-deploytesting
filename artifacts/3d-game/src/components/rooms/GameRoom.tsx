@@ -1,87 +1,485 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-const d = (b: string) => atob(b);
-const AB = d("aHR0cHM6Ly93ZWIuYXJjaGl2ZS5vcmcvd2ViLw==");
+type BookmarkItem = { name: string; url?: string; note?: string; isEmbed?: boolean };
+type SidebarEntry = BookmarkItem & { locked?: boolean };
 
-const SG = [
-  { n: "Starfall", p: "MjAxMjExMDIwMDAwMDBpZl8vaHR0cHM6Ly93d3cuc3RhcmZhbGwuY29tL2gv" },
-  { n: "Moshi Monsters", p: "MjAxMzAxMjYwMjI4MDJpZl8vaHR0cHM6Ly93d3cubW9zaGltb25zdGVycy5jb20v" },
-  { n: "Nickelodeon (2015)", p: "MjAxNTExMjcwNzQ2MTNpZl8vaHR0cHM6Ly93d3cubmljay5jb20v" },
-  { n: "GirlsGoGames", p: "MjAxNDA3MTUwMDAwMDBpZl8vaHR0cDovL3d3dy5naXJsc2dvZ2FtZXMuY29tLw==" },
-  { n: "SmallWorlds", p: "MjAxMjA2MTUwMDAwMDBpZl8vaHR0cDovL3d3dy5zbWFsbHdvcmxkcy5jb20v" },
-  { n: "Poptropica", p: "MjAxMzA4MTUwMDAwMDBpZl8vaHR0cDovL3d3dy5wb3B0cm9waWNhLmNvbS8=" },
-  { n: "Fantage", p: "MjAxMzA1MTUwMDAwMDBpZl8vaHR0cDovL3d3dy5mYW50YWdlLmNvbS8=" },
-  { n: "JibJab", p: "MjAxMTA0MTUwMDAwMDBpZl8vaHR0cDovL3d3dy5qaWJqYWIuY29tLw==" },
-  { n: "Scratch", u: "aHR0cHM6Ly9zY3JhdGNoLm1pdC5lZHUvcHJvamVjdHMvZW1iZWQvMTAxMjg0MDAv" },
-  { n: "WeeWorld", p: "MjAxMTExMTUwMDAwMDBpZl8vaHR0cDovL3d3dy53ZWV3b3JsZC5jb20v" },
-  { n: "Club Penguin", p: "MjAxMzAzMTUwMDAwMDBpZl8vaHR0cDovL3d3dy5jbHVicGVuZ3Vpbi5jb20v" },
-  { n: "MovieStar Planet", p: "MjAxNDAyMTUwMDAwMDBpZl8vaHR0cDovL3d3dy5tb3ZpZXN0YXJwbGFuZXQuY29tLw==" },
-  { n: "Animal Jam", p: "MjAxNDAxMTUwMDAwMDBpZl8vaHR0cDovL3d3dy5hbmltYWxqYW0uY29tLw==" },
+const SIDEBAR: Record<string, SidebarEntry[]> = {
+  "🎮 Online Games": [
+    { name: "Boohbah Zone (Flash Archive)", url: "https://archive.org/details/boobah_zone_flash" },
+    { name: "Starfall", url: "https://www.starfall.com/h/" },
+    { name: "JibJab (2010 Archive)", url: "http://web.archive.org/web/20100930163107/http://sendables.jibjab.com/" },
+    { name: "Moshi Monsters", url: "https://moshionline.net/" },
+    { name: "WeeWorld (2013 Archive)", url: "https://web.archive.org/web/20130401004346/http://www.weeworld.com/" },
+    { name: "SmallWorlds (2014 Archive)", url: "http://web.archive.org/web/20140625220230/https://www.smallworlds.com/" },
+    { name: "Club Penguin (New CP)", url: "https://newcp.net/play" },
+    { name: "GirlsGoGames (2015 Archive)", url: "http://web.archive.org/web/20150801083101/http://www.girlsgogames.com/" },
+    { name: "Poptropica", url: "https://www.coolmathgames.com/0-poptropica" },
+    { name: "Fantage (2014 Archive)", url: "http://web.archive.org/web/20140920185941/http://www.fantage.com/" },
+    { name: "MovieStar Planet", note: "💾 Download Only" },
+    { name: "Animal Jam", note: "💾 Download Only" },
+    { name: "PBS Kids Flash Games", url: "https://flashmuseum.org/browse/developer/pbs" },
+    { name: "Nickelodeon Games (Archive)", url: "https://web.archive.org/web/20151127074613/http://www.nick.com/games/?navid=topNav" },
+    { name: "Disney Flash Games", url: "https://flashmuseum.org/browse/publisher/disney" },
+  ],
+  "📚 School": [
+    { name: "FunBrain", url: "https://web.archive.org/web/20140209111338/http://www.funbrain.com/brain/SweepsBrain/sweepsbrain.html" },
+    { name: "Ticket to Read", url: "https://web.archive.org/web/20130402034540/http://www.tickettoread.com/" },
+    { name: "Class Dojo", note: "🔒 Teacher Access Only", locked: true },
+    { name: "GoNoodle", note: "🔒 Teacher Access Only", locked: true },
+    { name: "Scratch (1dlovzer)", url: "https://scratch.mit.edu/users/1dlovzer/" },
+    { name: "Scratch (jazraz)", url: "https://scratch.mit.edu/users/jazraz/" },
+    { name: "CoolMath (2012 Archive)", url: "https://web.archive.org/web/20121002000245/http://coolmath.com/" },
+    { name: "Reading Plus", url: "https://web.archive.org/web/20170628084733/https://login.readingplus.com/" },
+    { name: "ALEKS", url: "https://web.archive.org/web/20170903182928/https://www.aleks.com/" },
+  ],
+};
+
+const LINKS_BAR: { category: string; icon: string; items: BookmarkItem[] }[] = [
+  { category: "Noggin", icon: "🎠", items: [
+    { name: "Upside Down Show: Schmancy Schmashup", url: "https://flashmuseum.org/the-upside-down-show-schmancy-schmashup-game/" },
+    { name: "The Missing Scribble Sticks", url: "https://flashmuseum.org/the-missing-scribble-sticks/" },
+  ]},
+  { category: "Starfall", icon: "⭐", items: [
+    { name: "Starfall Me", url: "https://www.starfall.com/h/me/" },
+  ]},
+  { category: "Girls Go Games", icon: "👗", items: [
+    { name: "Shopaholic", url: "https://flashmuseum.org/?s=Shopaholic" },
+    { name: "Snail Bob", url: "https://flashmuseum.org/?s=snail+bob" },
+    { name: "Frizzle Fraz", url: "https://flashmuseum.org/?s=frizzle+fraz" },
+    { name: "Love Tester", url: "https://www.girlsgogames.com/game/love-tester" },
+  ]},
+  { category: "CoolMath", icon: "🧮", items: [
+    { name: "Run", url: "https://www.coolmathgames.com/0-run" },
+  ]},
+  { category: "PBS Kids", icon: "🐾", items: [
+    { name: "Alien Assembly Required", url: "https://flashmuseum.org/alien-assembly-required/" },
+    { name: "Binky's Facts & Opinions", url: "https://flashmuseum.org/binkys-facts-and-opinions/" },
+    { name: "Lunch-o-Matic", url: "https://pbskids.org/games/play/lunch-o-matic/8517" },
+    { name: "Supermarket Adventure", url: "https://flashmuseum.org/supermarket-adventure/" },
+  ]},
+  { category: "Disney Jr", icon: "🏰", items: [
+    { name: "Zooter's Zippin Zip Along", url: "https://flashmuseum.org/zooters-zippin-zip-along/" },
+    { name: "Bungo's Silly Sign Shop", url: "https://flashmuseum.org/bungos-silly-sign-shop/" },
+    { name: "Oso's Digi Medal Painter", url: "https://flashmuseum.org/osos-digi-medal-painter/" },
+  ]},
+  { category: "Disney", icon: "✨", items: [
+    { name: "Hot Shot Photo Pro", url: "https://www.disney--games.com/hot_shot_photo_pro_313.html" },
+    { name: "Maze of Destiny", url: "https://www.disney--games.com/maze_of_destiny_495.html" },
+    { name: "Vacation Vehicles", url: "https://www.disney--games.com/vacation_vehicles_525.html" },
+  ]},
+  { category: "Nick Jr", icon: "🟠", items: [
+    { name: "Kai-Lan's Great Trip to China", url: "https://www.numuki.com/game/kai-lan-s-great-trip-to-china/" },
+  ]},
+  { category: "Nickelodeon", icon: "🎬", items: [
+    { name: "iCarly (2012 Archive)", url: "https://web.archive.org/web/20120831030248/http://www.icarly.com/" },
+    { name: "The Slap (2014 Archive)", url: "https://web.archive.org/web/20140531193706/http://www.theslap.com/" },
+    { name: "iCarly: The Ultimate Game", url: "https://flashmuseum.org/icarly-the-ultimate-icarly-game/" },
+    { name: "Nick Block Party", url: "https://www.numuki.com/game/nick-block-party/" },
+    { name: "Ask the Magic Meatball", url: "https://archive.org/details/ask-the-magic-meatball" },
+  ]},
+  { category: "Classics", icon: "🍕", items: [
+    { name: "Papa's Games", url: "https://flashmuseum.org/?s=papa%27s" },
+    { name: "Sara's Cooking Class", url: "https://flashmuseum.org/?s=sara%27s+cooking+class" },
+    { name: "Fireboy & Watergirl", url: "https://flashmuseum.org/browse/series/fireboy-and-watergirl-series/" },
+  ]},
+  { category: "Videos", icon: "📹", items: [
+    { name: "Oh California (Starfall)", url: "https://www.youtube.com/embed/GG_KO-UnXBU", isEmbed: true },
+    { name: "Moose & Zee: I Don't Like Candy Corn", url: "https://player.vimeo.com/video/20307100?h=a98f92cbf7", isEmbed: true },
+  ]},
 ];
 
 export default function GameRoom() {
-  const [url, setUrl] = useState(AB + d(SG[0].p!));
-  const [title, setTitle] = useState(SG[0].n);
+  const [currentUrl, setCurrentUrl] = useState<string | null>(null);
+  const [currentTitle, setCurrentTitle] = useState("Jasmyn's World — Home");
+  const [isEmbed, setIsEmbed] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [openFolder, setOpenFolder] = useState<string | null>("🎮 Online Games");
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [startMenuOpen, setStartMenuOpen] = useState(false);
+  const [addressBar, setAddressBar] = useState("about:home");
+  const [loading, setLoading] = useState(false);
 
-  const nav = (i: any) => {
-    const next = i.p ? AB + d(i.p) : d(i.u);
-    setUrl(next);
-    setTitle(i.n);
+  const navigate = (url: string, title: string, embed = false) => {
+    setCurrentUrl(url);
+    setCurrentTitle(title);
+    setIsEmbed(embed);
+    setAddressBar(url);
+    setOpenDropdown(null);
+    setStartMenuOpen(false);
+    setLoading(true);
+    setTimeout(() => setLoading(false), 1200);
+  };
+
+  const goHome = () => {
+    setCurrentUrl(null);
+    setCurrentTitle("Jasmyn's World — Home");
+    setAddressBar("about:home");
+    setOpenDropdown(null);
   };
 
   return (
-    <div className="flex flex-col h-screen bg-[#ece9d8] font-sans overflow-hidden text-black select-none">
-      <div className="h-8 bg-gradient-to-r from-[#0058e6] via-[#3a83f9] to-[#0058e6] flex items-center justify-between px-2 text-white font-bold shadow-inner">
-        <div className="flex items-center gap-2">
-          <div className="w-5 h-5 bg-blue-600 rounded-sm shadow-sm" />
-          <span className="text-sm truncate drop-shadow-md">{title} - Microsoft Internet Explorer</span>
-        </div>
-        <div className="flex gap-1 pr-1">
-          <button className="w-6 h-[21px] bg-[#ece9d8] border border-white border-b-gray-400 border-r-gray-400 flex items-center justify-center hover:bg-gray-200"><div className="w-2 h-[2px] bg-black mt-2" /></button>
-          <button className="w-6 h-[21px] bg-[#ece9d8] border border-white border-b-gray-400 border-r-gray-400 flex items-center justify-center hover:bg-gray-200"><div className="w-[9px] h-[7px] border-2 border-black border-t-4" /></button>
-          <button className="w-[43px] h-[21px] bg-[#e33d2a] border border-white border-b-[#9b2a1c] border-r-[#9b2a1c] flex items-center justify-center hover:bg-[#f24c3d]"><span className="text-white text-xs font-black shadow-sm">✕</span></button>
-        </div>
-      </div>
-      <div className="flex gap-4 px-2 py-0.5 bg-[#ece9d8] border-b border-gray-400 text-xs shadow-sm">
-        {['File', 'Edit', 'View', 'Favorites', 'Tools', 'Help'].map(m => (<div key={m} className="px-1 hover:bg-[#316ac5] hover:text-white cursor-default rounded-sm">{m}</div>))}
-      </div>
-      <div className="flex items-center gap-2 p-1 bg-[#ece9d8] border-b border-gray-400 shadow-sm flex-wrap">
-        <div className="flex gap-1 items-center px-1">
-          <button className="flex flex-col items-center group px-2"><div className="w-7 h-7 rounded-full bg-green-600 flex items-center justify-center text-white text-lg shadow-inner group-hover:brightness-110">←</div><span className="text-[10px]">Back</span></button>
-          <button className="flex flex-col items-center opacity-50 px-2"><div className="w-7 h-7 rounded-full bg-green-600 flex items-center justify-center text-white text-lg shadow-inner">→</div><span className="text-[10px]">Forward</span></button>
-          <button className="flex flex-col items-center group px-2"><div className="text-lg">🔄</div><span className="text-[10px]">Refresh</span></button>
-          <button className="flex flex-col items-center group px-2"><div className="text-lg">🏠</div><span className="text-[10px]">Home</span></button>
-        </div>
-        <div className="h-10 w-[1px] bg-gray-400 mx-1" />
-        <div className="flex-1 flex items-center gap-1 ml-2 min-w-[200px]">
-          <span className="text-xs">Address</span>
-          <div className="flex-1 bg-white border border-gray-500 h-6 flex items-center px-2 text-xs overflow-hidden shadow-inner"><span className="truncate opacity-70">{url}</span></div>
-          <button className="px-2 h-6 bg-[#ece9d8] border border-white border-b-gray-400 border-r-gray-400 text-xs hover:bg-gray-200">Go</button>
-        </div>
-      </div>
-      <div className="flex flex-1 overflow-hidden bg-white">
-        <div className="w-64 bg-[#f1f1f1] border-r border-[#9aaa91] flex flex-col shadow-inner">
-          <div className="bg-gradient-to-b from-[#7ba2e7] to-[#6375d6] text-white px-3 py-1.5 font-bold text-sm flex justify-between items-center shadow-md"><span>Favorites</span><span className="cursor-pointer">✕</span></div>
-          <div className="p-3 overflow-y-auto">
-            <div className="flex items-center gap-1 mb-3 border-b border-gray-300 pb-1"><span className="text-yellow-600 text-lg">⭐</span><h3 className="font-bold text-xs text-[#003399]">Online Games</h3></div>
-            <div className="space-y-2 pl-4">
-              {SG.map((i) => (<div key={i.n} onClick={() => nav(i)} className="text-xs text-blue-700 hover:underline cursor-pointer flex items-center gap-2 py-0.5"><span className="opacity-70">📄</span><span>{i.n}</span></div>))}
-            </div>
+    <div
+      className="w-full h-full flex flex-col bg-[#ece9d8] select-none overflow-hidden text-black"
+      style={{ fontFamily: "Tahoma, Arial, sans-serif", fontSize: 12 }}
+      onClick={() => { setOpenDropdown(null); setStartMenuOpen(false); }}
+    >
+      {/* ── IE TITLE BAR ── */}
+      <div
+        className="flex items-center justify-between px-2 py-0.5 shrink-0"
+        style={{ background: "linear-gradient(180deg, #2f5bb7 0%, #1e3f8a 50%, #1a3578 100%)", height: 28 }}
+      >
+        <div className="flex items-center gap-1.5">
+          <div className="w-4 h-4 flex items-center justify-center">
+            <div className="w-3 h-3 rounded-full" style={{ background: "radial-gradient(circle at 40% 35%, #7ad7f0 0%, #0b6cc4 60%, #0a3d8f 100%)" }} />
           </div>
+          <span className="text-white text-xs font-bold drop-shadow" style={{ textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}>
+            {currentTitle} — Internet Explorer
+          </span>
         </div>
-        <div className="flex-1 relative bg-white">
-          <AnimatePresence mode="wait"><motion.div key={url} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full h-full">
-              <iframe src={url} className="w-full h-full border-none" title={title} />
-          </motion.div></AnimatePresence>
+        <div className="flex gap-0.5">
+          {["_","□","✕"].map((s, i) => (
+            <button key={i} className="w-6 h-5 text-white text-[10px] font-bold flex items-center justify-center rounded-sm hover:brightness-125"
+              style={{ background: i === 2 ? "linear-gradient(180deg,#e05,#b00)" : "linear-gradient(180deg,#6b9bd2,#3a6db0)", border: "1px solid rgba(0,0,0,0.3)" }}
+              onClick={i === 2 ? goHome : undefined}
+            >{s}</button>
+          ))}
         </div>
       </div>
-      <div className="h-6 bg-[#ece9d8] border-t border-gray-400 flex items-center justify-between px-2 text-[10px] text-gray-700">
-        <div className="flex items-center gap-2"><span>Done</span></div>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 border-l border-gray-400 pl-4 h-full"><div className="w-4 h-4 bg-blue-500 rounded-sm" /><span>Internet</span></div>
-          <div className="border-l border-gray-400 pl-4 pr-10 h-full flex items-center">100%</div>
+
+      {/* ── MENU BAR ── */}
+      <div className="flex items-center px-1 shrink-0" style={{ background: "#ece9d8", height: 20, borderBottom: "1px solid #aca899" }}>
+        {["File","Edit","View","Favorites","Tools","Help"].map(m => (
+          <button key={m} className="px-2 h-full hover:bg-[#316ac5] hover:text-white rounded-sm text-[11px]">{m}</button>
+        ))}
+      </div>
+
+      {/* ── MAIN TOOLBAR ── */}
+      <div className="flex items-center gap-1 px-1 py-0.5 shrink-0" style={{ background: "linear-gradient(180deg,#f0efea,#dbd9d0)", borderBottom: "1px solid #aca899", height: 36 }}>
+        <button onClick={goHome}
+          className="flex flex-col items-center justify-center w-10 h-8 rounded hover:bg-[#c1d3e8] active:bg-[#316ac5] border border-transparent hover:border-[#316ac5]"
+          title="Back"
+        >
+          <span className="text-base">◀</span>
+          <span className="text-[7px] text-[#333]">Back</span>
+        </button>
+        <button
+          className="flex flex-col items-center justify-center w-10 h-8 rounded opacity-40 cursor-default"
+          title="Forward"
+        >
+          <span className="text-base">▶</span>
+          <span className="text-[7px] text-[#333]">Forward</span>
+        </button>
+        <button onClick={() => setLoading(true)}
+          className="flex flex-col items-center justify-center w-10 h-8 rounded hover:bg-[#c1d3e8] border border-transparent hover:border-[#316ac5]"
+          title="Refresh"
+        >
+          <span className="text-sm">↻</span>
+          <span className="text-[7px] text-[#333]">Refresh</span>
+        </button>
+        <button onClick={goHome}
+          className="flex flex-col items-center justify-center w-10 h-8 rounded hover:bg-[#c1d3e8] border border-transparent hover:border-[#316ac5]"
+          title="Home"
+        >
+          <span className="text-sm">🏠</span>
+          <span className="text-[7px] text-[#333]">Home</span>
+        </button>
+        <button
+          onClick={() => setSidebarOpen(s => !s)}
+          className="flex flex-col items-center justify-center w-14 h-8 rounded hover:bg-[#c1d3e8] border border-transparent hover:border-[#316ac5]"
+          title="Favorites"
+        >
+          <span className="text-sm">⭐</span>
+          <span className="text-[7px] text-[#333]">Favorites</span>
+        </button>
+
+        <div className="w-px h-6 bg-[#aca899] mx-1" />
+
+        <div className="flex-1 flex items-center gap-1">
+          <span className="text-[11px] text-[#333] whitespace-nowrap">Address:</span>
+          <div className="flex-1 flex items-center h-6 bg-white border border-[#7f9db9] rounded-sm overflow-hidden">
+            <div className="w-5 h-full flex items-center justify-center bg-[#f5f5f5] border-r border-[#c0c0c0]">
+              <div className="w-3 h-3 rounded-full" style={{ background: "radial-gradient(circle, #7ad7f0 0%, #0b6cc4 100%)" }} />
+            </div>
+            <input
+              value={addressBar}
+              onChange={e => setAddressBar(e.target.value)}
+              onKeyDown={e => { if (e.key === "Enter" && addressBar.startsWith("http")) navigate(addressBar, addressBar); }}
+              className="flex-1 px-1 text-[11px] outline-none bg-white"
+              style={{ fontFamily: "monospace" }}
+            />
+          </div>
+          <button
+            onClick={() => { if (addressBar.startsWith("http")) navigate(addressBar, addressBar); }}
+            className="px-2 h-6 bg-gradient-to-b from-[#f0efea] to-[#dbd9d0] border border-[#aca899] rounded-sm hover:bg-[#c1d3e8] text-[11px] font-bold"
+          >Go</button>
         </div>
+      </div>
+
+      {/* ── LINKS BAR ── */}
+      <div
+        className="flex items-center gap-0.5 px-2 shrink-0 overflow-x-auto"
+        style={{ background: "linear-gradient(180deg,#eeeae2,#dbd6ca)", borderBottom: "1px solid #aca899", height: 24, scrollbarWidth: "none" }}
+        onClick={e => e.stopPropagation()}
+      >
+        <span className="text-[10px] text-[#555] mr-1 whitespace-nowrap">Links:</span>
+        {LINKS_BAR.map(cat => (
+          <div key={cat.category} className="relative">
+            <button
+              onClick={() => setOpenDropdown(openDropdown === cat.category ? null : cat.category)}
+              className="flex items-center gap-0.5 px-2 h-5 text-[10px] rounded-sm border border-transparent hover:border-[#316ac5] hover:bg-[#d5e5f5] whitespace-nowrap"
+              style={{ color: openDropdown === cat.category ? "#fff" : "#00008b", background: openDropdown === cat.category ? "#316ac5" : "transparent" }}
+            >
+              {cat.icon} {cat.category} <span className="text-[8px] ml-0.5">▾</span>
+            </button>
+            <AnimatePresence>
+              {openDropdown === cat.category && (
+                <motion.div
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  className="absolute top-full left-0 z-50 bg-white border border-[#7f9db9] shadow-lg min-w-[240px] py-0.5"
+                  style={{ marginTop: 1 }}
+                  onClick={e => e.stopPropagation()}
+                >
+                  {cat.items.map((item, i) => (
+                    <button
+                      key={i}
+                      onClick={() => item.url && navigate(item.url, item.name, item.isEmbed)}
+                      className="w-full flex items-center gap-2 px-3 py-1.5 text-left text-[11px] hover:bg-[#316ac5] hover:text-white"
+                      style={{ color: "#00008b" }}
+                    >
+                      <span>{item.isEmbed ? "🎥" : "🌐"}</span>
+                      {item.name}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        ))}
+      </div>
+
+      {/* ── MAIN CONTENT AREA ── */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Favorites Sidebar */}
+        <AnimatePresence>
+          {sidebarOpen && (
+            <motion.div
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: 220, opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="h-full flex flex-col overflow-hidden shrink-0"
+              style={{ borderRight: "1px solid #aca899", background: "#f5f3ee" }}
+            >
+              <div className="flex items-center justify-between px-3 py-1.5 shrink-0" style={{ background: "linear-gradient(90deg,#2559b5,#4e82d0)", borderBottom: "1px solid #aca899" }}>
+                <span className="text-white text-xs font-bold">Favorites</span>
+                <button onClick={() => setSidebarOpen(false)} className="text-white text-xs hover:bg-white/20 w-4 h-4 flex items-center justify-center rounded">✕</button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-1">
+                {Object.entries(SIDEBAR).map(([folder, items]) => (
+                  <div key={folder}>
+                    <button
+                      onClick={() => setOpenFolder(openFolder === folder ? null : folder)}
+                      className="w-full flex items-center gap-1.5 px-2 py-1 text-left text-[11px] font-bold hover:bg-[#c1d3e8] rounded"
+                      style={{ color: "#00008b" }}
+                    >
+                      <span className="text-xs">{openFolder === folder ? "▾" : "▸"}</span>
+                      <span className="text-sm">{openFolder === folder ? "📂" : "📁"}</span>
+                      <span>{folder}</span>
+                    </button>
+                    <AnimatePresence>
+                      {openFolder === folder && (
+                        <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+                          {items.map((item, i) => (
+                            <button
+                              key={i}
+                              onClick={() => item.url && navigate(item.url, item.name)}
+                              disabled={!item.url}
+                              className="w-full flex items-center gap-1.5 px-5 py-1 text-left text-[11px] hover:bg-[#316ac5] hover:text-white rounded disabled:cursor-default"
+                              style={{ color: item.url ? "#00008b" : "#888" }}
+                            >
+                              <span className="shrink-0">{item.locked ? "🔒" : item.note?.includes("💾") ? "💾" : "🌐"}</span>
+                              <span className="truncate">{item.name}</span>
+                              {item.note && !item.url && (
+                                <span className="ml-auto text-[9px] text-[#888] whitespace-nowrap shrink-0">{item.note}</span>
+                              )}
+                            </button>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Page Content */}
+        <div className="flex-1 relative overflow-hidden bg-white">
+          {currentUrl ? (
+            <>
+              {loading && (
+                <div className="absolute inset-0 z-10 bg-white flex items-center justify-center">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="w-8 h-8 border-4 border-[#316ac5] border-t-transparent rounded-full animate-spin" />
+                    <span className="text-[#00008b] text-sm">Loading...</span>
+                  </div>
+                </div>
+              )}
+              <iframe
+                key={currentUrl}
+                src={currentUrl}
+                className="w-full h-full border-none"
+                title={currentTitle}
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"
+                onLoad={() => setLoading(false)}
+              />
+            </>
+          ) : (
+            <div className="w-full h-full overflow-y-auto" style={{ background: "linear-gradient(135deg, #e8f4ff 0%, #f0e8ff 100%)" }}>
+              <div className="max-w-2xl mx-auto p-8">
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-full" style={{ background: "radial-gradient(circle at 40% 35%, #7ad7f0 0%, #0b6cc4 60%, #0a3d8f 100%)" }} />
+                    <h1 className="text-2xl font-bold" style={{ color: "#003399", fontFamily: "Tahoma" }}>Jasmyn's Internet Explorer</h1>
+                  </div>
+                  <p className="text-sm text-gray-500">Welcome back, Jasmyn! ⭐</p>
+                </div>
+
+                <div className="bg-white border border-[#7f9db9] rounded shadow-sm p-4 mb-4">
+                  <h2 className="text-[#003399] font-bold text-sm mb-3 border-b border-[#c0d8f0] pb-1">⭐ Quick Launch — Click to play!</h2>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { name: "Club Penguin", url: "https://newcp.net/play", icon: "🐧" },
+                      { name: "Starfall", url: "https://www.starfall.com/h/", icon: "⭐" },
+                      { name: "Moshi Monsters", url: "https://moshionline.net/", icon: "👾" },
+                      { name: "Poptropica", url: "https://www.coolmathgames.com/0-poptropica", icon: "🏝️" },
+                      { name: "PBS Kids", url: "https://flashmuseum.org/browse/developer/pbs", icon: "🐾" },
+                      { name: "CoolMath: Run", url: "https://www.coolmathgames.com/0-run", icon: "🧮" },
+                      { name: "Papa's Games", url: "https://flashmuseum.org/?s=papa%27s", icon: "🍕" },
+                      { name: "Fireboy & Watergirl", url: "https://flashmuseum.org/browse/series/fireboy-and-watergirl-series/", icon: "🔥" },
+                      { name: "Boohbah", url: "https://archive.org/details/boobah_zone_flash", icon: "🟣" },
+                    ].map(item => (
+                      <button
+                        key={item.name}
+                        onClick={() => navigate(item.url, item.name)}
+                        className="flex items-center gap-2 p-2 text-left text-[11px] border border-[#c0d8f0] rounded hover:bg-[#e8f0fb] hover:border-[#316ac5] transition-colors"
+                        style={{ color: "#00008b" }}
+                      >
+                        <span className="text-lg">{item.icon}</span>
+                        <span className="font-bold">{item.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-white border border-[#7f9db9] rounded shadow-sm p-4 mb-4">
+                  <h2 className="text-[#003399] font-bold text-sm mb-3 border-b border-[#c0d8f0] pb-1">📹 Videos</h2>
+                  <div className="flex gap-3">
+                    {[
+                      { name: "Oh California (Starfall)", url: "https://www.youtube.com/embed/GG_KO-UnXBU", icon: "🎵" },
+                      { name: "Moose & Zee: Candy Corn", url: "https://player.vimeo.com/video/20307100?h=a98f92cbf7", icon: "🦌" },
+                    ].map(v => (
+                      <button
+                        key={v.name}
+                        onClick={() => navigate(v.url, v.name, true)}
+                        className="flex items-center gap-2 px-3 py-2 border border-[#c0d8f0] rounded hover:bg-[#e8f0fb] hover:border-[#316ac5] text-[11px]"
+                        style={{ color: "#00008b" }}
+                      >
+                        <span className="text-xl">{v.icon}</span>
+                        <span className="font-bold">{v.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-[#fffbe6] border border-[#e6c800] rounded p-3 text-[11px] text-[#665500]">
+                  <strong>💡 Tip:</strong> Use the <strong>Favorites ⭐</strong> button on the toolbar to browse all games by category. Use the <strong>Links bar</strong> above for quick access to specific games!
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ── STATUS BAR ── */}
+      <div className="flex items-center px-2 shrink-0 border-t border-[#aca899]" style={{ background: "#ece9d8", height: 20 }}>
+        <div className="flex-1 text-[10px] text-[#555]">
+          {loading ? "Opening page..." : currentUrl ? `Done | ${currentUrl.substring(0, 60)}${currentUrl.length > 60 ? "..." : ""}` : "Ready"}
+        </div>
+        <div className="flex items-center gap-1">
+          <div className="w-4 h-4 rounded-full" style={{ background: "radial-gradient(circle, #7ad7f0 0%, #0b6cc4 100%)" }} />
+          <span className="text-[10px] text-[#555]">Internet Explorer</span>
+        </div>
+      </div>
+
+      {/* ── XP TASKBAR ── */}
+      <div className="h-10 shrink-0 flex items-center px-1 gap-1 relative" style={{ background: "linear-gradient(180deg,#245edb 0%,#3f8cf3 40%,#245edb 100%)", borderTop: "1px solid #1a4bb8" }}>
+        <button
+          onClick={e => { e.stopPropagation(); setStartMenuOpen(!startMenuOpen); }}
+          className="h-8 px-3 flex items-center gap-1.5 rounded-r-xl rounded-l-sm text-white font-bold italic text-sm shadow-inner hover:brightness-110"
+          style={{ background: "linear-gradient(180deg,#349c42,#298334)", border: "1px solid #1d6b26" }}
+        >
+          <div className="grid grid-cols-2 gap-px w-3.5 h-3.5">
+            <div className="rounded-tl bg-red-500" /><div className="rounded-tr bg-green-400" />
+            <div className="rounded-bl bg-blue-500" /><div className="rounded-br bg-yellow-400" />
+          </div>
+          start
+        </button>
+
+        {currentUrl && (
+          <div className="h-8 px-3 flex items-center gap-1 bg-[#1f50b5] border border-[#123681] rounded-sm text-white text-xs max-w-[200px] truncate shadow-inner">
+            🌐 {currentTitle}
+          </div>
+        )}
+
+        <div className="ml-auto h-8 px-3 flex items-center text-white text-xs bg-[#0d8ee8] border border-[#095ea8] rounded-sm shadow-inner" style={{ fontFamily: "Tahoma" }}>
+          4:20 PM
+        </div>
+
+        {/* Start Menu Popup */}
+        <AnimatePresence>
+          {startMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              className="absolute bottom-10 left-0 w-72 bg-[#ece9d8] rounded-t-lg shadow-[0_-5px_20px_rgba(0,0,0,0.3)] border border-[#0055e5] overflow-hidden z-50 text-black"
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="h-14 bg-gradient-to-r from-[#0b3394] to-[#1250d4] flex items-center px-4 gap-3 border-b-2 border-orange-400">
+                <div className="w-10 h-10 bg-pink-400 border-2 border-white rounded-md" />
+                <span className="text-white font-bold text-lg drop-shadow">Jasmyn</span>
+              </div>
+              <div className="flex min-h-[220px]">
+                <div className="flex-1 bg-white p-2 flex flex-col gap-0.5">
+                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm font-bold text-black">Internet Explorer</div>
+                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm font-bold text-black">AIM</div>
+                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm font-bold text-black">Limewire</div>
+                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm font-bold text-black">Pinball</div>
+                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-sm font-bold text-black">Minesweeper</div>
+                </div>
+                <div className="w-1/3 bg-[#d3e5fa] border-l border-[#95bcee] p-2 flex flex-col gap-0.5 text-[11px] text-[#00136b] font-bold">
+                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer">My Documents</div>
+                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer">My Pictures</div>
+                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer">Control Panel</div>
+                </div>
+              </div>
+              <div className="h-10 bg-gradient-to-r from-[#0b3394] to-[#1250d4] flex items-center justify-end px-4 gap-2">
+                <button className="text-white text-xs flex items-center gap-1 hover:underline">
+                  <div className="w-4 h-4 bg-orange-500 rounded-sm" /> Log Off
+                </button>
+                <button onClick={goHome} className="text-white text-xs flex items-center gap-1 hover:underline">
+                  <div className="w-4 h-4 bg-red-500 rounded-sm" /> Turn Off
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
