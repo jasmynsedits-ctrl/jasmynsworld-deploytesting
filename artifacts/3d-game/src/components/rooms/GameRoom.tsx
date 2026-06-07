@@ -6,7 +6,7 @@ type SidebarEntry = BookmarkItem & { locked?: boolean };
 
 const SIDEBAR: Record<string, SidebarEntry[]> = {
   "🎮 Online Games": [
-    { name: "Boohbah Zone (Flash Archive)", url: "https://archive.org/embed/boohbah_zone_flash" },
+    { name: "Boohbah Zone (Flash Archive)", url: "https://archive.org/embed/boobah_zone_flash" },
     { name: "Starfall", url: "https://web.archive.org/web/20121102000000if_/https://www.starfall.com/h/" },
     { name: "JibJab (2010 Archive)", url: "https://web.archive.org/web/20100930163107if_/http://sendables.jibjab.com/" },
     { name: "Moshi Monsters", url: "https://moshionline.net/" },
@@ -37,36 +37,36 @@ const SIDEBAR: Record<string, SidebarEntry[]> = {
 
 const LINKS_BAR: { category: string; icon: string; items: BookmarkItem[] }[] = [
   { category: "Noggin", icon: "🎠", items: [
-    { name: "Upside Down Show: Schmancy Schmashup", url: "https://flashmuseum.org/wp-content/uploads/games/the-upside-down-show-schmancy-schmashup-game/index.html" },
-    { name: "The Missing Scribble Sticks", url: "https://flashmuseum.org/wp-content/uploads/games/the-missing-scribble-sticks/index.html" },
+    { name: "Upside Down Show: Schmancy Schmashup", url: "https://web.archive.org/web/20151127074613if_/http://www.nickjr.com/the-upside-down-show/games/schmancy-schmashup/" },
+    { name: "The Missing Scribble Sticks", url: "https://web.archive.org/web/20120101000000if_/http://www.noggin.com/games/scribble-sticks.php" },
   ]},
   { category: "Starfall", icon: "⭐", items: [
     { name: "Starfall Me", url: "https://web.archive.org/web/20121102000000if_/https://www.starfall.com/h/me/" },
   ]},
   { category: "Girls Go Games", icon: "👗", items: [
-    { name: "Shopaholic", url: "https://flashmuseum.org/wp-content/uploads/games/shopaholic/index.html" },
-    { name: "Snail Bob", url: "https://flashmuseum.org/wp-content/uploads/games/snail-bob/index.html" },
-    { name: "Frizzle Fraz", url: "https://flashmuseum.org/wp-content/uploads/games/frizzle-fraz/index.html" },
+    { name: "Shopaholic", url: "https://web.archive.org/web/20150801083101if_/http://www.girlsgogames.com/game/shopaholic_models.html" },
+    { name: "Snail Bob", url: "https://web.archive.org/web/20150801083101if_/http://www.girlsgogames.com/game/snail_bob.html" },
+    { name: "Frizzle Fraz", url: "https://web.archive.org/web/20150801083101if_/http://www.girlsgogames.com/game/frizzle_fraz.html" },
     { name: "Love Tester", url: "https://web.archive.org/web/20150801083101if_/https://www.girlsgogames.com/game/love-tester" },
   ]},
   { category: "CoolMath", icon: "🧮", items: [
     { name: "Run", url: "https://web.archive.org/web/20121002000245if_/https://www.coolmathgames.com/0-run" },
   ]},
   { category: "PBS Kids", icon: "🐾", items: [
-    { name: "Alien Assembly Required", url: "https://flashmuseum.org/wp-content/uploads/games/alien-assembly-required/index.html" },
-    { name: "Binky's Facts & Opinions", url: "https://flashmuseum.org/wp-content/uploads/games/binkys-facts-and-opinions/index.html" },
+    { name: "Alien Assembly Required", url: "https://web.archive.org/web/20101010000000if_/http://pbskids.org/cyberchase/games/alienassembly/" },
+    { name: "Binky's Facts & Opinions", url: "https://web.archive.org/web/20101010000000if_/http://pbskids.org/arthur/games/factsopinions/" },
     { name: "Lunch-o-Matic", url: "https://web.archive.org/web/20151127074613if_/https://pbskids.org/games/play/lunch-o-matic/8517" },
-    { name: "Supermarket Adventure", url: "https://flashmuseum.org/wp-content/uploads/games/supermarket-adventure/index.html" },
+    { name: "Supermarket Adventure", url: "https://web.archive.org/web/20101010000000if_/http://pbskids.org/arthur/games/supermarket/" },
   ]},
   { category: "Disney Jr", icon: "🏰", items: [
-    { name: "Zooter's Zippin Zip Along", url: "https://flashmuseum.org/wp-content/uploads/games/zooters-zippin-zip-along/index.html" },
-    { name: "Bungo's Silly Sign Shop", url: "https://flashmuseum.org/wp-content/uploads/games/bungos-silly-sign-shop/index.html" },
-    { name: "Oso's Digi Medal Painter", url: "https://flashmuseum.org/wp-content/uploads/games/osos-digi-medal-painter/index.html" },
+    { name: "Zooter's Zippin Zip Along", url: "https://web.archive.org/web/20120101000000if_/http://disney.go.com/disneyjunior/jungle-junction/games/" },
+    { name: "Bungo's Silly Sign Shop", url: "https://web.archive.org/web/20120101000000if_/http://disney.go.com/disneyjunior/special-agent-oso/games/" },
+    { name: "Oso's Digi Medal Painter", url: "https://web.archive.org/web/20120101000000if_/http://disney.go.com/disneyjunior/special-agent-oso/games/digi-medal-painter.html" },
   ]},
   { category: "Disney", icon: "✨", items: [
-    { name: "Hot Shot Photo Pro", url: "https://flashmuseum.org/wp-content/uploads/games/hot-shot-photo-pro/index.html" },
-    { name: "Maze of Destiny", url: "https://flashmuseum.org/wp-content/uploads/games/maze-of-destiny/index.html" },
-    { name: "Vacation Vehicles", url: "https://flashmuseum.org/wp-content/uploads/games/vacation-vehicles/index.html" },
+    { name: "Hot Shot Photo Pro", url: "https://web.archive.org/web/20100101000000if_/http://disney.go.com/hannahmontana/games/" },
+    { name: "Maze of Destiny", url: "https://web.archive.org/web/20100101000000if_/http://disney.go.com/wizards/games/" },
+    { name: "Vacation Vehicles", url: "https://web.archive.org/web/20100101000000if_/http://disney.go.com/disneychannel/originalmovies/phineasandferb/games/" },
   ]},
   { category: "Nick Jr", icon: "🟠", items: [
     { name: "Kai-Lan's Great Trip to China", url: "https://www.numuki.com/game/kai-lan-s-great-trip-to-china/" },
@@ -74,19 +74,36 @@ const LINKS_BAR: { category: string; icon: string; items: BookmarkItem[] }[] = [
   { category: "Nickelodeon", icon: "🎬", items: [
     { name: "iCarly (2012 Archive)", url: "https://web.archive.org/web/20120831030248if_/http://www.icarly.com/" },
     { name: "The Slap (2014 Archive)", url: "https://web.archive.org/web/20140531193706if_/http://www.theslap.com/" },
-    { name: "iCarly: The Ultimate Game", url: "https://flashmuseum.org/wp-content/uploads/games/icarly-the-ultimate-icarly-game/index.html" },
+    { name: "iCarly: The Ultimate Game", url: "https://web.archive.org/web/20120831030248if_/http://www.icarly.com/games/ultimate-game.html" },
     { name: "Nick Block Party", url: "https://www.numuki.com/game/nick-block-party/" },
     { name: "Ask the Magic Meatball", url: "https://archive.org/embed/ask-the-magic-meatball" },
   ]},
   { category: "Classics", icon: "🍕", items: [
-    { name: "Papa's Games", url: "https://flashmuseum.org/wp-content/uploads/games/papas-pizzeria/index.html" },
-    { name: "Sara's Cooking Class", url: "https://flashmuseum.org/wp-content/uploads/games/saras-cooking-class-cherry-cheesecake/index.html" },
-    { name: "Fireboy & Watergirl", url: "https://flashmuseum.org/wp-content/uploads/games/fireboy-watergirl-6-fairy-tales/index.html" },
+    { name: "Papa's Games", url: "https://web.archive.org/web/20130101000000if_/http://www.coolmathgames.com/0-papas-pizzeria" },
+    { name: "Sara's Cooking Class", url: "https://web.archive.org/web/20150801083101if_/http://www.girlsgogames.com/game/saras_cooking_class_cherry_cheesecake.html" },
+    { name: "Fireboy & Watergirl", url: "https://web.archive.org/web/20130101000000if_/http://www.coolmathgames.com/0-fireboy-watergirl-forest-temple" },
   ]},
   { category: "Videos", icon: "📹", items: [
     { name: "Oh California (Starfall)", url: "https://www.youtube.com/embed/GG_KO-UnXBU", isEmbed: true },
     { name: "Moose & Zee: I Don't Like Candy Corn", url: "https://player.vimeo.com/video/20307100?h=a98f92cbf7", isEmbed: true },
   ]},
+];
+
+const USER_PICTURES = [
+  "https://lh3.googleusercontent.com/pw/AP1GczO9h7ZueRzC2Ku5DbYT4-QXm4rVm6GnXcG2ksbDC_O4CnJy14GMmk-QcGEMr0MWdnD_5fjedssjwHyYn12gp2MukVui42cTBfNxA2xsxAOkYZLIx1wyV1dXHQ1V9I4yZvoxYpFsOKHWGFzDgRbrJX4OGQ=w710-h947-s-no-gm",
+  "https://lh3.googleusercontent.com/pw/AP1GczPLFsT4WiNiCMIM5J541J_Ka3FoiV_kml4HfUj7nhrVaBpkxqptdpPdkQdQaUoiY7Uz2UZXIPdqnkDs1PQkwu8Pqx1kaVbGARz9baY8VTA8fTsAukb_cI1zOj6InO-s5-e6-C4tZzORsPwSO7OezUJOHg=w710-h947-s-no-gm",
+  "https://lh3.googleusercontent.com/pw/AP1GczPHTSK8fyI6TLKwklNU0i2B2c54Gv0xVrjdV0EVz-HATLXAJ6JK59PWf8hZh5UEM2QaMmqGRQ3Ybfq138zDqXYrfqc-Zygbn-im2yue13TdSETrKEoZRwecTljs_Be6-ouFUJpyeQY1GVBOcoZlxVbynA=w993-h560-s-no-gm",
+  "https://lh3.googleusercontent.com/pw/AP1GczPqn4yWYgvvod_k5pg3mA17q67ah1rWV17ssbSdVxJrg3dnp5fMa6qqnnWwUWFxNDIVV08xBJgTRxtO_oYjoYrQdAlkmatK5j66qVKE5IAXaQnpuD__hQvrMPQ1pw0MnqBpPm5nh2y60FR5o6sz133zGg=w993-h818-s-no-gm",
+  "https://lh3.googleusercontent.com/pw/AP1GczPFLa8beCIaNERaYmN7lPXqxo8E2AstSE7rb7wpxK7wHFypTTd_Awms1vRDTaZV0g4AsatPpIR79BHhdt8XtHmZVYKY72ybZmMy6wDUfyTe2ZJv_HcIX9E8CeeaHwdicf-nxcJuWTClOKiuxJToLRPNJQ=w675-h900-s-no-gm",
+  "https://lh3.googleusercontent.com/pw/AP1GczP-XoUH6OZOTO4bfOIqwPCJP89y-vvtVyJ5DvHzja_Fx9mvl4UHv_9H1OYELQY1eR0yAGZfTcmlbkSqgIjV90B0zVhjU1bLsejtQk_bovl7GonK36odvFz85Jswv0xjv4wFsFKl0cKCIb_8cqjttS1pFg=w993-h572-s-no-gm",
+  "https://lh3.googleusercontent.com/pw/AP1GczPX9vaPGC1sZmhWSvBadJdtlnvqzh4_vBW4T-PumEkF2HyNmyCbCHVIUri7AXLs6eiqPgdq5qFE3g3b_JygG7pdXpUbrpSIPrWw-oGUvyhMghs4jiYlz5ExUFRfGldy8_24ZoFIYRDqN_lf1Z4mn5Y4oA=w993-h746-s-no-gm",
+  "https://lh3.googleusercontent.com/pw/AP1GczNiDK1pk_cmITa1c8O_Cz7WF05tUL_XuokAfmcOUKFUp2-8GDVMWi9OXyNSEtvr4T76BxOmVsZEXXmAqUb50yvQvfVlMnjkLqFHF3e7_uSWv8Q-HE1oOaYNw7xrlTrbPR7nmgmaQQQ2aEdqYsKiLkyQRQ=w993-h746-s-no-gm",
+  "https://lh3.googleusercontent.com/pw/AP1GczOf1W-Rw-ktzY6alBAnXlKW240cfoywlWl_vUTRI8Y2TzrnsdXPdx47vvw5kCk6A7yL8hHrYJrOuhKI0qLEveKpAf0oGQUExZr-93sMD-_MUN5HR56nXkG4AtVNmYFyWefSpXrA_AFUnFT9TBpEobdWdA=w710-h947-s-no-gm",
+  "https://lh3.googleusercontent.com/pw/AP1GczNkIBuOWYmh4psNaPMof9faWkBJmi_l14GAdgs4FlvlgUgdlve6L769pb7kyYxznJ3o7TWk5qVmTs6yp-TdEq4L5NiT63It1eOpe6xSoIksrxf0YTiOYAhy3L-YMPp1VqqubEkrwZYWMMXn7pYFDQCVYw=w1262-h947-s-no-gm",
+  "https://lh3.googleusercontent.com/pw/AP1GczNifPONBuEurNIqHsVRtut9WgUt-WEO7aDzeTw7y4oRkc5bk7WOHQUqHs9DNFUFm2Wf9fVIpGy6b33LhXYId3v_VtWA3TVJev1s3V1BryZ1UTahfOjWdNOUx9GwM_SFE1p7yVX7rQdyLFmI9WpouSVojg=w1262-h947-s-no-gm",
+  "https://lh3.googleusercontent.com/pw/AP1GczNKdQrnPXwzMpysoBgQTAQergpZPbUn5L9Ca8TdasOiGriA4sdHjTD55yqfvRGH4qbZ-R89ovX1KXpIWicRhGS5EQquNMQ79dn3ELC2ZYQTguBi0uxgcUxu8diTmw1tKgLQ-QsNJn2-5e44-CqBGY1I_w=w710-h947-s-no-gm",
+  "https://lh3.googleusercontent.com/pw/AP1GczO7SaZMny7NGEljPsCV_1qFpp4AjvDOGyFB6fnjYPMSfjAZnwBxetG5CVGe8LLgrWACE708V1lFwJltxsjcfqUncVHiHus9KIWEFmXtMwJELDFm_ayPSc-QEXa5WHsYcRIg4cxvnIZ57XFTqEE69lQRyA=w1262-h947-s-no-gm",
+  "https://lh3.googleusercontent.com/pw/AP1GczP1xM94hC6Gt24piPlLo5pyephWAqGETFH4DOamsaxzyNKESB1eCfx3k6bE56_P90ulbtQDtyMwnz769A6cCSzN2REdMLetZUMUc5HAO4x8a8NEyQiE42gmtTdmSX4TnZSudm808F8ohozFaX9oYQygvg=w512-h384-s-no-gm"
 ];
 
 export default function GameRoom() {
@@ -97,6 +114,7 @@ export default function GameRoom() {
   const [openFolder, setOpenFolder] = useState<string | null>("🎮 Online Games");
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [startMenuOpen, setStartMenuOpen] = useState(false);
+  const [picturesWindowOpen, setPicturesWindowOpen] = useState(false);
   const [addressBar, setAddressBar] = useState("about:home");
   const [loading, setLoading] = useState(false);
 
@@ -370,8 +388,8 @@ export default function GameRoom() {
                       { name: "Poptropica", url: "https://web.archive.org/web/20130815000000if_/https://www.poptropica.com/", icon: "🏝️" },
                       { name: "PBS Kids", url: "https://flashmuseum.org/browse/developer/pbs", icon: "🐾" },
                       { name: "CoolMath: Run", url: "https://web.archive.org/web/20121002000245if_/https://www.coolmathgames.com/0-run", icon: "🧮" },
-                      { name: "Papa's Games", url: "https://flashmuseum.org/wp-content/uploads/games/papas-pizzeria/index.html", icon: "🍕" },
-                      { name: "Fireboy & Watergirl", url: "https://flashmuseum.org/wp-content/uploads/games/fireboy-watergirl-6-fairy-tales/index.html", icon: "🔥" },
+                      { name: "Papa's Games", url: "https://web.archive.org/web/20130101000000if_/http://www.coolmathgames.com/0-papas-pizzeria", icon: "🍕" },
+                      { name: "Fireboy & Watergirl", url: "https://web.archive.org/web/20130101000000if_/http://www.coolmathgames.com/0-fireboy-watergirl-forest-temple", icon: "🔥" },
                       { name: "Boohbah", url: "https://archive.org/embed/boohbah_zone_flash", icon: "🟣" },
                     ].map(item => (
                       <button
@@ -415,6 +433,32 @@ export default function GameRoom() {
           )}
         </div>
       </div>
+
+      {/* ── POPUP WINDOW: MY PICTURES ── */}
+      <AnimatePresence>
+        {picturesWindowOpen && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="absolute top-16 left-1/4 w-1/2 h-2/3 bg-[#ece9d8] border-2 border-[#0055e5] rounded-t-lg shadow-2xl z-50 flex flex-col overflow-hidden text-black"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-2 py-1 shrink-0" style={{ background: "linear-gradient(180deg, #2f5bb7 0%, #1e3f8a 50%, #1a3578 100%)", height: 26 }}>
+              <span className="text-white text-xs font-bold flex items-center gap-1">📂 My Pictures</span>
+              <button onClick={() => setPicturesWindowOpen(false)} className="w-5 h-4 bg-gradient-to-b from-[#e05] to-[#b00] border border-black/30 rounded text-white text-[10px] font-bold flex items-center justify-center hover:brightness-110">✕</button>
+            </div>
+            <div className="flex-1 bg-white p-4 overflow-y-auto grid grid-cols-3 gap-3">
+              {USER_PICTURES.map((pic, idx) => (
+                <div key={idx} className="border border-[#aca899] p-1 bg-[#f5f3ee] rounded shadow-sm hover:border-[#316ac5] flex flex-col items-center">
+                  <img src={pic} alt={`Pic ${idx + 1}`} className="w-full h-24 object-cover border border-white" />
+                  <span className="text-[10px] text-gray-600 mt-1 truncate max-w-full">picture_{idx + 1}.jpg</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── STATUS BAR ── */}
       <div className="flex items-center px-2 shrink-0 border-t border-[#aca899] relative z-30" style={{ background: "#ece9d8", height: 20 }}>
@@ -475,7 +519,7 @@ export default function GameRoom() {
                 </div>
                 <div className="w-1/3 bg-[#d3e5fa] border-l border-[#95bcee] p-2 flex flex-col gap-0.5 text-[11px] text-[#00136b] font-bold">
                   <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer">My Documents</div>
-                  <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer">My Pictures</div>
+                  <div onClick={() => { setPicturesWindowOpen(true); setStartMenuOpen(false); }} className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer text-[#00136b]">My Pictures</div>
                   <div className="px-2 py-1 hover:bg-[#316ac5] hover:text-white rounded cursor-pointer">Control Panel</div>
                 </div>
               </div>
