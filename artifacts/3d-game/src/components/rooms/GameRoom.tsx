@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Box, Plane, Cylinder } from "@react-three/drei";
 import { motion, AnimatePresence } from "framer-motion";
 
 type BookmarkItem = { name: string; url?: string; note?: string; isEmbed?: boolean };
@@ -108,88 +106,17 @@ const USER_PICTURES = [
   "https://lh3.googleusercontent.com/pw/AP1GczP1xM94hC6Gt24piPlLo5pyephWAqGETFH4DOamsaxzyNKESB1eCfx3k6bE56_P90ulbtQDtyMwnz769A6cCSzN2REdMLetZUMUc5HAO4x8a8NEyQiE42gmtTdmSX4TnZSudm808F8ohozFaX9oYQygvg=w512-h384-s-no-gm"
 ];
 
-function LowPolyRoom({ onObjClick }: { onObjClick: (type: string) => void }) {
-  return (
-    <>
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[8, 12, 5]} intensity={1.2} castShadow shadow-mapSize={[2048, 2048]} />
-      <pointLight position={[-4, 5, -2]} intensity={0.5} color="#a0c0ff" />
-
-      {/* Floor */}
-      <Plane args={[16, 16]} rotation={[-Math.PI / 2, 0, 0]} position={[0, -2, 0]} receiveShadow>
-        <meshStandardMaterial color="#4a3321" roughness={0.8} />
-      </Plane>
-      {/* Left Wall */}
-      <Box args={[0.2, 8, 16]} position={[-8, 2, 0]} receiveShadow>
-        <meshStandardMaterial color="#2d1f3d" roughness={0.9} />
-      </Box>
-      {/* Right Wall */}
-      <Box args={[16, 8, 0.2]} position={[0, 2, -8]} receiveShadow>
-        <meshStandardMaterial color="#2d1f3d" roughness={0.9} />
-      </Box>
-
-      {/* Bed */}
-      <group position={[-2, -2, -4]} onClick={() => onObjClick("bed")}>
-        <Box args={[6, 1.2, 3.5]} position={[0, 0.6, 0]} castShadow receiveShadow>
-          <meshStandardMaterial color="#3c1e5c" roughness={0.6} />
-        </Box>
-        <Box args={[0.4, 3, 3.5]} position={[-2.8, 1.5, 0]} castShadow>
-          <meshStandardMaterial color="#51297a" roughness={0.5} />
-        </Box>
-        <Box args={[5.6, 0.6, 3.3]} position={[0.1, 1.3, 0]} castShadow>
-          <meshStandardMaterial color="#8854c0" roughness={0.7} />
-        </Box>
-        <Box args={[1, 0.3, 1.2]} position={[-2, 1.6, 0.7]} rotation={[0, 0, 0.1]} castShadow>
-          <meshStandardMaterial color="#fff" roughness={0.9} />
-        </Box>
-        <Box args={[1, 0.3, 1.2]} position={[-2, 1.6, -0.7]} rotation={[0, 0, 0.1]} castShadow>
-          <meshStandardMaterial color="#fff" roughness={0.9} />
-        </Box>
-      </group>
-
-      {/* Desk Station */}
-      <group position={[5, -2, -4]} rotation={[0, -Math.PI / 2, 0]}>
-        <Box args={[5, 0.15, 2.5]} position={[0, 2, 0]} castShadow receiveShadow>
-          <meshStandardMaterial color="#222" roughness={0.4} metalness={0.1} />
-        </Box>
-        {[[-2.3, -1.1], [2.3, -1.1], [-2.3, 1.1], [2.3, 1.1]].map(([x, z], i) => (
-          <Cylinder key={i} args={[0.08, 0.08, 2]} position={[x, 1, z]} castShadow>
-            <meshStandardMaterial color="#888" metalness={0.8} roughness={0.2} />
-          </Cylinder>
-        ))}
-
-        {/* 3D Monitor Trigger */}
-        <group position={[0, 2.1, -0.4]} onClick={() => onObjClick("computer")}>
-          <Cylinder args={[0.3, 0.4, 0.4]} position={[0, 0.2, 0]} castShadow>
-            <meshStandardMaterial color="#ccc" roughness={0.5} />
-          </Cylinder>
-          <Box args={[2.2, 1.6, 0.2]} position={[0, 1.2, 0]} castShadow>
-            <meshStandardMaterial color="#dbdbdb" roughness={0.4} />
-          </Box>
-          <Box args={[2, 1.4, 0.05]} position={[0, 1.2, 0.1]}>
-            <meshStandardMaterial color="#0055e5" emissive="#0022aa" intensity={0.5} />
-          </Box>
-        </group>
-      </group>
-
-      {/* Toy Box Trigger */}
-      <group position={[-5, -2, 2]} rotation={[0, Math.PI / 4, 0]} onClick={() => onObjClick("toybox")}>
-        <Box args={[2.5, 1.8, 1.8]} position={[0, 0.9, 0]} castShadow receiveShadow>
-          <meshStandardMaterial color="#8b5a2b" roughness={0.7} />
-        </Box>
-        <Box args={[0.3, 0.6, 0.1]} position={[0, 1.1, 0.91]} castShadow>
-          <meshStandardMaterial color="#d4af37" metalness={0.7} roughness={0.3} />
-        </Box>
-      </group>
-    </>
-  );
-}
+// Helper function to convert flat coordinates into Isometric Screen positions
+const getIsoCoords = (x: number, y: number, tileWidth = 64, tileHeight = 32) => {
+  const screenX = (x - y) * (tileWidth / 2);
+  const screenY = (x + y) * (tileHeight / 2);
+  return { left: screenX, top: screenY };
+};
 
 export default function GameRoom() {
   const [activeWindow, setActiveWindow] = useState<string | null>(null);
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [currentTitle, setCurrentTitle] = useState("Jasmyn's World — Home");
-  const [isEmbed, setIsEmbed] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [openFolder, setOpenFolder] = useState<string | null>("🎮 Online Games");
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -208,7 +135,6 @@ export default function GameRoom() {
     }
     setCurrentUrl(cleanUrl);
     setCurrentTitle(title);
-    setIsEmbed(embed);
     setAddressBar(cleanUrl);
     setOpenDropdown(null);
     setStartMenuOpen(false);
@@ -223,62 +149,176 @@ export default function GameRoom() {
     setOpenDropdown(null);
   };
 
+  // Grid layout definitions
+  const gridSize = 8;
+  const tileW = 64;
+  const tileH = 32;
+
   return (
-    <div className="w-full h-full bg-[#0a0512] text-white relative font-sans overflow-hidden select-none">
+    <div className="w-full h-full bg-[#1b112c] text-white relative font-sans overflow-hidden select-none flex items-center justify-center">
       
-      {/* Map Navigation Button */}
-      <div className="absolute top-4 left-4 z-40">
+      {/* ── MAP BACK NAVIGATION BUTTON ── */}
+      <div className="absolute top-4 left-4 z-50">
         <button 
           onClick={() => window.history.back()}
-          className="px-4 py-2 bg-[#2d1b4e]/80 border border-[#6b4aa5] rounded-full text-sm font-medium tracking-wide hover:bg-[#492e7c] transition-all backdrop-blur-xs shadow-lg"
+          className="px-4 py-2 bg-[#2d1b4e]/80 border border-[#6b4aa5] rounded-full text-xs font-bold tracking-wide hover:bg-[#492e7c] transition-all backdrop-blur-xs shadow-lg"
         >
           ← Back to Map
         </button>
       </div>
 
-      {/* ── 3D CANVAS VIEWPORT ── */}
-      <div className="w-full h-full absolute inset-0 z-10 cursor-grab active:cursor-grabbing">
-        <Canvas camera={{ position: [0, 6, 10], fov: 50 }} shadows>
-          <color attach="background" args={["#0c061a"]} />
-          <fog attach="fog" args={["#0c061a", 8, 22]} />
-          <LowPolyRoom onObjClick={(obj) => setActiveWindow(obj)} />
-          <OrbitControls enableDamping dampingFactor={0.05} minDistance={4} maxDistance={15} maxPolarAngle={Math.PI / 2 - 0.05} />
-        </Canvas>
+      {/* ── INTERACTIVE ISOMETRIC HABBO VIEWPORT CONTAINER ── */}
+      <div className="relative transform translate-y-[-40px]" style={{ width: gridSize * tileW, height: gridSize * tileH * 2 }}>
+        
+        {/* ── BACK LEFT PIXEL WALL ── */}
+        <div 
+          className="absolute origin-top-left bg-[#2b1c40] border-r-2 border-t-2 border-[#3d2a59] shadow-xl"
+          style={{
+            width: gridSize * tileW / Math.sqrt(2),
+            height: 180,
+            transform: "rotate(30deg) skewX(-30deg) translate(-220px, -110px)",
+            zIndex: 1,
+            backgroundImage: "repeating-linear-gradient(90deg, transparent, transparent 31px, #211533 31px, #211533 32px)"
+          }}
+        />
+
+        {/* ── BACK RIGHT PIXEL WALL ── */}
+        <div 
+          className="absolute origin-top-right bg-[#34234c] border-l-2 border-t-2 border-[#453164] shadow-xl"
+          style={{
+            width: gridSize * tileW / Math.sqrt(2),
+            height: 180,
+            transform: "rotate(-30deg) skewX(30deg) translate(220px, -110px)",
+            zIndex: 1,
+            backgroundImage: "repeating-linear-gradient(90deg, transparent, transparent 31px, #26193b 31px, #26193b 32px)"
+          }}
+        />
+
+        {/* ── ISOMETRIC FLOORTILE GRID ── */}
+        <div className="absolute top-[160px] left-1/2 transform translate-x-[-50%] relative">
+          {Array.from({ length: gridSize }).map((_, x) =>
+            Array.from({ length: gridSize }).map((_, y) => {
+              const coords = getIsoCoords(x, y, tileW, tileH);
+              return (
+                <div
+                  key={`${x}-${y}`}
+                  className="absolute border border-[#231538] bg-[#432d66] hover:bg-[#52397c] transition-colors duration-200"
+                  style={{
+                    width: tileW,
+                    height: tileH,
+                    left: coords.left,
+                    top: coords.top,
+                    transform: "rotateX(60deg) rotateZ(45deg)",
+                    zIndex: 2
+                  }}
+                />
+              );
+            })
+          )}
+
+          {/* ── ITEM SPRITE LAYER: RETRO BED ── */}
+          {(() => {
+            const coords = getIsoCoords(2, 1, tileW, tileH);
+            return (
+              <div 
+                onClick={() => setActiveWindow("bed")}
+                className="absolute cursor-pointer group"
+                style={{ left: coords.left + 16, top: coords.top + 70, zIndex: 10 + 2 + 1 }}
+              >
+                {/* 2D Isometric Layered Blocks for Bed */}
+                <div className="relative w-24 h-16 bg-[#51297a] border border-[#2b1244] shadow-md transform transition-transform group-hover:translate-y-[-2px]">
+                  <div className="absolute top-0 left-0 w-full h-4 bg-[#8854c0]" />
+                  <div className="absolute top-0 right-0 w-6 h-full bg-[#3c1e5c]" />
+                  <div className="absolute top-1 left-2 w-6 h-3 bg-white rounded-xs shadow-xs" />
+                  <span className="absolute bottom-1 left-2 text-[8px] font-bold tracking-widest text-[#d8b4fe] opacity-60 uppercase group-hover:opacity-100">Bed</span>
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* ── ITEM SPRITE LAYER: DESK & PORTAL TERMINAL ── */}
+          {(() => {
+            const coords = getIsoCoords(5, 2, tileW, tileH);
+            return (
+              <div 
+                onClick={() => setActiveWindow("computer")}
+                className="absolute cursor-pointer group"
+                style={{ left: coords.left + 24, top: coords.top + 75, zIndex: 10 + 5 + 2 }}
+              >
+                {/* Desk Sprite Wrapper */}
+                <div className="relative w-20 h-20 flex flex-col items-center justify-end transform transition-transform group-hover:translate-y-[-2px]">
+                  {/* Computer Monitor Sprite */}
+                  <div className="w-12 h-10 bg-[#dbdbdb] border-2 border-[#a8a8a8] rounded-xs shadow-md p-0.5 flex items-center justify-center relative mb-1">
+                    <div className="w-full h-full bg-[#0055e5] animate-pulse flex items-center justify-center text-[7px] text-white font-mono">IE_XP</div>
+                    <div className="absolute -bottom-2 w-3 h-2 bg-[#999] border border-[#777]" />
+                  </div>
+                  {/* Desk Surface Tabletop */}
+                  <div className="w-20 h-3 bg-[#222] border border-black shadow-md" />
+                  {/* Desk Base Pillars */}
+                  <div className="flex justify-between w-16 h-8">
+                    <div className="w-1 h-full bg-[#666]" />
+                    <div className="w-1 h-full bg-[#666]" />
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* ── ITEM SPRITE LAYER: THE SNAPSHOT TOYBOX ── */}
+          {(() => {
+            const coords = getIsoCoords(1, 5, tileW, tileH);
+            return (
+              <div 
+                onClick={() => setActiveWindow("toybox")}
+                className="absolute cursor-pointer group"
+                style={{ left: coords.left + 20, top: coords.top + 80, zIndex: 10 + 1 + 5 }}
+              >
+                {/* Toybox Pixel Trunk Wrapper */}
+                <div className="w-16 h-14 bg-[#8b5a2b] border-2 border-[#5c3a1a] shadow-md relative flex items-center justify-center transform transition-transform group-hover:translate-y-[-2px]">
+                  <div className="absolute top-0 left-0 w-full h-2 bg-[#aa7744]" />
+                  <div className="w-3 h-4 bg-[#d4af37] border border-[#a3801a] rounded-xs mt-2" />
+                  <span className="absolute bottom-1 text-[7px] font-bold text-[#f5d061] tracking-wider opacity-60 group-hover:opacity-100 uppercase">Chest</span>
+                </div>
+              </div>
+            );
+          })()}
+
+        </div>
       </div>
 
-      {/* Ambient HUD Bar */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30 bg-[#160d29]/90 px-6 py-3 rounded-2xl border border-[#492d7e] shadow-2xl backdrop-blur-md flex items-center gap-6">
-        <p className="text-xs font-semibold tracking-widest text-[#a882f0] uppercase">
-          ✨ Left-Click & Drag to tumble room. Click the Computer Desk or Toy Box to interact.
+      {/* Ambient HUD Control Bar */}
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30 bg-[#160d29]/95 px-6 py-2.5 rounded-xl border border-[#492d7e] shadow-2xl backdrop-blur-md flex items-center gap-6">
+        <p className="text-[11px] font-semibold tracking-wide text-[#b493fc]">
+          🏨 **Jasmyn's Pixel Node:** Click on the retro objects inside the room layout to trigger interactive windows.
         </p>
       </div>
 
-      {/* ── POPUP WINDOW: THE RETRO OS INTERFACE (COMPUTER CLICK) ── */}
+      {/* ── POPUP PORTAL: RETRO OS GRID INTERFACE (COMPUTER CLICK) ── */}
       <AnimatePresence>
         {activeWindow === "computer" && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{ opacity: 0, scale: 0.96, y: 15 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            exit={{ opacity: 0, scale: 0.96, y: 15 }}
             transition={{ type: "spring", damping: 25 }}
             className="absolute inset-4 z-50 bg-[#ece9d8] border-2 border-[#0055e5] rounded-t-lg shadow-2xl flex flex-col text-black pointer-events-auto"
             onClick={e => e.stopPropagation()}
           >
-            {/* Title Bar */}
+            {/* IE Title bar */}
             <div className="flex items-center justify-between px-2 py-0.5 shrink-0 relative z-30" style={{ background: "linear-gradient(180deg, #2f5bb7 0%, #1e3f8a 50%, #1a3578 100%)", height: 28 }}>
               <div className="flex items-center gap-1.5">
                 <div className="w-4 h-4 rounded-full" style={{ background: "radial-gradient(circle, #7ad7f0 0%, #0b6cc4 100%)" }} />
                 <span className="text-white text-xs font-bold drop-shadow">{currentTitle} — Internet Explorer</span>
               </div>
-              <button onClick={() => { setActiveWindow(null); setStartMenuOpen(false); }} className="w-6 h-5 bg-gradient-to-b from-[#e05] to-[#b00] border border-black/30 rounded text-white text-xs font-bold flex items-center justify-center hover:brightness-115">✕</button>
+              <button onClick={() => { setActiveWindow(null); setStartMenuOpen(false); }} className="w-6 h-5 bg-gradient-to-b from-[#e05] to-[#b00] border border-black/30 rounded text-white text-xs font-bold flex items-center justify-center hover:brightness-110">✕</button>
             </div>
 
-            {/* Menu Bar */}
+            {/* Menu options strip */}
             <div className="flex items-center px-1 shrink-0 relative z-30 bg-[#ece9d8]" style={{ height: 20, borderBottom: "1px solid #aca899" }}>
               {["File","Edit","View","Favorites","Tools","Help"].map(m => <button key={m} className="px-2 h-full hover:bg-[#316ac5] hover:text-white rounded-sm text-[11px]">{m}</button>)}
             </div>
 
-            {/* Toolbar */}
+            {/* Browser Control Toolbar */}
             <div className="flex items-center gap-1 px-1 py-0.5 shrink-0 relative z-30" style={{ background: "linear-gradient(180deg,#f0efea,#dbd9d0)", borderBottom: "1px solid #aca899", height: 36 }}>
               <button onClick={goHome} className="flex flex-col items-center justify-center w-10 h-8 rounded hover:bg-[#c1d3e8] active:bg-[#316ac5] border border-transparent hover:border-[#316ac5]"><span className="text-base">◀</span><span className="text-[7px]">Back</span></button>
               <button onClick={() => setLoading(true)} className="flex flex-col items-center justify-center w-10 h-8 rounded hover:bg-[#c1d3e8] border border-transparent hover:border-[#316ac5]"><span className="text-sm">↻</span><span className="text-[7px]">Refresh</span></button>
@@ -293,7 +333,7 @@ export default function GameRoom() {
               </div>
             </div>
 
-            {/* Links Bar */}
+            {/* Links Bar Row */}
             <div className="flex items-center gap-0.5 px-2 shrink-0 overflow-visible relative z-40 bg-[#dbd6ca]" style={{ borderBottom: "1px solid #aca899", height: 24 }} onClick={e => e.stopPropagation()}>
               <span className="text-[10px] text-[#555] mr-1">Links:</span>
               {LINKS_BAR.map(cat => (
@@ -314,7 +354,7 @@ export default function GameRoom() {
               ))}
             </div>
 
-            {/* Main Window Browser Split */}
+            {/* Browser Content Split */}
             <div className="flex flex-1 overflow-hidden relative z-10 bg-white">
               {sidebarOpen && (
                 <div className="w-52 h-full flex flex-col overflow-hidden shrink-0 border-r border-[#aca899] bg-[#f5f3ee]">
@@ -354,12 +394,12 @@ export default function GameRoom() {
               </div>
             </div>
 
-            {/* Status Bar */}
+            {/* Bottom bar */}
             <div className="flex items-center px-2 shrink-0 border-t border-[#aca899] bg-[#ece9d8]" style={{ height: 20 }}>
               <div className="flex-1 text-[10px] text-gray-600">Ready</div>
             </div>
 
-            {/* XP Taskbar Row */}
+            {/* Taskbar */}
             <div className="h-10 shrink-0 flex items-center px-1 gap-1 relative z-30" style={{ background: "linear-gradient(180deg,#245edb 0%,#3f8cf3 40%,#245edb 100%)" }}>
               <button onClick={e => { e.stopPropagation(); setStartMenuOpen(!startMenuOpen); }} className="h-8 px-3 bg-gradient-to-b from-[#349c42] to-[#298334] text-white font-bold italic rounded-r-xl text-sm shadow">start</button>
               {startMenuOpen && (
@@ -382,7 +422,7 @@ export default function GameRoom() {
         )}
       </AnimatePresence>
 
-      {/* ── POPUP WINDOW: TOY BOX GALLERY SNAPSHOTS ── */}
+      {/* ── POPUP WINDOW: TOY BOX STORAGE snapshots ── */}
       <AnimatePresence>
         {activeWindow === "toybox" && (
           <motion.div
@@ -407,20 +447,20 @@ export default function GameRoom() {
         )}
       </AnimatePresence>
 
-      {/* ── COZY BED JOURNAL OVERLAY ── */}
+      {/* ── COZY JOURNAL JOURNAL PORTAL ── */}
       <AnimatePresence>
         {activeWindow === "bed" && (
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="absolute inset-0 m-auto w-80 h-40 bg-[#ece9d8] border-2 border-[#0055e5] rounded-t-lg shadow-2xl z-55 flex flex-col text-black pointer-events-auto">
             <div className="flex items-center justify-between px-2 py-1" style={{ background: "linear-gradient(180deg, #2f5bb7 0%, #1e3f8a 50%, #1a3578 100%)", height: 24 }}><span className="text-white text-xs font-bold">📝 Bedroom Journal</span><button onClick={() => setActiveWindow(null)} className="text-white text-xs font-bold">✕</button></div>
             <div className="flex-1 bg-[#fffee0] p-4 font-mono text-xs overflow-y-auto leading-relaxed">
               <strong>📌 Jasmyn's Log:</strong><br />
-              "Click onto the computer node monitor mesh to turn on the fully customized legacy browser desktop grid."
+              "Click onto the computer monitor icon stack on your desk to boot up your local node Internet Explorer launcher framework."
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* ── EXPANDABLE PHOTO LIGHTBOX VIEWPORT ── */}
+      {/* ── LIGHTBOX EXPAND VIEW OVERLAY ── */}
       <AnimatePresence>
         {activeLightboxPic && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setActiveLightboxPic(null)} className="absolute inset-0 bg-black/80 z-60 flex items-center justify-center p-4 cursor-zoom-out pointer-events-auto">
