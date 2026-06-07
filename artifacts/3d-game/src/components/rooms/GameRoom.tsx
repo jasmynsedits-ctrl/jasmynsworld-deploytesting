@@ -6,7 +6,7 @@ type SidebarEntry = BookmarkItem & { locked?: boolean };
 
 const SIDEBAR: Record<string, SidebarEntry[]> = {
   "🎮 Online Games": [
-    { name: "Boohbah Zone (Flash Archive)", url: "https://archive.org/embed/boobah_zone_flash" },
+    { name: "Boohbah Zone (Flash Archive)", url: "https://archive.org/embed/boohbah_zone_flash" },
     { name: "Starfall", url: "https://web.archive.org/web/20121102000000if_/https://www.starfall.com/h/" },
     { name: "JibJab (2010 Archive)", url: "https://web.archive.org/web/20100930163107if_/http://sendables.jibjab.com/" },
     { name: "Moshi Monsters", url: "https://moshionline.net/" },
@@ -18,9 +18,9 @@ const SIDEBAR: Record<string, SidebarEntry[]> = {
     { name: "Fantage (2014 Archive)", url: "https://web.archive.org/web/20140920185941if_/http://www.fantage.com/" },
     { name: "MovieStar Planet", note: "💾 Download Only" },
     { name: "Animal Jam", note: "💾 Download Only" },
-    { name: "PBS Kids Flash Games", url: "https://flashmuseum.org/browse/developer/pbs" },
+    { name: "PBS Kids Flash Games", url: "https://web.archive.org/web/20131127074613if_/http://pbskids.org/games/" },
     { name: "Nickelodeon Games (Archive)", url: "https://web.archive.org/web/20151127074613if_/http://www.nick.com/games/?navid=topNav" },
-    { name: "Disney Flash Games", url: "https://flashmuseum.org/browse/publisher/disney" },
+    { name: "Disney Flash Games", url: "https://web.archive.org/web/20131127074613if_/http://disney.go.com/games/" },
   ],
   "📚 School": [
     { name: "FunBrain", url: "https://web.archive.org/web/20140209111338if_/http://www.funbrain.com/brain/SweepsBrain/sweepsbrain.html" },
@@ -69,13 +69,13 @@ const LINKS_BAR: { category: string; icon: string; items: BookmarkItem[] }[] = [
     { name: "Vacation Vehicles", url: "https://web.archive.org/web/20100101000000if_/http://disney.go.com/disneychannel/originalmovies/phineasandferb/games/" },
   ]},
   { category: "Nick Jr", icon: "🟠", items: [
-    { name: "Kai-Lan's Great Trip to China", url: "https://www.numuki.com/game/kai-lan-s-great-trip-to-china/" },
+    { name: "Kai-Lan's Great Trip to China", url: "https://web.archive.org/web/20101010000000if_/http://www.nickjr.com/ni-hao-kai-lan/games/kai-lans-great-trip-to-china/" },
   ]},
   { category: "Nickelodeon", icon: "🎬", items: [
     { name: "iCarly (2012 Archive)", url: "https://web.archive.org/web/20120831030248if_/http://www.icarly.com/" },
     { name: "The Slap (2014 Archive)", url: "https://web.archive.org/web/20140531193706if_/http://www.theslap.com/" },
     { name: "iCarly: The Ultimate Game", url: "https://web.archive.org/web/20120831030248if_/http://www.icarly.com/games/ultimate-game.html" },
-    { name: "Nick Block Party", url: "https://www.numuki.com/game/nick-block-party/" },
+    { name: "Nick Block Party", url: "https://web.archive.org/web/20140101000000if_/http://www.nick.com/games/nick-block-party.html" },
     { name: "Ask the Magic Meatball", url: "https://archive.org/embed/ask-the-magic-meatball" },
   ]},
   { category: "Classics", icon: "🍕", items: [
@@ -115,6 +115,7 @@ export default function GameRoom() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [startMenuOpen, setStartMenuOpen] = useState(false);
   const [picturesWindowOpen, setPicturesWindowOpen] = useState(false);
+  const [activeLightboxPic, setActiveLightboxPic] = useState<string | null>(null);
   const [addressBar, setAddressBar] = useState("about:home");
   const [loading, setLoading] = useState(false);
 
@@ -386,7 +387,7 @@ export default function GameRoom() {
                       { name: "Starfall", url: "https://web.archive.org/web/20121102000000if_/https://www.starfall.com/h/", icon: "⭐" },
                       { name: "Moshi Monsters", url: "https://moshionline.net/", icon: "👾" },
                       { name: "Poptropica", url: "https://web.archive.org/web/20130815000000if_/https://www.poptropica.com/", icon: "🏝️" },
-                      { name: "PBS Kids", url: "https://flashmuseum.org/browse/developer/pbs", icon: "🐾" },
+                      { name: "PBS Kids", url: "https://web.archive.org/web/20131127074613if_/http://pbskids.org/games/", icon: "🐾" },
                       { name: "CoolMath: Run", url: "https://web.archive.org/web/20121002000245if_/https://www.coolmathgames.com/0-run", icon: "🧮" },
                       { name: "Papa's Games", url: "https://web.archive.org/web/20130101000000if_/http://www.coolmathgames.com/0-papas-pizzeria", icon: "🍕" },
                       { name: "Fireboy & Watergirl", url: "https://web.archive.org/web/20130101000000if_/http://www.coolmathgames.com/0-fireboy-watergirl-forest-temple", icon: "🔥" },
@@ -450,12 +451,45 @@ export default function GameRoom() {
             </div>
             <div className="flex-1 bg-white p-4 overflow-y-auto grid grid-cols-3 gap-3">
               {USER_PICTURES.map((pic, idx) => (
-                <div key={idx} className="border border-[#aca899] p-1 bg-[#f5f3ee] rounded shadow-sm hover:border-[#316ac5] flex flex-col items-center">
+                <div 
+                  key={idx} 
+                  onClick={() => setActiveLightboxPic(pic)}
+                  className="border border-[#aca899] p-1 bg-[#f5f3ee] rounded shadow-sm hover:border-[#316ac5] hover:bg-[#e8f0fb] flex flex-col items-center cursor-pointer transition-colors"
+                >
                   <img src={pic} alt={`Pic ${idx + 1}`} className="w-full h-24 object-cover border border-white" />
                   <span className="text-[10px] text-gray-600 mt-1 truncate max-w-full">picture_{idx + 1}.jpg</span>
                 </div>
               ))}
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── LIGHTBOX OVERLAY (CLICK TO EXPAND IMAGES) ── */}
+      <AnimatePresence>
+        {activeLightboxPic && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setActiveLightboxPic(null)}
+            className="absolute inset-0 bg-black/70 z-50 flex items-center justify-center p-4 backdrop-blur-xs cursor-zoom-out"
+          >
+            <motion.div
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.95 }}
+              className="bg-[#ece9d8] border-2 border-[#0055e5] rounded-t-lg max-w-[85%] max-h-[85%] flex flex-col shadow-2xl overflow-hidden"
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between px-3 py-1 shrink-0" style={{ background: "linear-gradient(180deg, #2f5bb7 0%, #1e3f8a 50%, #1a3578 100%)", height: 26 }}>
+                <span className="text-white text-xs font-bold truncate">Windows Picture and Fax Viewer</span>
+                <button onClick={() => setActiveLightboxPic(null)} className="w-5 h-4 bg-gradient-to-b from-[#e05] to-[#b00] border border-black/30 rounded text-white text-[10px] font-bold flex items-center justify-center hover:brightness-110">✕</button>
+              </div>
+              <div className="p-3 bg-[#7f7f7f] flex items-center justify-center overflow-hidden">
+                <img src={activeLightboxPic} alt="Expanded Preview" className="max-w-full max-h-[65vh] object-contain border border-black shadow-lg bg-white" />
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
