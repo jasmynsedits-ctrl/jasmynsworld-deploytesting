@@ -27,8 +27,8 @@ const SIDEBAR: Record<string, SidebarEntry[]> = {
     { name: "Ticket to Read", url: "https://web.archive.org/web/20130402034540if_/https://www.tickettoread.com/" },
     { name: "Class Dojo", note: "🔒 Teacher Access Only", locked: true },
     { name: "GoNoodle", note: "🔒 Teacher Access Only", locked: true },
-    { name: "Scratch (1dlovzer)", url: "https://scratch.mit.edu/projects/embed/101284284/" },
-    { name: "Scratch (jazraz)", url: "https://scratch.mit.edu/projects/embed/101284284/" },
+    { name: "Scratch (1dlovzer)", url: "https://scratch.mit.edu/projects/embed/275685552/" },
+    { name: "Scratch (jazraz)", url: "https://scratch.mit.edu/projects/embed/275685552/" },
     { name: "CoolMath (2012 Archive)", url: "https://web.archive.org/web/20121002000245if_/http://coolmath.com/" },
     { name: "Reading Plus", url: "https://web.archive.org/web/20170628084733if_/https://login.readingplus.com/" },
     { name: "ALEKS", url: "https://web.archive.org/web/20170903182928if_/https://www.aleks.com/" },
@@ -128,13 +128,13 @@ export default function GameRoom() {
 
   return (
     <div
-      className="w-full h-full flex flex-col bg-[#ece9d8] select-none overflow-hidden text-black"
+      className="w-full h-full flex flex-col bg-[#ece9d8] select-none overflow-hidden text-black relative z-0"
       style={{ fontFamily: "Tahoma, Arial, sans-serif", fontSize: 12 }}
       onClick={() => { setOpenDropdown(null); setStartMenuOpen(false); }}
     >
       {/* ── IE TITLE BAR ── */}
       <div
-        className="flex items-center justify-between px-2 py-0.5 shrink-0"
+        className="flex items-center justify-between px-2 py-0.5 shrink-0 relative z-30"
         style={{ background: "linear-gradient(180deg, #2f5bb7 0%, #1e3f8a 50%, #1a3578 100%)", height: 28 }}
       >
         <div className="flex items-center gap-1.5">
@@ -156,14 +156,14 @@ export default function GameRoom() {
       </div>
 
       {/* ── MENU BAR ── */}
-      <div className="flex items-center px-1 shrink-0" style={{ background: "#ece9d8", height: 20, borderBottom: "1px solid #aca899" }}>
+      <div className="flex items-center px-1 shrink-0 relative z-30" style={{ background: "#ece9d8", height: 20, borderBottom: "1px solid #aca899" }}>
         {["File","Edit","View","Favorites","Tools","Help"].map(m => (
           <button key={m} className="px-2 h-full hover:bg-[#316ac5] hover:text-white rounded-sm text-[11px]">{m}</button>
         ))}
       </div>
 
       {/* ── MAIN TOOLBAR ── */}
-      <div className="flex items-center gap-1 px-1 py-0.5 shrink-0" style={{ background: "linear-gradient(180deg,#f0efea,#dbd9d0)", borderBottom: "1px solid #aca899", height: 36 }}>
+      <div className="flex items-center gap-1 px-1 py-0.5 shrink-0 relative z-30" style={{ background: "linear-gradient(180deg,#f0efea,#dbd9d0)", borderBottom: "1px solid #aca899", height: 36 }}>
         <button onClick={goHome}
           className="flex flex-col items-center justify-center w-10 h-8 rounded hover:bg-[#c1d3e8] active:bg-[#316ac5] border border-transparent hover:border-[#316ac5]"
           title="Back"
@@ -226,7 +226,7 @@ export default function GameRoom() {
 
       {/* ── LINKS BAR ── */}
       <div
-        className="flex items-center gap-0.5 px-2 shrink-0 overflow-x-auto"
+        className="flex items-center gap-0.5 px-2 shrink-0 overflow-x-auto relative z-40"
         style={{ background: "linear-gradient(180deg,#eeeae2,#dbd6ca)", borderBottom: "1px solid #aca899", height: 24, scrollbarWidth: "none" }}
         onClick={e => e.stopPropagation()}
       >
@@ -269,7 +269,7 @@ export default function GameRoom() {
       </div>
 
       {/* ── MAIN CONTENT AREA ── */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden relative z-10">
         {/* Favorites Sidebar */}
         <AnimatePresence>
           {sidebarOpen && (
@@ -327,7 +327,7 @@ export default function GameRoom() {
         </AnimatePresence>
 
         {/* Page Content */}
-        <div className="flex-1 relative overflow-hidden bg-white">
+        <div className="flex-1 relative overflow-hidden bg-white z-0">
           {currentUrl ? (
             <>
               {loading && (
@@ -341,7 +341,7 @@ export default function GameRoom() {
               <iframe
                 key={currentUrl}
                 src={currentUrl}
-                className="w-full h-full border-none"
+                className="w-full h-full border-none relative z-0"
                 title={currentTitle}
                 sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"
                 onLoad={() => setLoading(false)}
@@ -415,7 +415,7 @@ export default function GameRoom() {
       </div>
 
       {/* ── STATUS BAR ── */}
-      <div className="flex items-center px-2 shrink-0 border-t border-[#aca899]" style={{ background: "#ece9d8", height: 20 }}>
+      <div className="flex items-center px-2 shrink-0 border-t border-[#aca899] relative z-30" style={{ background: "#ece9d8", height: 20 }}>
         <div className="flex-1 text-[10px] text-[#555]">
           {loading ? "Opening page..." : currentUrl ? `Done | ${currentUrl.substring(0, 60)}${currentUrl.length > 60 ? "..." : ""}` : "Ready"}
         </div>
@@ -426,7 +426,7 @@ export default function GameRoom() {
       </div>
 
       {/* ── XP TASKBAR ── */}
-      <div className="h-10 shrink-0 flex items-center px-1 gap-1 relative" style={{ background: "linear-gradient(180deg,#245edb 0%,#3f8cf3 40%,#245edb 100%)", borderTop: "1px solid #1a4bb8" }}>
+      <div className="h-10 shrink-0 flex items-center px-1 gap-1 relative z-30" style={{ background: "linear-gradient(180deg,#245edb 0%,#3f8cf3 40%,#245edb 100%)", borderTop: "1px solid #1a4bb8" }}>
         <button
           onClick={e => { e.stopPropagation(); setStartMenuOpen(!startMenuOpen); }}
           className="h-8 px-3 flex items-center gap-1.5 rounded-r-xl rounded-l-sm text-white font-bold italic text-sm shadow-inner hover:brightness-110"
