@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Box, Plane, Cylinder } from "@react-three/drei";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 const TOYS = [
   { id: "bottle", name: "Magic Baby Bottle", desc: "The milk disappears when you tilt it. TECHNOLOGY." },
@@ -75,20 +75,18 @@ function ToyGraphic({ id }: { id: string }) {
   }
 }
 
-// ── DETAILED ISOMETRIC GAME ASSETS ──
 function HighFidelityAssets({ onSelect }: { onSelect: (type: string) => void }) {
   return (
     <group position={[0, -0.5, 0]}>
-      {/* Dynamic Ambient Room Lights */}
       <ambientLight intensity={0.7} />
       <directionalLight position={[6, 10, 4]} intensity={1.3} castShadow shadow-mapSize={[2048, 2048]} />
       <pointLight position={[3, 4, 3]} intensity={0.6} color="#ffeaa7" />
 
-      {/* Textured Wooden Floor */}
+      {/* Textured Floor */}
       <Plane args={[10, 10]} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
         <meshStandardMaterial color="#4a3525" roughness={0.7} />
       </Plane>
-      {/* Lime Green / Sage Wall Panels */}
+      {/* Wall Panels */}
       <Box args={[0.1, 5, 10]} position={[-5, 2.5, 0]} receiveShadow>
         <meshStandardMaterial color="#b4c99c" roughness={0.9} />
       </Box>
@@ -96,25 +94,20 @@ function HighFidelityAssets({ onSelect }: { onSelect: (type: string) => void }) 
         <meshStandardMaterial color="#a5b88e" roughness={0.9} />
       </Box>
 
-      {/* ── COZY FLORAL BED SETUP ── */}
+      {/* Bed */}
       <group position={[-2.5, 0, -2.5]} onClick={(e) => { e.stopPropagation(); onSelect("bed"); }}>
-        {/* Espresso wood base */}
         <Box args={[4.2, 0.6, 2.8]} position={[0, 0.3, 0]} castShadow receiveShadow>
           <meshStandardMaterial color="#241407" roughness={0.8} />
         </Box>
-        {/* Headboard */}
         <Box args={[0.2, 2.2, 2.8]} position={[-2, 1.1, 0]} castShadow>
           <meshStandardMaterial color="#1a0e05" roughness={0.8} />
         </Box>
-        {/* Mattress Sheet Wrapper */}
         <Box args={[4, 0.5, 2.6]} position={[0.05, 0.85, 0]} castShadow>
           <meshStandardMaterial color="#ffffff" roughness={0.9} />
         </Box>
-        {/* Custom Floral Comforter Node Layer */}
         <Box args={[2.5, 0.52, 2.62]} position={[0.8, 0.86, 0]}>
           <meshStandardMaterial color="#f0f0f0" roughness={0.6} emissive="#e63956" emissiveIntensity={0.05} />
         </Box>
-        {/* Soft Bed Pillows */}
         <Box args={[0.6, 0.2, 1]} position={[-1.4, 1.1, 0.6]} rotation={[0, 0, 0.1]} castShadow>
           <meshStandardMaterial color="#fff" roughness={0.9} />
         </Box>
@@ -123,52 +116,43 @@ function HighFidelityAssets({ onSelect }: { onSelect: (type: string) => void }) 
         </Box>
       </group>
 
-      {/* ── PHOTO-ACCURATE GLASS COMPUTER DESK ── */}
+      {/* Glass Computer Desk */}
       <group position={[2.5, 0, -2]} rotation={[0, -Math.PI / 2, 0]} onClick={(e) => { e.stopPropagation(); onSelect("computer"); }}>
-        {/* Translucent Cyan Glass Tabletop */}
         <Box args={[3.8, 0.1, 2]} position={[0, 1.5, 0]} castShadow receiveShadow>
           <meshStandardMaterial color="#22d3ee" transparent opacity={0.6} roughness={0.1} metalness={0.1} />
         </Box>
-        {/* Chrome Framework Desk Edges */}
         <Box args={[3.8, 0.08, 0.08]} position={[0, 1.45, 0.95]}><meshStandardMaterial color="#8a8a8a" metalness={0.8} /></Box>
         <Box args={[3.8, 0.08, 0.08]} position={[0, 1.45, -0.95]}><meshStandardMaterial color="#8a8a8a" metalness={0.8} /></Box>
-        {/* Structural Cross-Braced Metal Legs */}
         <Cylinder args={[0.05, 0.05, 1.5]} position={[-1.8, 0.75, -0.8]} castShadow><meshStandardMaterial color="#666" metalness={0.7} /></Cylinder>
         <Cylinder args={[0.05, 0.05, 1.5]} position={[1.8, 0.75, -0.8]} castShadow><meshStandardMaterial color="#666" metalness={0.7} /></Cylinder>
         <Cylinder args={[0.05, 0.05, 1.5]} position={[-1.8, 0.75, 0.8]} castShadow><meshStandardMaterial color="#666" metalness={0.7} /></Cylinder>
         <Cylinder args={[0.05, 0.05, 1.5]} position={[1.8, 0.75, 0.8]} castShadow><meshStandardMaterial color="#666" metalness={0.7} /></Cylinder>
 
-        {/* HP All-In-One Desktop Computer Monitor */}
+        {/* Monitor */}
         <group position={[0, 1.55, -0.2]}>
           <Box args={[1.6, 1.1, 0.12]} position={[0, 0.7, 0]} castShadow>
             <meshStandardMaterial color="#1a1a1a" roughness={0.4} />
           </Box>
-          {/* Glowing Terminal Face */}
           <Box args={[1.5, 0.8, 0.02]} position={[0, 0.8, 0.06]}>
             <meshStandardMaterial color="#2563eb" emissive="#1d4ed8" intensity={0.6} />
           </Box>
-          {/* Lower Silver Speaker Strip */}
           <Box args={[1.6, 0.2, 0.14]} position={[0, 0.15, 0]}>
             <meshStandardMaterial color="#a8a8a8" metalness={0.3} roughness={0.4} />
           </Box>
-          {/* Silver U-Stand Base */}
           <Cylinder args={[0.06, 0.06, 0.4]} position={[0, 0, 0]}><meshStandardMaterial color="#8a8a8a" metalness={0.8} /></Cylinder>
         </group>
 
-        {/* ── THE ICONIC NEON ORANGE STOOL CHAIR ── */}
+        {/* Orange Stool */}
         <group position={[0, 0, 0.8]}>
-          {/* Bright Orange Swivel Seat Cushion */}
           <Cylinder args={[0.42, 0.42, 0.18]} position={[0, 0.8, 0]} castShadow>
             <meshStandardMaterial color="#ff6b2b" roughness={0.5} />
           </Cylinder>
-          {/* Core Support Center Column Column */}
           <Cylinder args={[0.04, 0.04, 0.8]} position={[0, 0.4, 0]}><meshStandardMaterial color="#111" /></Cylinder>
-          {/* Star Feet Base Base */}
           <Cylinder args={[0.45, 0.45, 0.04]} position={[0, 0.02, 0]}><meshStandardMaterial color="#444" roughness={0.6} /></Cylinder>
         </group>
- group>
+      </group>
 
-      {/* ── RETRO PLANK WOOD TOY CHEST ── */}
+      {/* Toy Chest */}
       <group position={[-3.2, 0, 2]} rotation={[0, Math.PI / 5, 0]} onClick={(e) => { e.stopPropagation(); onSelect("toybox"); }}>
         <Box args={[1.8, 1.2, 1.3]} position={[0, 0.6, 0]} castShadow receiveShadow>
           <meshStandardMaterial color="#9c6233" roughness={0.8} />
@@ -176,17 +160,13 @@ function HighFidelityAssets({ onSelect }: { onSelect: (type: string) => void }) 
         <Box args={[1.86, 0.2, 1.36]} position={[0, 1.2, 0]} castShadow>
           <meshStandardMaterial color="#bd7e4a" roughness={0.7} />
         </Box>
-        {/* Golden Padlock hardware lock latch */}
         <Box args={[0.2, 0.3, 0.05]} position={[0, 0.8, 0.66]}><meshStandardMaterial color="#e0b434" metalness={0.8} roughness={0.2} /></Box>
       </group>
 
-      {/* ── DYNAMIC MULTI-HEAD CONE FLOOR LAMP ── */}
+      {/* Lamp */}
       <group position={[3.5, 0, 2.5]}>
-        {/* Base Plate */}
         <Cylinder args={[0.35, 0.35, 0.05]} position={[0, 0.02, 0]} castShadow><meshStandardMaterial color="#555" /></Cylinder>
-        {/* Main Silver Stem */}
         <Cylinder args={[0.03, 0.03, 3]} position={[0, 1.5, 0]} castShadow><meshStandardMaterial color="#a8a8a8" metalness={0.7} /></Cylinder>
-        {/* Individual Colorful Adjustable Cone Shades */}
         <group position={[0, 3, 0]}>
           <Box args={[0.3, 0.4, 0.3]} position={[-0.4, 0.2, -0.2]} rotation={[0.4, 0, -0.5]}><meshStandardMaterial color="#3b82f6" emissive="#1d4ed8" emissiveIntensity={0.3} /></Box>
           <Box args={[0.3, 0.4, 0.3]} position={[0, 0.4, 0]}><meshStandardMaterial color="#ffffff" emissive="#fff" emissiveIntensity={0.2} /></Box>
@@ -217,7 +197,7 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
   return (
     <div className="w-full h-full bg-[#110a1a] text-white relative font-sans overflow-hidden select-none flex flex-col items-center justify-center">
       
-      {/* ── MAP CORE NAVIGATION HEADER ── */}
+      {/* Navigation */}
       <div className="absolute top-4 left-4 z-50 flex items-center gap-3">
         <button 
           onClick={() => window.history.back()}
@@ -227,12 +207,11 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
         </button>
       </div>
 
-      {/* ── CAMERA AND VIEW CONSOLE CONTROLS BAR (Habbo style) ── */}
+      {/* Rotation and Zoom UI */}
       <div className="absolute top-4 right-4 z-50 bg-[#1f162e]/90 p-2 rounded-xl border border-[#4d326b] flex items-center gap-2 shadow-2xl backdrop-blur-md">
         <button 
           onClick={() => setRoomRotation(prev => prev + Math.PI / 2)} 
           className="p-2 bg-[#3c2554] hover:bg-[#533575] active:scale-90 rounded-lg text-xs font-bold transition-all border border-[#663f8c]"
-          title="Rotate Room 90°"
         >
           🔄 Rotate Angle
         </button>
@@ -240,30 +219,27 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
         <button 
           onClick={() => setZoomLevel(prev => Math.max(4, prev - 1.5))} 
           className="px-3 py-1.5 bg-[#3c2554] hover:bg-[#533575] active:scale-90 rounded-lg text-xs font-bold transition-all"
-          title="Step Closer"
         >
           ➕ Step Closer
         </button>
         <button 
           onClick={() => setZoomLevel(prev => Math.min(12, prev + 1.5))} 
           className="px-3 py-1.5 bg-[#3c2554] hover:bg-[#533575] active:scale-90 rounded-lg text-xs font-bold transition-all"
-          title="Step Away"
         >
           ➖ Step Away
         </button>
       </div>
 
-      {/* ── REAL-TIME 3D WEGL ISOMETRIC VIEWPORT CANVAS ── */}
+      {/* 3D WebGL Canvas */}
       <div className="w-full h-full absolute inset-0 z-10 cursor-grab active:cursor-grabbing">
         <Canvas 
           camera={{ position: [zoomLevel, zoomLevel, zoomLevel], fov: 35 }} 
           shadows
-          key={`${roomRotation}-${zoomLevel}`} // Forces frame snap reload on view shifts
+          key={`${roomRotation}-${zoomLevel}`}
         >
           <color attach="background" args={["#130c1c"]} />
           <fog attach="fog" args={["#130c1c", 10, 25]} />
           
-          {/* Rotatable Scene Anchor Group */}
           <group rotation={[0, roomRotation, 0]}>
             <HighFidelityAssets onSelect={handleInteractiveSelection} />
           </group>
@@ -273,19 +249,19 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
             dampingFactor={0.05}
             minDistance={3}
             maxDistance={14}
-            maxPolarAngle={Math.PI / 2 - 0.05} // Blocks cam from dipping underneath floor line
+            maxPolarAngle={Math.PI / 2 - 0.05}
           />
         </Canvas>
       </div>
 
-      {/* Ambient Console HUD Strip */}
+      {/* HUD Guide Banner */}
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30 bg-[#120a1c]/95 px-6 py-2.5 rounded-xl border border-[#4a2e6b] shadow-2xl backdrop-blur-md flex items-center gap-6">
         <p className="text-[11px] font-bold tracking-wide text-[#b195db] uppercase">
-          🎮 **Virtual Node:** Click & Drag room to spin manually, use top console controls, or click objects to enter ports.
+          🎮 Click & drag to tumble manually, use top console controls, or click assets to explore.
         </p>
       </div>
 
-      {/* ── INTERACTIVE TOY DRAWER MODAL SHEET ── */}
+      {/* Toy Box Drawer */}
       <AnimatePresence>
         {toyboxOpen && (
           <motion.div 
@@ -310,7 +286,7 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
         )}
       </AnimatePresence>
 
-      {/* ── TOY INDIVIDUAL DETAIL OVERLAY CARD ── */}
+      {/* Toy Detail Inspection Modal */}
       <AnimatePresence>
         {activeToy && activeToyData && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-60 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4" onClick={() => setActiveToy(null)}>
