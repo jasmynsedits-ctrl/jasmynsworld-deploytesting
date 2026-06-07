@@ -106,7 +106,6 @@ const USER_PICTURES = [
   "https://lh3.googleusercontent.com/pw/AP1GczP1xM94hC6Gt24piPlLo5pyephWAqGETFH4DOamsaxzyNKESB1eCfx3k6bE56_P90ulbtQDtyMwnz769A6cCSzN2REdMLetZUMUc5HAO4x8a8NEyQiE42gmtTdmSX4TnZSudm808F8ohozFaX9oYQygvg=w512-h384-s-no-gm"
 ];
 
-// Helper function to convert flat coordinates into Isometric Screen positions
 const getIsoCoords = (x: number, y: number, tileWidth = 64, tileHeight = 32) => {
   const screenX = (x - y) * (tileWidth / 2);
   const screenY = (x + y) * (tileHeight / 2);
@@ -149,135 +148,176 @@ export default function GameRoom() {
     setOpenDropdown(null);
   };
 
-  // Grid layout definitions
   const gridSize = 8;
   const tileW = 64;
   const tileH = 32;
 
   return (
-    <div className="w-full h-full bg-[#1b112c] text-white relative font-sans overflow-hidden select-none flex items-center justify-center">
+    <div className="w-full h-full bg-[#160f24] text-white relative font-sans overflow-hidden select-none flex items-center justify-center">
       
       {/* ── MAP BACK NAVIGATION BUTTON ── */}
       <div className="absolute top-4 left-4 z-50">
         <button 
           onClick={() => window.history.back()}
-          className="px-4 py-2 bg-[#2d1b4e]/80 border border-[#6b4aa5] rounded-full text-xs font-bold tracking-wide hover:bg-[#492e7c] transition-all backdrop-blur-xs shadow-lg"
+          className="px-4 py-2 bg-[#2d1b4e]/80 border-2 border-[#6b4aa5] rounded-full text-xs font-bold tracking-wide hover:bg-[#492e7c] transition-all shadow-lg active:scale-95"
         >
           ← Back to Map
         </button>
       </div>
 
-      {/* ── INTERACTIVE ISOMETRIC HABBO VIEWPORT CONTAINER ── */}
-      <div className="relative transform translate-y-[-40px]" style={{ width: gridSize * tileW, height: gridSize * tileH * 2 }}>
+      {/* ── DEFINED RETRO HABBO ISOMETRIC WORLD CONTAINER ── */}
+      <div className="relative scale-110 transform translate-y-[-20px]" style={{ width: gridSize * tileW, height: gridSize * tileH * 2.5 }}>
         
-        {/* ── BACK LEFT PIXEL WALL ── */}
+        {/* ── PIXEL PANELLED BACKGROUND WALLS ── */}
+        {/* Left Isometric Wall */}
         <div 
-          className="absolute origin-top-left bg-[#2b1c40] border-r-2 border-t-2 border-[#3d2a59] shadow-xl"
+          className="absolute origin-top-left bg-[#2b1c40] border-r-4 border-t-4 border-[#140b21] shadow-2xl"
           style={{
             width: gridSize * tileW / Math.sqrt(2),
-            height: 180,
-            transform: "rotate(30deg) skewX(-30deg) translate(-220px, -110px)",
+            height: 200,
+            transform: "rotate(30deg) skewX(-30deg) translate(-218px, -114px)",
             zIndex: 1,
-            backgroundImage: "repeating-linear-gradient(90deg, transparent, transparent 31px, #211533 31px, #211533 32px)"
+            backgroundImage: "repeating-linear-gradient(90deg, transparent, transparent 31px, #180e26 31px, #180e26 32px)",
+            boxShadow: "inset -10px 0 20px rgba(0,0,0,0.4)"
           }}
         />
 
-        {/* ── BACK RIGHT PIXEL WALL ── */}
+        {/* Right Isometric Wall */}
         <div 
-          className="absolute origin-top-right bg-[#34234c] border-l-2 border-t-2 border-[#453164] shadow-xl"
+          className="absolute origin-top-right bg-[#35234e] border-l-4 border-t-4 border-[#140b21] shadow-2xl"
           style={{
             width: gridSize * tileW / Math.sqrt(2),
-            height: 180,
-            transform: "rotate(-30deg) skewX(30deg) translate(220px, -110px)",
+            height: 200,
+            transform: "rotate(-30deg) skewX(30deg) translate(218px, -114px)",
             zIndex: 1,
-            backgroundImage: "repeating-linear-gradient(90deg, transparent, transparent 31px, #26193b 31px, #26193b 32px)"
+            backgroundImage: "repeating-linear-gradient(90deg, transparent, transparent 31px, #1c102b 31px, #1c102b 32px)",
+            boxShadow: "inset 10px 0 20px rgba(0,0,0,0.4)"
           }}
         />
 
-        {/* ── ISOMETRIC FLOORTILE GRID ── */}
-        <div className="absolute top-[160px] left-1/2 transform translate-x-[-50%] relative">
+        {/* ── FLOORTILE COORDINATE SURFACE GRID ── */}
+        <div className="absolute top-[180px] left-1/2 transform translate-x-[-50%] relative">
           {Array.from({ length: gridSize }).map((_, x) =>
             Array.from({ length: gridSize }).map((_, y) => {
               const coords = getIsoCoords(x, y, tileW, tileH);
               return (
                 <div
                   key={`${x}-${y}`}
-                  className="absolute border border-[#231538] bg-[#432d66] hover:bg-[#52397c] transition-colors duration-200"
+                  className="absolute border border-[#1b0f30] bg-[#49316d] hover:bg-[#5a3f85] transition-colors duration-150"
                   style={{
                     width: tileW,
                     height: tileH,
                     left: coords.left,
                     top: coords.top,
                     transform: "rotateX(60deg) rotateZ(45deg)",
-                    zIndex: 2
+                    zIndex: 2,
+                    boxShadow: "inset 1px 1px 2px rgba(255,255,255,0.05)"
                   }}
                 />
               );
             })
           )}
 
-          {/* ── ITEM SPRITE LAYER: RETRO BED ── */}
+          {/* ── HIGH-DEFINED RETRO BED SPRITE ── */}
           {(() => {
             const coords = getIsoCoords(2, 1, tileW, tileH);
             return (
               <div 
                 onClick={() => setActiveWindow("bed")}
                 className="absolute cursor-pointer group"
-                style={{ left: coords.left + 16, top: coords.top + 70, zIndex: 10 + 2 + 1 }}
+                style={{ left: coords.left + 4, top: coords.top + 55, zIndex: 12 }}
               >
-                {/* 2D Isometric Layered Blocks for Bed */}
-                <div className="relative w-24 h-16 bg-[#51297a] border border-[#2b1244] shadow-md transform transition-transform group-hover:translate-y-[-2px]">
-                  <div className="absolute top-0 left-0 w-full h-4 bg-[#8854c0]" />
-                  <div className="absolute top-0 right-0 w-6 h-full bg-[#3c1e5c]" />
-                  <div className="absolute top-1 left-2 w-6 h-3 bg-white rounded-xs shadow-xs" />
-                  <span className="absolute bottom-1 left-2 text-[8px] font-bold tracking-widest text-[#d8b4fe] opacity-60 uppercase group-hover:opacity-100">Bed</span>
+                <div className="relative w-28 h-24 transform transition-transform duration-200 group-hover:translate-y-[-4px]">
+                  {/* Outer Bed Base Frame (Dark Plum Outlines) */}
+                  <div className="absolute bottom-0 left-0 w-full h-10 bg-[#351c4f] border-2 border-[#120521] rounded-xs shadow-md">
+                    {/* Front Bed Foot Posts */}
+                    <div className="absolute -bottom-1 left-1 w-2 h-3 bg-[#1c0c2b] border border-black" />
+                    <div className="absolute -bottom-1 right-1 w-2 h-3 bg-[#1c0c2b] border border-black" />
+                  </div>
+                  {/* Layered Lilac Mattress Layer */}
+                  <div className="absolute bottom-3 left-1 w-[104px] h-12 bg-[#8c5bc4] border-2 border-[#120521] rounded-xs">
+                    {/* Folded Duvet Accent Line */}
+                    <div className="absolute top-0 right-0 w-10 h-full bg-[#7544ad] border-l border-[#120521]" />
+                  </div>
+                  {/* Defined Pillows with Borders */}
+                  <div className="absolute top-1 left-3 w-8 h-6 bg-white border-2 border-[#120521] rounded-sm shadow-xs transform rotate-[-4deg]" />
+                  <div className="absolute top-2 left-12 w-8 h-6 bg-white border-2 border-[#120521] rounded-sm shadow-xs transform rotate-[4deg]" />
+                  {/* Floating Tag Indicator */}
+                  <span className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#120521]/80 text-[#d8b4fe] text-[8px] font-bold px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-wider">Bed Log</span>
                 </div>
               </div>
             );
           })()}
 
-          {/* ── ITEM SPRITE LAYER: DESK & PORTAL TERMINAL ── */}
+          {/* ── HIGH-DEFINED COMPUTER DESK & CRT MONITOR ── */}
           {(() => {
             const coords = getIsoCoords(5, 2, tileW, tileH);
             return (
               <div 
                 onClick={() => setActiveWindow("computer")}
                 className="absolute cursor-pointer group"
-                style={{ left: coords.left + 24, top: coords.top + 75, zIndex: 10 + 5 + 2 }}
+                style={{ left: coords.left + 16, top: coords.top + 50, zIndex: 18 }}
               >
-                {/* Desk Sprite Wrapper */}
-                <div className="relative w-20 h-20 flex flex-col items-center justify-end transform transition-transform group-hover:translate-y-[-2px]">
-                  {/* Computer Monitor Sprite */}
-                  <div className="w-12 h-10 bg-[#dbdbdb] border-2 border-[#a8a8a8] rounded-xs shadow-md p-0.5 flex items-center justify-center relative mb-1">
-                    <div className="w-full h-full bg-[#0055e5] animate-pulse flex items-center justify-center text-[7px] text-white font-mono">IE_XP</div>
-                    <div className="absolute -bottom-2 w-3 h-2 bg-[#999] border border-[#777]" />
+                <div className="relative w-24 h-28 flex flex-col items-center justify-end transform transition-transform duration-200 group-hover:translate-y-[-4px]">
+                  
+                  {/* Retro CRT Computer Monitor Sprite */}
+                  <div className="w-16 h-14 bg-[#e6e2d3] border-2 border-[#1a1915] rounded shadow-md p-1 flex flex-col items-center justify-center relative mb-1">
+                    {/* Inner Bezel Border */}
+                    <div className="w-full h-10 bg-[#2b2a26] border border-[#1a1915] rounded-xs p-0.5 flex items-center justify-center">
+                      {/* Active Blue Desktop Screen Area */}
+                      <div className="w-full h-full bg-[#0055e5] rounded-xs animate-pulse flex items-center justify-center text-[8px] text-white font-bold tracking-tighter shadow-inner" style={{ textShadow: "1px 1px 0px #0022aa" }}>
+                        IE_XP
+                      </div>
+                    </div>
+                    {/* Monitor Ventilation Grill Marks */}
+                    <div className="absolute top-0.5 w-8 h-0.5 bg-[#b5b1a1] flex justify-between px-1"><div className="w-0.5 h-full bg-black/40"/><div className="w-0.5 h-full bg-black/40"/><div className="w-0.5 h-full bg-black/40"/></div>
+                    {/* Screen Stand Pivot Neck */}
+                    <div className="absolute -bottom-2 w-4 h-2 bg-[#bda891] border-x-2 border-b-2 border-[#1a1915]" />
                   </div>
-                  {/* Desk Surface Tabletop */}
-                  <div className="w-20 h-3 bg-[#222] border border-black shadow-md" />
-                  {/* Desk Base Pillars */}
-                  <div className="flex justify-between w-16 h-8">
-                    <div className="w-1 h-full bg-[#666]" />
-                    <div className="w-1 h-full bg-[#666]" />
+
+                  {/* Desktop Keyboard Sprite */}
+                  <div className="w-12 h-2 bg-[#dedaca] border border-[#1a1915] shadow-xs mb-0.5 z-10 relative transform rotateX(20deg)" />
+
+                  {/* Wood-Panel Tabletop Surface */}
+                  <div className="w-24 h-4 bg-[#7a4b26] border-2 border-[#1a1915] shadow-md relative rounded-xs">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-[#a36837]" />
                   </div>
+
+                  {/* Detailed Desk Base Legs */}
+                  <div className="flex justify-between w-20 h-10 px-1">
+                    <div className="w-2 h-full bg-[#2b2a26] border-x border-b border-black shadow-sm" />
+                    <div className="w-2 h-full bg-[#2b2a26] border-x border-b border-black shadow-sm" />
+                  </div>
+                  
+                  {/* Floating Tag Label */}
+                  <span className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#1a1915]/80 text-[#ffe599] text-[8px] font-bold px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-wider">Terminal</span>
                 </div>
               </div>
             );
           })()}
 
-          {/* ── ITEM SPRITE LAYER: THE SNAPSHOT TOYBOX ── */}
+          {/* ── HIGH-DEFINED RETRO ACCENT CHEST TOYBOX ── */}
           {(() => {
             const coords = getIsoCoords(1, 5, tileW, tileH);
             return (
               <div 
                 onClick={() => setActiveWindow("toybox")}
                 className="absolute cursor-pointer group"
-                style={{ left: coords.left + 20, top: coords.top + 80, zIndex: 10 + 1 + 5 }}
+                style={{ left: coords.left + 12, top: coords.top + 65, zIndex: 16 }}
               >
-                {/* Toybox Pixel Trunk Wrapper */}
-                <div className="w-16 h-14 bg-[#8b5a2b] border-2 border-[#5c3a1a] shadow-md relative flex items-center justify-center transform transition-transform group-hover:translate-y-[-2px]">
-                  <div className="absolute top-0 left-0 w-full h-2 bg-[#aa7744]" />
-                  <div className="w-3 h-4 bg-[#d4af37] border border-[#a3801a] rounded-xs mt-2" />
-                  <span className="absolute bottom-1 text-[7px] font-bold text-[#f5d061] tracking-wider opacity-60 group-hover:opacity-100 uppercase">Chest</span>
+                <div className="w-20 h-16 bg-[#9c6233] border-2 border-[#1f1105] shadow-xl relative flex flex-col items-center justify-start rounded-xs transform transition-transform duration-200 group-hover:translate-y-[-4px]">
+                  {/* Reinforced Heavy Wooden Lid Panel */}
+                  <div className="w-[84px] h-4 bg-[#bd7e4a] border-b-2 border-t border-x border-[#1f1105] rounded-t-xs shadow-xs relative">
+                    <div className="absolute top-0.5 left-1 w-[74px] h-0.5 bg-[#e09e67]" />
+                  </div>
+                  {/* Gold Metal Corner Trim Accents */}
+                  <div className="absolute top-4 left-0 w-1.5 h-10 bg-[#e0b434] border-r border-b border-[#1f1105]" />
+                  <div className="absolute top-4 right-0 w-1.5 h-10 bg-[#e0b434] border-l border-b border-[#1f1105]" />
+                  {/* Heavy Iron Padlock / Latch Plate */}
+                  <div className="w-4 h-5 bg-[#e0b434] border border-[#1f1105] rounded-xs mt-1 shadow relative flex items-center justify-center">
+                    <div className="w-1 h-2 bg-black rounded-full" />
+                  </div>
+                  <span className="absolute bottom-1 text-[8px] font-bold text-[#ffd966] tracking-widest opacity-60 group-hover:opacity-100 uppercase">Chest</span>
                 </div>
               </div>
             );
@@ -287,13 +327,13 @@ export default function GameRoom() {
       </div>
 
       {/* Ambient HUD Control Bar */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30 bg-[#160d29]/95 px-6 py-2.5 rounded-xl border border-[#492d7e] shadow-2xl backdrop-blur-md flex items-center gap-6">
-        <p className="text-[11px] font-semibold tracking-wide text-[#b493fc]">
-          🏨 **Jasmyn's Pixel Node:** Click on the retro objects inside the room layout to trigger interactive windows.
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30 bg-[#0e081c]/95 px-6 py-2.5 rounded-xl border border-[#492d7e] shadow-2xl backdrop-blur-md flex items-center gap-6">
+        <p className="text-[11px] font-bold tracking-wide text-[#c0a3ff]">
+          🏨 **Jasmyn's Profile Core:** Click the defined room assets to activate portfolio snapshots and legacy components.
         </p>
       </div>
 
-      {/* ── POPUP PORTAL: RETRO OS GRID INTERFACE (COMPUTER CLICK) ── */}
+      {/* ── POPUP WINDOW: INTERACTIVE OS STATION (COMPUTER CLICK) ── */}
       <AnimatePresence>
         {activeWindow === "computer" && (
           <motion.div
@@ -304,21 +344,21 @@ export default function GameRoom() {
             className="absolute inset-4 z-50 bg-[#ece9d8] border-2 border-[#0055e5] rounded-t-lg shadow-2xl flex flex-col text-black pointer-events-auto"
             onClick={e => e.stopPropagation()}
           >
-            {/* IE Title bar */}
+            {/* IE Title Bar */}
             <div className="flex items-center justify-between px-2 py-0.5 shrink-0 relative z-30" style={{ background: "linear-gradient(180deg, #2f5bb7 0%, #1e3f8a 50%, #1a3578 100%)", height: 28 }}>
               <div className="flex items-center gap-1.5">
-                <div className="w-4 h-4 rounded-full" style={{ background: "radial-gradient(circle, #7ad7f0 0%, #0b6cc4 100%)" }} />
+                <div className="w-4 h-4 rounded-full" style={{ background: "radial-gradient(circle at 40% 35%, #7ad7f0 0%, #0b6cc4 60%, #0a3d8f 100%)" }} />
                 <span className="text-white text-xs font-bold drop-shadow">{currentTitle} — Internet Explorer</span>
               </div>
               <button onClick={() => { setActiveWindow(null); setStartMenuOpen(false); }} className="w-6 h-5 bg-gradient-to-b from-[#e05] to-[#b00] border border-black/30 rounded text-white text-xs font-bold flex items-center justify-center hover:brightness-110">✕</button>
             </div>
 
-            {/* Menu options strip */}
+            {/* Menu options row */}
             <div className="flex items-center px-1 shrink-0 relative z-30 bg-[#ece9d8]" style={{ height: 20, borderBottom: "1px solid #aca899" }}>
               {["File","Edit","View","Favorites","Tools","Help"].map(m => <button key={m} className="px-2 h-full hover:bg-[#316ac5] hover:text-white rounded-sm text-[11px]">{m}</button>)}
             </div>
 
-            {/* Browser Control Toolbar */}
+            {/* Main Toolbar Panel */}
             <div className="flex items-center gap-1 px-1 py-0.5 shrink-0 relative z-30" style={{ background: "linear-gradient(180deg,#f0efea,#dbd9d0)", borderBottom: "1px solid #aca899", height: 36 }}>
               <button onClick={goHome} className="flex flex-col items-center justify-center w-10 h-8 rounded hover:bg-[#c1d3e8] active:bg-[#316ac5] border border-transparent hover:border-[#316ac5]"><span className="text-base">◀</span><span className="text-[7px]">Back</span></button>
               <button onClick={() => setLoading(true)} className="flex flex-col items-center justify-center w-10 h-8 rounded hover:bg-[#c1d3e8] border border-transparent hover:border-[#316ac5]"><span className="text-sm">↻</span><span className="text-[7px]">Refresh</span></button>
@@ -333,7 +373,7 @@ export default function GameRoom() {
               </div>
             </div>
 
-            {/* Links Bar Row */}
+            {/* Links Bookmark Bar */}
             <div className="flex items-center gap-0.5 px-2 shrink-0 overflow-visible relative z-40 bg-[#dbd6ca]" style={{ borderBottom: "1px solid #aca899", height: 24 }} onClick={e => e.stopPropagation()}>
               <span className="text-[10px] text-[#555] mr-1">Links:</span>
               {LINKS_BAR.map(cat => (
@@ -354,7 +394,7 @@ export default function GameRoom() {
               ))}
             </div>
 
-            {/* Browser Content Split */}
+            {/* Main Layout Framework Content Grid */}
             <div className="flex flex-1 overflow-hidden relative z-10 bg-white">
               {sidebarOpen && (
                 <div className="w-52 h-full flex flex-col overflow-hidden shrink-0 border-r border-[#aca899] bg-[#f5f3ee]">
@@ -379,7 +419,7 @@ export default function GameRoom() {
               <div className="flex-1 relative overflow-hidden bg-[#e8f4ff]">
                 {currentUrl ? (
                   <>
-                    {loading && <div className="absolute inset-0 bg-white flex items-center justify-center text-[#00008b] font-bold">Loading Node...</div>}
+                    {loading && <div className="absolute inset-0 bg-white flex items-center justify-center text-[#00008b] font-bold">Loading Port Node...</div>}
                     <iframe key={currentUrl} src={currentUrl} className="w-full h-full border-none" allow="autoplay; encrypted-media; fullscreen; gamepad" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation" onLoad={() => setLoading(false)} />
                   </>
                 ) : (
@@ -394,12 +434,12 @@ export default function GameRoom() {
               </div>
             </div>
 
-            {/* Bottom bar */}
+            {/* Bottom Window status indicator */}
             <div className="flex items-center px-2 shrink-0 border-t border-[#aca899] bg-[#ece9d8]" style={{ height: 20 }}>
               <div className="flex-1 text-[10px] text-gray-600">Ready</div>
             </div>
 
-            {/* Taskbar */}
+            {/* Desktop Taskbar Component */}
             <div className="h-10 shrink-0 flex items-center px-1 gap-1 relative z-30" style={{ background: "linear-gradient(180deg,#245edb 0%,#3f8cf3 40%,#245edb 100%)" }}>
               <button onClick={e => { e.stopPropagation(); setStartMenuOpen(!startMenuOpen); }} className="h-8 px-3 bg-gradient-to-b from-[#349c42] to-[#298334] text-white font-bold italic rounded-r-xl text-sm shadow">start</button>
               {startMenuOpen && (
@@ -422,7 +462,7 @@ export default function GameRoom() {
         )}
       </AnimatePresence>
 
-      {/* ── POPUP WINDOW: TOY BOX STORAGE snapshots ── */}
+      {/* ── POPUP WINDOW: TOY BOX STORAGE SNAPSHOTS ── */}
       <AnimatePresence>
         {activeWindow === "toybox" && (
           <motion.div
@@ -432,12 +472,12 @@ export default function GameRoom() {
             className="absolute inset-0 m-auto w-1/2 h-2/3 bg-[#ece9d8] border-2 border-[#0055e5] rounded-t-lg shadow-2xl z-55 flex flex-col overflow-hidden text-black pointer-events-auto"
           >
             <div className="flex items-center justify-between px-2 py-1 shrink-0" style={{ background: "linear-gradient(180deg, #2f5bb7 0%, #1e3f8a 50%, #1a3578 100%)", height: 26 }}>
-              <span className="text-white text-xs font-bold">📂 Toy Box — Memory Gallery</span>
+              <span className="text-white text-xs font-bold">📂 Toy Box — Memory Archive Gallery</span>
               <button onClick={() => setActiveWindow(null)} className="w-5 h-4 bg-gradient-to-b from-[#e05] to-[#b00] border border-black/30 rounded text-white text-[10px] font-bold flex items-center justify-center">✕</button>
             </div>
             <div className="flex-1 bg-white p-4 overflow-y-auto grid grid-cols-3 gap-3">
               {USER_PICTURES.map((pic, idx) => (
-                <div key={idx} onClick={() => setActiveLightboxPic(pic)} className="border p-1 bg-[#f5f3ee] hover:border-blue-600 flex flex-col items-center cursor-pointer">
+                <div key={idx} onClick={() => setActiveLightboxPic(pic)} className="border p-1 bg-[#f5f3ee] hover:border-blue-600 flex flex-col items-center cursor-pointer transition-shadow">
                   <img src={pic} alt="" className="w-full h-24 object-cover border bg-white" />
                   <span className="text-[10px] text-gray-500 mt-1 truncate max-w-full">picture_{idx + 1}.jpg</span>
                 </div>
@@ -447,14 +487,14 @@ export default function GameRoom() {
         )}
       </AnimatePresence>
 
-      {/* ── COZY JOURNAL JOURNAL PORTAL ── */}
+      {/* ── COZY JOURNAL OVERLAY ── */}
       <AnimatePresence>
         {activeWindow === "bed" && (
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="absolute inset-0 m-auto w-80 h-40 bg-[#ece9d8] border-2 border-[#0055e5] rounded-t-lg shadow-2xl z-55 flex flex-col text-black pointer-events-auto">
             <div className="flex items-center justify-between px-2 py-1" style={{ background: "linear-gradient(180deg, #2f5bb7 0%, #1e3f8a 50%, #1a3578 100%)", height: 24 }}><span className="text-white text-xs font-bold">📝 Bedroom Journal</span><button onClick={() => setActiveWindow(null)} className="text-white text-xs font-bold">✕</button></div>
             <div className="flex-1 bg-[#fffee0] p-4 font-mono text-xs overflow-y-auto leading-relaxed">
-              <strong>📌 Jasmyn's Log:</strong><br />
-              "Click onto the computer monitor icon stack on your desk to boot up your local node Internet Explorer launcher framework."
+              <strong>📌 Bedroom Node Log:</strong><br />
+              "Welcome back! Click onto the computer monitor asset stack on your desk layout to activate your local Internet Explorer application window mesh."
             </div>
           </motion.div>
         )}
