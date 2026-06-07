@@ -37,36 +37,36 @@ const SIDEBAR: Record<string, SidebarEntry[]> = {
 
 const LINKS_BAR: { category: string; icon: string; items: BookmarkItem[] }[] = [
   { category: "Noggin", icon: "🎠", items: [
-    { name: "Upside Down Show: Schmancy Schmashup", url: "https://flashmuseum.org/the-upside-down-show-schmancy-schmashup-game/" },
-    { name: "The Missing Scribble Sticks", url: "https://flashmuseum.org/the-missing-scribble-sticks/" },
+    { name: "Upside Down Show: Schmancy Schmashup", url: "https://flashmuseum.org/embed/the-upside-down-show-schmancy-schmashup-game/" },
+    { name: "The Missing Scribble Sticks", url: "https://flashmuseum.org/embed/the-missing-scribble-sticks/" },
   ]},
   { category: "Starfall", icon: "⭐", items: [
     { name: "Starfall Me", url: "https://web.archive.org/web/20121102000000if_/https://www.starfall.com/h/me/" },
   ]},
   { category: "Girls Go Games", icon: "👗", items: [
-    { name: "Shopaholic", url: "https://flashmuseum.org/?s=Shopaholic" },
-    { name: "Snail Bob", url: "https://flashmuseum.org/?s=snail+bob" },
-    { name: "Frizzle Fraz", url: "https://flashmuseum.org/?s=frizzle+fraz" },
+    { name: "Shopaholic", url: "https://flashmuseum.org/embed/shopaholic/" },
+    { name: "Snail Bob", url: "https://flashmuseum.org/embed/snail-bob/" },
+    { name: "Frizzle Fraz", url: "https://flashmuseum.org/embed/frizzle-fraz/" },
     { name: "Love Tester", url: "https://web.archive.org/web/20150801083101if_/https://www.girlsgogames.com/game/love-tester" },
   ]},
   { category: "CoolMath", icon: "🧮", items: [
     { name: "Run", url: "https://web.archive.org/web/20121002000245if_/https://www.coolmathgames.com/0-run" },
   ]},
   { category: "PBS Kids", icon: "🐾", items: [
-    { name: "Alien Assembly Required", url: "https://flashmuseum.org/alien-assembly-required/" },
-    { name: "Binky's Facts & Opinions", url: "https://flashmuseum.org/binkys-facts-and-opinions/" },
+    { name: "Alien Assembly Required", url: "https://flashmuseum.org/embed/alien-assembly-required/" },
+    { name: "Binky's Facts & Opinions", url: "https://flashmuseum.org/embed/binkys-facts-and-opinions/" },
     { name: "Lunch-o-Matic", url: "https://web.archive.org/web/20151127074613if_/https://pbskids.org/games/play/lunch-o-matic/8517" },
-    { name: "Supermarket Adventure", url: "https://flashmuseum.org/supermarket-adventure/" },
+    { name: "Supermarket Adventure", url: "https://flashmuseum.org/embed/supermarket-adventure/" },
   ]},
   { category: "Disney Jr", icon: "🏰", items: [
-    { name: "Zooter's Zippin Zip Along", url: "https://flashmuseum.org/zooters-zippin-zip-along/" },
-    { name: "Bungo's Silly Sign Shop", url: "https://flashmuseum.org/bungos-silly-sign-shop/" },
-    { name: "Oso's Digi Medal Painter", url: "https://flashmuseum.org/osos-digi-medal-painter/" },
+    { name: "Zooter's Zippin Zip Along", url: "https://flashmuseum.org/embed/zooters-zippin-zip-along/" },
+    { name: "Bungo's Silly Sign Shop", url: "https://flashmuseum.org/embed/bungos-silly-sign-shop/" },
+    { name: "Oso's Digi Medal Painter", url: "https://flashmuseum.org/embed/osos-digi-medal-painter/" },
   ]},
   { category: "Disney", icon: "✨", items: [
-    { name: "Hot Shot Photo Pro", url: "https://www.disney--games.com/hot_shot_photo_pro_313.html" },
-    { name: "Maze of Destiny", url: "https://www.disney--games.com/maze_of_destiny_495.html" },
-    { name: "Vacation Vehicles", url: "https://www.disney--games.com/vacation_vehicles_525.html" },
+    { name: "Hot Shot Photo Pro", url: "https://flashmuseum.org/embed/hot-shot-photo-pro/" },
+    { name: "Maze of Destiny", url: "https://flashmuseum.org/embed/maze-of-destiny/" },
+    { name: "Vacation Vehicles", url: "https://flashmuseum.org/embed/vacation-vehicles/" },
   ]},
   { category: "Nick Jr", icon: "🟠", items: [
     { name: "Kai-Lan's Great Trip to China", url: "https://www.numuki.com/game/kai-lan-s-great-trip-to-china/" },
@@ -74,14 +74,14 @@ const LINKS_BAR: { category: string; icon: string; items: BookmarkItem[] }[] = [
   { category: "Nickelodeon", icon: "🎬", items: [
     { name: "iCarly (2012 Archive)", url: "https://web.archive.org/web/20120831030248if_/http://www.icarly.com/" },
     { name: "The Slap (2014 Archive)", url: "https://web.archive.org/web/20140531193706if_/http://www.theslap.com/" },
-    { name: "iCarly: The Ultimate Game", url: "https://flashmuseum.org/icarly-the-ultimate-icarly-game/" },
+    { name: "iCarly: The Ultimate Game", url: "https://flashmuseum.org/embed/icarly-the-ultimate-icarly-game/" },
     { name: "Nick Block Party", url: "https://www.numuki.com/game/nick-block-party/" },
     { name: "Ask the Magic Meatball", url: "https://archive.org/embed/ask-the-magic-meatball" },
   ]},
   { category: "Classics", icon: "🍕", items: [
-    { name: "Papa's Games", url: "https://flashmuseum.org/?s=papa%27s" },
-    { name: "Sara's Cooking Class", url: "https://flashmuseum.org/?s=sara%27s+cooking+class" },
-    { name: "Fireboy & Watergirl", url: "https://flashmuseum.org/browse/series/fireboy-and-watergirl-series/" },
+    { name: "Papa's Games", url: "https://flashmuseum.org/embed/papas-pizzeria/" },
+    { name: "Sara's Cooking Class", url: "https://flashmuseum.org/embed/saras-cooking-class-cherry-cheesecake/" },
+    { name: "Fireboy & Watergirl", url: "https://flashmuseum.org/embed/fireboy-watergirl-6-fairy-tales/" },
   ]},
   { category: "Videos", icon: "📹", items: [
     { name: "Oh California (Starfall)", url: "https://www.youtube.com/embed/GG_KO-UnXBU", isEmbed: true },
