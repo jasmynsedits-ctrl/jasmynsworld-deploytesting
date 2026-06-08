@@ -1,27 +1,19 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// ── TOY INVENTORY ──
-const TOYS = [
-  { id: "bottle", name: "Magic Baby Bottle", desc: "The milk disappears when you tilt it." },
-  { id: "skeebo", name: "Skeebo Beebo", desc: "My little lime green alien friend." },
-];
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-
 // — TOY INVENTORY —
 const TOYS = [
   { id: "bottle", name: "Magic Baby Bottle", desc: "The milk disappears when you tilt it." },
-  { id: "skeebo", name: "Skeebo Beebo", desc: "My little lime green alien friend." },
+  { id: "jojos circus skeebo figure", name: "Skeebo Beebo", desc: "My little lime green alien friend." },
   { id: "doodle", name: "Doodle Bear (Purple)", desc: "A purple bear you can draw on!" },
   { id: "fijit", name: "Fijit Friend (Purple)", desc: "Interactive dancing purple friend." },
   { id: "furby", name: "Furby (Orange)", desc: "Classic orange electronic pet." },
   { id: "journal", name: "Password Journal", desc: "Keep your secrets safe with voice recognition." },
   { id: "playdoh", name: "Play-Doh Sets", desc: "Endless creativity with colorful clay." },
   { id: "oven", name: "Easy Bake Oven", desc: "Bake real treats with a lightbulb!" },
-  { id: "wagon", name: "Red Wagon", desc: "Classic metal wagon for adventures." },
-  { id: "wand", name: "Alex's Magic Wand", desc: "Make magic happen with a flick of the wrist." },
-  { id: "remote", name: "Sam's TV Remote", desc: "Control the TV just like Sam." },
+  { id: "radio flyer tricycle", name: "Red tricycle", desc: "Classic toddler ride." },
+  { id: "wizards of waverly place wand", name: "Alex's Wand", desc: "Make magic happen with a flick of the wrist." },
+  { id: "icarly remote", name: "Sam's TV Remote", desc: "*insert laugh track*." },
   { id: "shopkins", name: "Shopkins", desc: "Cute little characters from the grocery store." }
 ];
 
