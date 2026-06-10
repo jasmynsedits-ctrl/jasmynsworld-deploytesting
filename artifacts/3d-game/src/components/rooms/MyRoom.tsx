@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const TOYS = [
-  { id: "bottle", name: "Magic Baby Bottle", desc: "The milk disappears when you tilt it." },
+  { id: "bottle", name: "Disappearing Liquid Bottles", desc: "Magic milk and juice." },
   { id: "skeebo", name: "Skeebo Beebo", desc: "My little lime green alien friend." },
   { id: "doodle", name: "Doodle Bear (Purple)", desc: "A purple bear you can draw on!" },
   { id: "fijit", name: "Fijit Friend (Purple)", desc: "A classic interactive robotic toy." },
@@ -22,15 +22,17 @@ export default function MyRoom() {
     <div className="relative w-full h-full bg-[#1a1a1a] overflow-hidden font-sans text-white">
       <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80" style={{ backgroundImage: "url('/room-bg.png')" }} />
 
+      {/* Computer Clickable Area */}
       <div 
         className="absolute top-[220px] left-[685px] w-[140px] h-[110px] cursor-pointer z-10 border-2 border-transparent hover:border-white hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] transition-all rounded-lg group" 
-        onClick={() => window.location.href = '/computer-interface'}
+        onClick={() => window.location.href = '/artifacts/3d-game/src/components/rooms/GameRoom.tsx'}
         onMouseEnter={() => setHoveredItem('Computer')} 
         onMouseLeave={() => setHoveredItem(null)}
       >
         <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Use Computer</div>
       </div>
 
+      {/* Nightstand Clickable Area */}
       <div 
         className="absolute top-[380px] left-[245px] w-[90px] h-[130px] cursor-pointer z-10 border-2 border-transparent hover:border-white hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] transition-all rounded-lg group" 
         onClick={() => setSelectedToy('nightstand')}
@@ -40,6 +42,7 @@ export default function MyRoom() {
         <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Open Drawer</div>
       </div>
 
+      {/* Toy Modal */}
       <AnimatePresence>
         {selectedToy && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-50 bg-black/60 flex items-center justify-center p-8" onClick={() => setSelectedToy(null)}>
@@ -63,4 +66,7 @@ export default function MyRoom() {
 
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
         <p className="text-sm tracking-widest uppercase">{hoveredItem ? `Exploring: ${hoveredItem}` : 'Explore the Room'}</p>
-        }
+      </div>
+    </div>
+  );
+}
