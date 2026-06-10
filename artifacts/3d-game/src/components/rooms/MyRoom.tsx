@@ -6,14 +6,6 @@ const TOYS = [
   { id: "skeebo", name: "Skeebo Beebo", desc: "My little lime green alien friend." },
   { id: "doodle", name: "Doodle Bear (Purple)", desc: "A purple bear you can draw on!" },
   { id: "fijit", name: "Fijit Friend (Purple)", desc: "A classic interactive robotic toy." },
-  { id: "furby", name: "Furby (Orange)", desc: "Classiimport { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-
-const TOYS = [
-  { id: "bottle", name: "Disappearing Liquid Bottles", desc: "Magic milk and juice." },
-  { id: "skeebo", name: "Skeebo Beebo", desc: "My little lime green alien friend." },
-  { id: "doodle", name: "Doodle Bear (Purple)", desc: "A purple bear you can draw on!" },
-  { id: "fijit", name: "Fijit Friend (Purple)", desc: "A classic interactive robotic toy." },
   { id: "furby", name: "Furby (Orange)", desc: "Classic orange electronic pet." },
   { id: "journal", name: "Password Journal", desc: "Voice-activated secrets locker." },
   { id: "playdoh", name: "Play-Doh Sets", desc: "The smell alone takes me back." },
