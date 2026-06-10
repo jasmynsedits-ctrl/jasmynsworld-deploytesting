@@ -12,6 +12,7 @@ const TOYS = [
   { id: "easybake", name: "Easy Bake Oven", desc: "Tiny light-bulb powered cakes." },
   { id: "wagon", name: "Red Wagon", desc: "The original ride on toy." },
   { id: "wand", name: "Alex's Magic Wand", desc: "Aunt Alex brought it from the UK." },
+  { id: "remote", name: "iCarly remote", desc: "Random dancing!" },
 ];
 
 export default function MyRoom() {
@@ -20,7 +21,10 @@ export default function MyRoom() {
 
   return (
     <div className="relative w-full h-full bg-[#1a1a1a] overflow-hidden font-sans text-white">
-      <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80" style={{ backgroundImage: "url('/room-bg.png')" }} />
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80" 
+        style={{ backgroundImage: "url('https://lh3.googleusercontent.com/pw/AP1GczOKuj3oJ2SzDmpzjJlp5lfZhli0nlWcYb-KibxvMCXJpcxbDIKDRezIQeP6OPWsg5mNNk7JSV8eeqt41irWF3coGOpXURFdAfsjLIfOC5LWS9zSOyC9u9VnyQbR8c_y30k2awYBqoSDsqUJZfMbK8REuw=w1035-h947-s-no-gm?authuser=0')" }} 
+      />
 
       {/* Computer Clickable Area */}
       <div 
