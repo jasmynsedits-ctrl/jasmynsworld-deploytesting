@@ -6,7 +6,159 @@ const TOYS = [
   { id: "skeebo", name: "Skeebo Beebo", desc: "My little lime green alien friend." },
   { id: "doodle", name: "Doodle Bear (Purple)", desc: "A purple bear you can draw on!" },
   { id: "fijit", name: "Fijit Friend (Purple)", desc: "A classic interactive robotic toy." },
+  { id: "furby", name: "Furby (Orange)", desc: "Classiimport { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
+const TOYS = [
+  { id: "bottle", name: "Magic Baby Bottle", desc: "The milk disappears when you tilt it." },
+  { id: "skeebo", name: "Skeebo Beebo", desc: "My little lime green alien friend." },
+  { id: "doodle", name: "Doodle Bear (Purple)", desc: "A purple bear you can draw on!" },
+  { id: "fijit", name: "Fijit Friend (Purple)", desc: "A classic interactive robotic toy." },
   { id: "furby", name: "Furby (Orange)", desc: "Classic orange electronic pet." },
+  { id: "journal", name: "Password Journal", desc: "Voice-activated secrets locker." },
+  { id: "playdoh", name: "Play-Doh Sets", desc: "The simport { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
+const TOYS = [
+  { id: "bottle", name: "Magic Baby Bottle", desc: "The milk disappears when you tilt it." },
+  { id: "skeebo", name: "Skeebo Beebo", desc: "My little lime green alien friend." },
+  { id: "doodle", name: "Doodle Bear (Purple)", desc: "A purple bear you can draw on!" },
+  { id: "fijit", name: "Fijit Friend (Purple)", desc: "A classic interactive robotic toy." },
+  { id: "furby", name: "Furby (Orange)", desc: "Classic orange electronic pet." },
+  { id: "journal", name: "Password Journal", desc: "Voice-activated secrets locker." },
+  { id: "playdoh", name: "Play-Doh Sets", desc: "The smell alone takes me back." },
+  { id: "easybake", name: "Easy Bake Oven", desc: "Tiny light-bulb powered cakes." },
+  { id: "wagon", name: "Red Wagon", desc: "The original ride on toy." },
+  { id: "wand", name: "Alex's Magic Wand", desc: "Aunt Alex brought it from the UK." },
+];
+
+export default function MyRoom() {
+  const [selectedToy, setSelectedToy] = useState<string | null>(null);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+
+  return (
+    <div className="relative w-full h-full bg-[#1a1a1a] overflow-hidden font-sans text-white flex items-center justify-center p-4">
+      {/* Room Container with Border */}
+      <div 
+        className="relative w-full h-full max-w-[1035px] max-h-[947px] aspect-[1035/947] bg-contain bg-center bg-no-repeat border-8 border-white/10 rounded-3xl shadow-2xl overflow-hidden" 
+        style={{ backgroundImage: "url('https://lh3.googleusercontent.com/pw/AP1GczOKuj3oJ2SzDmpzjJlp5lfZhli0nlWcYb-KibxvMCXJpcxbDIKDRezIQeP6OPWsg5mNNk7JSV8eeqt41irWF3coGOpXURFdAfsjLIfOC5LWS9zSOyC9u9VnyQbR8c_y30k2awYBqoSDsqUJZfMbK8REuw=w1035-h947-s-no-gm?authuser=0')" }} 
+      >
+        <div className="absolute inset-0 bg-black/10" />
+
+        {/* Computer Clickable Area */}
+        <div 
+          className="absolute top-[220px] left-[685px] w-[140px] h-[110px] cursor-pointer z-10 border-2 border-transparent hover:border-white hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] transition-all rounded-lg group" 
+          onClick={() => window.location.href = '/artifacts/3d-game/src/components/rooms/GameRoom.tsx'}
+          onMouseEnter={() => setHoveredItem('Computer')} 
+          onMouseLeave={() => setHoveredItem(null)}
+        >
+          <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Use Computer</div>
+        </div>
+
+        {/* Nightstand Clickable Area */}
+        <div 
+          className="absolute top-[380px] left-[245px] w-[90px] h-[130px] cursor-pointer z-10 border-2 border-transparent hover:border-white hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] transition-all rounded-lg group" 
+          onClick={() => setSelectedToy('nightstand')}
+          onMouseEnter={() => setHoveredItem('Nightstand')} 
+          onMouseLeave={() => setHoveredItem(null)}
+        >
+          <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Open Drawer</div>
+        </div>
+
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+          <p className="text-sm tracking-widest uppercase">{hoveredItem ? `Exploring: ${hoveredItem}` : 'Explore the Room'}</p>
+        </div>
+      </div>
+
+      {/* Toy Modal */}
+      <AnimatePresence>
+        {selectedToy && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-50 bg-black/60 flex items-center justify-center p-8" onClick={() => setSelectedToy(null)}>
+            <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} className="bg-[#2a2a2a] p-6 rounded-xl max-w-2xl w-full border border-white/20 shadow-2xl" onClick={e => e.stopPropagation()}>
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-white">Toy Collection</h2>
+                <button onClick={() => setSelectedToy(null)} className="text-white/60 hover:text-white">✕</button>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {TOYS.map(toy => (
+                  <div key={toy.id} className="p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors">
+                    <h3 className="font-semibold text-white">{toy.name}</h3>
+                    <p className="text-xs text-white/60">{toy.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+mell alone takes me back." },
+  { id: "easybake", name: "Easy Bake Oven", desc: "Tiny light-bulb powered cakes." },
+  { id: "wagon", name: "Red Wagon", desc: "The original ride on toy." },
+  { id: "wand", name: "Alex's Magic Wand", desc: "Aunt Alex brought it from the UK." },
+];
+
+export default function MyRoom() {
+  const [selectedToy, setSelectedToy] = useState<string | null>(null);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+
+  return (
+    <div className="relative w-full h-full bg-[#1a1a1a] overflow-hidden font-sans text-white">
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80" 
+        style={{ backgroundImage: "url('https://lh3.googleusercontent.com/pw/AP1GczOKuj3oJ2SzDmpzjJlp5lfZhli0nlWcYb-KibxvMCXJpcxbDIKDRezIQeP6OPWsg5mNNk7JSV8eeqt41irWF3coGOpXURFdAfsjLIfOC5LWS9zSOyC9u9VnyQbR8c_y30k2awYBqoSDsqUJZfMbK8REuw=w1035-h947-s-no-gm?authuser=0')" }} 
+      />
+
+      {/* Computer Clickable Area */}
+      <div 
+        className="absolute top-[220px] left-[685px] w-[140px] h-[110px] cursor-pointer z-10 border-2 border-transparent hover:border-white hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] transition-all rounded-lg group" 
+        onClick={() => window.location.href = '/artifacts/3d-game/src/components/rooms/GameRoom.tsx'}
+        onMouseEnter={() => setHoveredItem('Computer')} 
+        onMouseLeave={() => setHoveredItem(null)}
+      >
+        <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Use Computer</div>
+      </div>
+
+      {/* Nightstand Clickable Area */}
+      <div 
+        className="absolute top-[380px] left-[245px] w-[90px] h-[130px] cursor-pointer z-10 border-2 border-transparent hover:border-white hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] transition-all rounded-lg group" 
+        onClick={() => setSelectedToy('nightstand')}
+        onMouseEnter={() => setHoveredItem('Nightstand')} 
+        onMouseLeave={() => setHoveredItem(null)}
+      >
+        <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Open Drawer</div>
+      </div>
+
+      {/* Toy Modal */}
+      <AnimatePresence>
+        {selectedToy && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-50 bg-black/60 flex items-center justify-center p-8" onClick={() => setSelectedToy(null)}>
+            <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} className="bg-[#2a2a2a] p-6 rounded-xl max-w-2xl w-full border border-white/20 shadow-2xl" onClick={e => e.stopPropagation()}>
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-white">Toy Collection</h2>
+                <button onClick={() => setSelectedToy(null)} className="text-white/60 hover:text-white">✕</button>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {TOYS.map(toy => (
+                  <div key={toy.id} className="p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors">
+                    <h3 className="font-semibold text-white">{toy.name}</h3>
+                    <p className="text-xs text-white/60">{toy.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+        <p className="text-sm tracking-widest uppercase">{hoveredItem ? `Exploring: ${hoveredItem}` : 'Explore the Room'}</p>
+      </div>
+    </div>
+  );
+}c orange electronic pet." },
   { id: "journal", name: "Password Journal", desc: "Voice-activated secrets locker." },
   { id: "playdoh", name: "Play-Doh Sets", desc: "The smell alone takes me back." },
   { id: "easybake", name: "Easy Bake Oven", desc: "Tiny light-bulb powered cakes." },
