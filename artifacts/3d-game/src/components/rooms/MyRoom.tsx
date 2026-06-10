@@ -28,19 +28,19 @@ export default function MyRoom() {
           style={{ backgroundImage: "url('https://lh3.googleusercontent.com/pw/AP1GczOKuj3oJ2SzDmpzjJlp5lfZhli0nlWcYb-KibxvMCXJpcxbDIKDRezIQeP6OPWsg5mNNk7JSV8eeqt41irWF3coGOpXURFdAfsjLIfOC5LWS9zSOyC9u9VnyQbR8c_y30k2awYBqoSDsqUJZfMbK8REuw=w1035-h947-s-no-gm?authuser=0')" }} 
         />
 
-        {/* Computer Clickable Area */}
+        {/* Refined Computer Clickable Area - moved to monitor */}
         <div 
-          className="absolute top-[320px] left-[730px] w-[110px] h-[90px] cursor-pointer z-10 border-2 border-transparent hover:border-white hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] transition-all rounded-lg group" 
-          onClick={() => window.location.href = '/GameRoom'}
+          className="absolute top-[350px] left-[730px] w-[90px] h-[70px] cursor-pointer z-10 border-2 border-transparent hover:border-white hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] transition-all rounded-lg group" 
+          onClick={() => window.location.href = '/artifacts/3d-game/src/components/rooms/GameRoom.tsx'}
           onMouseEnter={() => setHoveredItem('Computer')} 
           onMouseLeave={() => setHoveredItem(null)}
         >
           <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Use Computer</div>
         </div>
 
-        {/* Nightstand Clickable Area */}
+        {/* Refined Nightstand Clickable Area - smaller, higher, and further right */}
         <div 
-          className="absolute top-[480px] left-[100px] w-[150px] h-[150px] cursor-pointer z-10 border-2 border-transparent hover:border-white hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] transition-all rounded-lg group" 
+          className="absolute top-[490px] left-[115px] w-[120px] h-[120px] cursor-pointer z-10 border-2 border-transparent hover:border-white hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] transition-all rounded-lg group" 
           onClick={() => setSelectedToy('nightstand')}
           onMouseEnter={() => setHoveredItem('Nightstand')} 
           onMouseLeave={() => setHoveredItem(null)}
@@ -69,7 +69,6 @@ export default function MyRoom() {
           )}
         </AnimatePresence>
       </div>
-
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
         <p className="text-sm tracking-widest uppercase">{hoveredItem ? `Exploring: ${hoveredItem}` : 'Explore the Room'}</p>
       </div>
