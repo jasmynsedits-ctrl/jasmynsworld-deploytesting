@@ -28,7 +28,7 @@ const SIDEBAR: Record<string, SidebarEntry[]> = {
 ],
 "📚 School": [
 { name: "FunBrain", url: "https://web.archive.org/web/20140209111338if_/http://www.funbrain.com/brain/SweepsBrain/sweepsbrain.html" },
-@@ -41,10 +41,10 @@ const LINKS_BAR: { category: string; icon: string; items: BookmarkItem[] }[] = [
+const LINKS_BAR: { category: string; icon: string; items: BookmarkItem[] }[] = [
 { name: "The Missing Scribble Sticks", url: "https://web.archive.org/web/20120101000000if_/http://www.noggin.com/games/scribble-sticks.php" },
 ]},
 { category: "Starfall", icon: "⭐", items: [
