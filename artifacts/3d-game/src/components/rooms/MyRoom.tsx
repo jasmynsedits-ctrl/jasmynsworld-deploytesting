@@ -32,9 +32,6 @@ const MyRoom = () => {
         <div 
           className="absolute top-[220px] left-[350px] w-[140px] h-[110px] cursor-pointer z-10 border-2 border-dashed border-white/50 hover:border-white transition-all rounded-lg"
           onClick={() => window.location.href = '/computer-interface'}
-          onMouseEnter={() => setHoveredItem('Computer')}
-          onMouseLeave={() => setHoveredItem(null)}
-        />
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
