@@ -17,8 +17,8 @@ const SIDEBAR: Record<string, SidebarEntry[]> = {
     { name: "Poptropica", url: "https://web.archive.org/web/20130815000000if_/https://www.poptropica.com/" },
     { name: "Fantage", url: "https://web.archive.org/web/20140920185941if_/http://www.fantage.com/" },
     { name: "Woozworld", url: "https://web.archive.org/web/20121114051541/http://www.woozworld.com/" },
-   { name: "MovieStar Planet", url: "MjAxNDAyMTUwMDAwMDBpZl8vaHR0cDovL3d3dy5tb3ZpZXN0YXJwbGFuZXQuY29tLw==" },
-  { name: "Animal Jam", url: "MjAxNDAxMTUwMDAwMDBpZl8vaHR0cDovL3d3dy5hbmltYWxqYW0uY29tLw==" },
+   { name: "MovieStar Planet", url: "https://web.archive.org/web/20140215000000if_/http://www.moviestarplanet.com/" },
+  { name: "Animal Jam", url: "https://web.archive.org/web/20140115000000if_/http://www.animaljam.com/" },
     { name: "PBS Kids Flash Games", url: "https://web.archive.org/web/20131127074613if_/http://pbskids.org/games/" },
     { name: "Nickelodeon", url: "https://web.archive.org/web/20151127074613if_/http://www.nick.com/games/?navid=topNav" },
     { name: "Disney", url: "https://web.archive.org/web/20131127074613if_/http://disney.go.com/games/" },
@@ -45,7 +45,7 @@ const LINKS_BAR: { category: string; icon: string; items: BookmarkItem[] }[] = [
     { name: "Starfall Me", url: "https://web.archive.org/web/20121102000000if_/https://www.starfall.com/h/me/" },
   ]},
   { category: "Girls Go Games", icon: "👗", items: [
-    { name: "Shopaholic Models", url: "https://web.archive.org/web/20150801083101if_/http://www.girlsgogames.com/game/shopaholic_models.html" },
+    { name: "Shopaholic: Hollywood", url: "https://web.archive.org/web/20150801083101if_/http://www.girlsgogames.com/game/shopaholic_hollywood.html" },
     { name: "Snail Bob", url: "https://web.archive.org/web/20150801083101if_/http://www.girlsgogames.com/game/snail_bob.html" },
     { name: "Frizzle Fraz", url: "https://web.archive.org/web/20150801083101if_/http://www.girlsgogames.com/game/frizzle_fraz.html" },
     { name: "Love Tester", url: "https://web.archive.org/web/20150801083101if_/https://www.girlsgogames.com/game/love-tester" },
@@ -54,7 +54,7 @@ const LINKS_BAR: { category: string; icon: string; items: BookmarkItem[] }[] = [
     { name: "Run", url: "https://web.archive.org/web/20121002000245if_/https://www.coolmathgames.com/0-run" },
   ]},
   { category: "PBS Kids", icon: "🐾", items: [
-    { name: "Alien Assembly Required (Cyberchase)", url: "https://web.archive.org/web/20101010000000if_/http://pbskids.org/cyberchase/games/alienassembly/" },
+    { name: "Alien Assembly Required (Arthur)", url: "https://web.archive.org/web/20101010000000if_/http://pbskids.org/cyberchase/games/alienassembly/" },
     { name: "Binky's Facts & Opinions (Arthur)", url: "https://web.archive.org/web/20101010000000if_/http://pbskids.org/arthur/games/factsopinions/" },
     { name: "Lunch-o-Matic", url: "https://web.archive.org/web/20151127074613if_/https://pbskids.org/games/play/lunch-o-matic/8517" },
     { name: "Supermarket Adventure (Arthur)", url: "https://web.archive.org/web/20101010000000if_/http://pbskids.org/arthur/games/supermarket/" },
@@ -291,6 +291,16 @@ export default function GameRoom() {
 
       {/* ── MAIN CONTENT AREA ── */}
       <div className="flex flex-1 overflow-hidden relative z-10">
+        <iframe
+  key={currentUrl}
+  src={currentUrl}
+  className="w-full h-full border-none"
+  style={{ minHeight: "100%", width: "100%", overflow: "hidden" }}
+  title={currentTitle}
+  allow="autoplay; encrypted-media; fullscreen; gamepad; screen-wake-lock"
+  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"
+  onLoad={() => setLoading(false)}
+/>
         {/* Favorites Sidebar */}
         <AnimatePresence>
           {sidebarOpen && (
