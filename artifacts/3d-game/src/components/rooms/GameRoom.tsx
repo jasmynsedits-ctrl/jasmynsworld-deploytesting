@@ -14,6 +14,7 @@ const SIDEBAR: Record<string, SidebarEntry[]> = {
     { name: "SmallWorlds", url: "https://web.archive.org/web/20140625220230if_/https://www.smallworlds.com/" },
     { name: "Club Penguin", url: "https://newcp.net/play" },
     { name: "GirlsGoGames", url: "https://web.archive.org/web/20150801083101if_/http://www.girlsgogames.com/" },
+    { name: "The Real Tooth Fairies", url: "https://web.archive.org/web/20120404205201mp_/http://www.therealtoothfairies.com/girl-join" },
     { name: "Poptropica", url: "https://web.archive.org/web/20130815000000if_/https://www.poptropica.com/" },
     { name: "Fantage", url: "https://web.archive.org/web/20140920185941if_/http://www.fantage.com/" },
     { name: "Woozworld", url: "https://web.archive.org/web/20121114051541/http://www.woozworld.com/" },
@@ -104,7 +105,11 @@ const USER_PICTURES = [
   "https://lh3.googleusercontent.com/pw/AP1GczNifPONBuEurNIqHsVRtut9WgUt-WEO7aDzeTw7y4oRkc5bk7WOHQUqHs9DNFUFm2Wf9fVIpGy6b33LhXYId3v_VtWA3TVJev1s3V1BryZ1UTahfOjWdNOUx9GwM_SFE1p7yVX7rQdyLFmI9WpouSVojg=w1262-h947-s-no-gm",
   "https://lh3.googleusercontent.com/pw/AP1GczNKdQrnPXwzMpysoBgQTAQergpZPbUn5L9Ca8TdasOiGriA4sdHjTD55yqfvRGH4qbZ-R89ovX1KXpIWicRhGS5EQquNMQ79dn3ELC2ZYQTguBi0uxgcUxu8diTmw1tKgLQ-QsNJn2-5e44-CqBGY1I_w=w710-h947-s-no-gm",
   "https://lh3.googleusercontent.com/pw/AP1GczO7SaZMny7NGEljPsCV_1qFpp4AjvDOGyFB6fnjYPMSfjAZnwBxetG5CVGe8LLgrWACE708V1lFwJltxsjcfqUncVHiHus9KIWEFmXtMwJELDFm_ayPSc-QEXa5WHsYcRIg4cxvnIZ57XFTqEE69lQRyA=w1262-h947-s-no-gm",
-  "https://lh3.googleusercontent.com/pw/AP1GczP1xM94hC6Gt24piPlLo5pyephWAqGETFH4DOamsaxzyNKESB1eCfx3k6bE56_P90ulbtQDtyMwnz769A6cCSzN2REdMLetZUMUc5HAO4x8a8NEyQiE42gmtTdmSX4TnZSudm808F8ohozFaX9oYQygvg=w512-h384-s-no-gm"
+  "https://lh3.googleusercontent.com/pw/AP1GczP1xM94hC6Gt24piPlLo5pyephWAqGETFH4DOamsaxzyNKESB1eCfx3k6bE56_P90ulbtQDtyMwnz769A6cCSzN2REdMLetZUMUc5HAO4x8a8NEyQiE42gmtTdmSX4TnZSudm808F8ohozFaX9oYQygvg=w512-h384-s-no-gm",
+  "https://lh3.googleusercontent.com/pw/AP1GczMDUZX-IVcWmrxVWKDbl9Q12hv7JMFKAkxuLpjD4oGBwmGNTQfJe3-3waMCLHudXspFbj_bk4DDORfJojM4V_p3BYAsuQbzo0KrVkjB-DiEZQnKiYYRaZ-X6_wEwIf-RaJ8LEPUs4KdG_9s23N3sZWZLg=w776-h947-s-no-gm",
+"https://lh3.googleusercontent.com/pw/AP1GczOg4lfM7PsL2MMeFbj5TdkYkFqys9F65FbmI783US3UrdIwm94DTolscpQdXjOc9JZDP2eihevPugeLBkFXpya93PiwlkhtjajZEboil92Bp5xNkb8Eiij_OQWCfUz9vnKKe9S7xcdc-UTR5rM4nBv-Zw=w710-h947-s-no-gm",
+"https://lh3.googleusercontent.com/pw/AP1GczO2oFHEDdH8lIQX7OJ7fnByL54pGfX5W0Fd34gfIzQKf4dlvEc27Uqvw8tqMzGstBC4TbIjochf1Rz6VejwxBpN-tPeVxOnzxZoCDlxKT1hybxpQFKegvElyiieTAFCEALRRmVxLXCfdIXTKoWmU_YrgQ=w710-h947-s-no-gm",
+"https://lh3.googleusercontent.com/pw/AP1GczPiyzc56L6638f7dX2L5w4mjhyoX89kv5OcNdIY4UXBCYvoR5ElwYJqmkbo-Vd3glJuwlkXkrijGamTfxJy7-fwHpAPg7o2hHVgMkaY7hyFgnywlcXBKg3gnoe7xFqiu9n7JoEbGvIDuDGINq5nTMibLw=w380-h672-s-no-gm"
 ];
 
 export default function GameRoom() {
