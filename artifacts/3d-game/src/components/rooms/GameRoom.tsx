@@ -11,7 +11,7 @@ const SIDEBAR: Record<string, SidebarEntry[]> = {
     { name: "JibJab", url: "https://web.archive.org/web/20100930163107if_/http://sendables.jibjab.com/" },
     { name: "Moshi Monsters", url: "https://moshionline.net/" },
     { name: "WeeWorld", url: "https://web.archive.org/web/20130401004346if_/http://www.weeworld.com/" },
-    { name: "SmallWorlds (2014 Archive)", url: "https://web.archive.org/web/20140625220230if_/https://www.smallworlds.com/" },
+    { name: "SmallWorlds", url: "https://web.archive.org/web/20140625220230if_/https://www.smallworlds.com/" },
     { name: "Club Penguin", url: "https://newcp.net/play" },
     { name: "GirlsGoGames", url: "https://web.archive.org/web/20150801083101if_/http://www.girlsgogames.com/" },
     { name: "Poptropica", url: "https://web.archive.org/web/20130815000000if_/https://www.poptropica.com/" },
@@ -73,8 +73,8 @@ const LINKS_BAR: { category: string; icon: string; items: BookmarkItem[] }[] = [
     { name: "Kai-Lan's Great Trip to China", url: "https://web.archive.org/web/20101010000000if_/http://www.nickjr.com/ni-hao-kai-lan/games/kai-lans-great-trip-to-china/" },
   ]},
   { category: "Nickelodeon", icon: "🎬", items: [
-    { name: "iCarly (2012 Archive)", url: "https://web.archive.org/web/20120831030248if_/http://www.icarly.com/" },
-    { name: "The Slap (2014 Archive)", url: "https://web.archive.org/web/20140531193706if_/http://www.theslap.com/" },
+    { name: "iCarly.com", url: "https://web.archive.org/web/20120831030248if_/http://www.icarly.com/" },
+    { name: "TheSlap.com", url: "https://web.archive.org/web/20140531193706if_/http://www.theslap.com/" },
     { name: "iCarly: The Ultimate Game", url: "https://web.archive.org/web/20120831030248if_/http://www.icarly.com/games/ultimate-game.html" },
     { name: "Nick Block Party", url: "https://web.archive.org/web/20140101000000if_/http://www.nick.com/games/nick-block-party.html" },
     { name: "Ask the Magic Meatball", url: "https://archive.org/embed/ask-the-magic-meatball" },
@@ -291,16 +291,7 @@ export default function GameRoom() {
 
       {/* ── MAIN CONTENT AREA ── */}
       <div className="flex flex-1 overflow-hidden relative z-10">
-        <iframe
-  key={currentUrl}
-  src={currentUrl}
-  className="w-full h-full border-none"
-  style={{ minHeight: "100%", width: "100%", overflow: "hidden" }}
-  title={currentTitle}
-  allow="autoplay; encrypted-media; fullscreen; gamepad; screen-wake-lock"
-  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"
-  onLoad={() => setLoading(false)}
-/>
+       
         {/* Favorites Sidebar */}
         <AnimatePresence>
           {sidebarOpen && (
