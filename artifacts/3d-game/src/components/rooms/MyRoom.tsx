@@ -28,9 +28,9 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
           style={{ backgroundImage: "url('https://lh3.googleusercontent.com/pw/AP1GczOKuj3oJ2SzDmpzjJlp5lfZhli0nlWcYb-KibxvMCXJpcxbDIKDRezIQeP6OPWsg5mNNk7JSV8eeqt41irWF3coGOpXURFdAfsjLIfOC5LWS9zSOyC9u9VnyQbR8c_y30k2awYBqoSDsqUJZfMbK8REuw=w1035-h947-s-no-gm?authuser=0')" }} 
         />
 
-        {/* Corrected Computer Clickable Area */}
+        {/* Computer Clickable Area - Moved further left */}
         <div 
-          className="absolute top-[320px] left-[730px] w-[90px] h-[70px] cursor-pointer z-10 border-2 border-transparent hover:border-white hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] transition-all rounded-lg group" 
+          className="absolute top-[320px] left-[680px] w-[90px] h-[70px] cursor-pointer z-10 border-2 border-transparent hover:border-white hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] transition-all rounded-lg group" 
           onClick={onEnterGameRoom}
           onMouseEnter={() => setHoveredItem('Computer')} 
           onMouseLeave={() => setHoveredItem(null)}
@@ -38,9 +38,9 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
           <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Use Computer</div>
         </div>
 
-        {/* Corrected Nightstand Clickable Area */}
+        {/* Nightstand Clickable Area - Smaller */}
         <div 
-          className="absolute top-[490px] left-[115px] w-[120px] h-[120px] cursor-pointer z-10 border-2 border-transparent hover:border-white hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] transition-all rounded-lg group" 
+          className="absolute top-[510px] left-[135px] w-[80px] h-[80px] cursor-pointer z-10 border-2 border-transparent hover:border-white hover:shadow-[0_0_15px_rgba(255,255,255,0.7)] transition-all rounded-lg group" 
           onClick={() => setSelectedToy('nightstand')}
           onMouseEnter={() => setHoveredItem('Nightstand')} 
           onMouseLeave={() => setHoveredItem(null)}
