@@ -2,18 +2,18 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const TOYS = [
-  { id: "bottle", name: "Disappearing Liquid Bottles",
-  { id: "skeebo", name: "Skeebo Beebo",
-  { id: "doodle", name: "Doodle Bear (Purple)",
-  { id: "fijit", name: "Fijit Friend (Purple)",
-  { id: "furby", name: "Furby (Orange)",
-  { id: "journal", name: "Password Journal",
-  { id: "playdoh", name: "Play-Doh Sets",
-  { id: "easybake", name: "Easy Bake Oven",
-  { id: "wagon", name: "Red Wagon",
-  { id: "wand", name: "Alex's Magic Wand",
-  { id: "remote", name: "iCarly remote",
-  { id: "shopkins", name: "Shopkins",
+ { id: "bottle", name: "Disappearing Liquid Bottles", desc: "insert desc" },
+  { id: "skeebo", name: "Skeebo Beebo", desc: "insert desc" },
+  { id: "doodle", name: "Doodle Bear (Purple)", desc: "insert desc" },
+  { id: "fijit", name: "Fijit Friend (Purple)", desc: "insert desc" },
+  { id: "furby", name: "Furby (Orange)", desc: "insert desc" },
+  { id: "journal", name: "Password Journal", desc: "insert desc" },
+  { id: "playdoh", name: "Play-Doh Sets", desc: "insert desc" },
+  { id: "easybake", name: "Easy Bake Oven", desc: "insert desc" },
+  { id: "wagon", name: "Red Wagon", desc: "insert desc" },
+  { id: "wand", name: "Alex's Magic Wand", desc: "insert desc" },
+  { id: "remote", name: "iCarly remote", desc: "insert desc" },
+  { id: "shopkins", name: "Shopkins", desc: "insert desc" },
 ];
 
 export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => void }) {
