@@ -34,7 +34,93 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
        <source src={roomBackground} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import roomBackground from "@/assets/room-background.mp4";
 
+const TOYS = [
+  { id: "bottle", name: "Disappearing Liquid Bottles", desc: "insert desc" },
+  { id: "skeebo", name: "Skeebo Beebo", desc: "insert desc" },
+  { id: "doodle", name: "Doodle Bear (Purple)", desc: "insert desc" },
+  { id: "fijit", name: "Fijit Friend (Blue)", desc: "insert desc" },
+  { id: "furby", name: "Furby (Orange)", desc: "insert desc" },
+  { id: "journal", name: "Password Journal", desc: "insert desc" },
+  { id: "playdoh", name: "Play-Doh Sets", desc: "insert desc" },
+  { id: "easybake", name: "Easy Bake Oven", desc: "insert desc" },
+  { id: "wagon", name: "Red Wagon", desc: "insert desc" },
+  { id: "shonkins", name: "Shonkins", desc: "insert desc" }
+];
+
+export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom: () => void }) {
+  const [activeToy, setActiveToy] = useState<string | null>(null);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(error => {
+        console.error("Video play failed:", error);
+      });
+    }
+  }, []);
+
+  return (
+    <div className="relative w-full h-screen overflow-hidden bg-black flex items-center justify-center">
+      <video
+        ref={videoRef}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src={roomBackground} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
+      <div className="relative z-10 w-full h-full flex items-center justify-center">
+        {/* Computer Clickable Area - Moved further left */}
+        <div
+          className="absolute top-[320px] left-[680px] w-[90px] h-[70px] cursor-pointer z-10 border-2 border-transparent"
+          onClick={onEnterGameRoom}
+          onMouseEnter={() => setHoveredItem('Computer')}
+          onMouseLeave={() => setHoveredItem(null)}
+        />
+        
+        {hoveredItem === 'Computer' && (
+          <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black/80 px-2 py-1 rounded text-xs whitespace-nowrap text-white">
+            Go to Computer
+          </div>
+        )}
+
+        {/* Modal for viewing toy details */}
+        <AnimatePresence>
+          {activeToy && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="absolute z-50 p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 text-white max-w-md"
+            >
+              <h2 className="text-2xl font-bold mb-2">
+                {TOYS.find(t => t.id === activeToy)?.name}
+              </h2>
+              <p className="text-white/80">
+                {TOYS.find(t => t.id === activeToy)?.desc}
+              </p>
+              <button 
+                onClick={() => setActiveToy(null)}
+                className="mt-4 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-colors"
+              >
+                Close
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
       {/* Computer Clickable Area - Moved further left */}
       <div
         className="absolute top-[320px] left-[680px] w-[90px] h-[70px] cursor-pointer z-10 border-2 border-transparent hover:border-white/30 transition-all rounded-lg"
