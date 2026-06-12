@@ -25,7 +25,7 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
       <div className="relative w-[1000px] h-[800px] border-4 border-white/20 shadow-2xl overflow-hidden bg-[#160f24]">
         <div 
           className="absolute inset-0 bg-contain bg-center bg-no-repeat opacity-90" 
-          style={{ backgroundImage: "url('https://lh3.googleusercontent.com/pw/AP1GczOKuj3oJ2SzDmpzjJlp5lfZhli0nlWcYb-KibxvMCXJpcxbDIKDRezIQeP6OPWsg5mNNk7JSV8eeqt41irWF3coGOpXURFdAfsjLIfOC5LWS9zSOyC9u9VnyQbR8c_y30k2awYBqoSDsqUJZfMbK8REuw=w1035-h947-s-no-gm?authuser=0')" }} 
+          style={{ backgroundImage: "url('https://lh3.googleusercontent.com/pw/AP1GczMrQVW-IhmRPV8OkC4WZfCVmU92UZOFAcNnelTRtMYfT0j-MsOawe1isXAzQ_CLro9jaPNg_znMvty0TemdM-GURDKLsby4aXTTgQ__DcB4NsOg2pTUooraz358DXnPzvakS2OBqdfdEu1RewOwmwVqhg=w1262-h947-s-no-gm')" }} 
         />
 
         {/* Computer Clickable Area - Moved further left */}
