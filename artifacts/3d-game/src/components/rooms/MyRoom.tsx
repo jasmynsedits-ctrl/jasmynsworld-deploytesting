@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import roomBackground from "../../assets/room-background.mp4";
+import roomBackground from "@/assets/room-background.mp4";
 
 const TOYS = [
   { id: "bottle", name: "Disappearing Liquid Bottles", desc: "insert desc" },
@@ -24,14 +24,14 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
   return (
     <div className="relative w-full h-full bg-black flex items-center justify-center overflow-hidden">
       {/* Background Video */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute w-full h-full object-cover"
-        src={roomBackground}
+     <video
+  autoPlay
+  loop
+  muted
+  playsInline
+  className="absolute inset-0 w-full h-full object-cover"
       >
+       <source src={roomBackground} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
