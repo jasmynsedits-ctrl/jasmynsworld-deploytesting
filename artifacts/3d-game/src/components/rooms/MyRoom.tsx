@@ -63,7 +63,64 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom: () => voi
       });
     }
   }, []);
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import roomBackground from "@/assets/room-background.mp4";
 
+const TOYS = [
+  { id: "bottle", name: "Disappearing Liquid Bottles", desc: "insert desc" },
+  { id: "skeebo", name: "Skeebo Beebo", desc: "insert desc" },
+  { id: "doodle", name: "Doodle Bear (Purple)", desc: "insert desc" },
+  { id: "fijit", name: "Fijit Friend (Purple)", desc: "insert desc" },
+  { id: "furby", name: "Furby (Orange)", desc: "insert desc" },
+  { id: "journal", name: "Password Journal", desc: "insert desc" },
+  { id: "playdoh", name: "Play-Doh Sets", desc: "insert desc" },
+  { id: "easybake", name: "Easy Bake Oven", desc: "insert desc" },
+  { id: "wagon", name: "Red Wagon", desc: "insert desc" },
+  { id: "wand", name: "Alex's Magic Wand", desc: "insert desc" },
+  { id: "remote", name: "iCarly remote", desc: "insert desc" },
+  { id: "shonkins", name: "Shonkins", desc: "insert desc" }
+];
+
+export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => void }) {
+  const [selectedToy, setSelectedToy] = useState<string | null>(null);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(error => {
+        console.error("Video play failed:", error);
+      });
+    }
+  }, []);
+
+  return (
+    <div className="relative w-full h-screen overflow-hidden bg-black flex items-center justify-center">
+      <video
+        ref={videoRef}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src={roomBackground} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none">
+        <h1 className="text-4xl text-white font-bold mb-4 drop-shadow-lg">My Room</h1>
+        <p className="text-xl text-white opacity-80 drop-shadow-md">Select a toy to play!</p>
+      </div>
+      
+      {/* Interaction Layer */}
+      <div className="absolute inset-0 z-20">
+        {/* Placeholder for interactive items */}
+      </div>
+    </div>
+  );
+}
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black flex items-center justify-center">
       <video
