@@ -24,7 +24,7 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
     <div className="relative w-full h-full bg-[#160f24] flex items-center justify-center font-sans text-white p-4">
       <div className="relative w-[1000px] h-[800px] border-4 border-white/20 shadow-2xl overflow-hidden bg-[#160f24]">
         <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
-         <source src="/room-background.mp4" type="video/mp4" />
+         <source src="./room-background.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 
