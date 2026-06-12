@@ -2,18 +2,18 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const TOYS = [
-  { id: "bottle", name: "Disappearing Liquid Bottles", desc: "Magic milk and juice." },
-  { id: "skeebo", name: "Skeebo Beebo", desc: "My little lime green alien friend." },
-  { id: "doodle", name: "Doodle Bear (Purple)", desc: "A purple bear you can draw on!" },
-  { id: "fijit", name: "Fijit Friend (Purple)", desc: "A classic interactive robotic toy." },
-  { id: "furby", name: "Furby (Orange)", desc: "Classic orange electronic pet." },
-  { id: "journal", name: "Password Journal", desc: "Voice-activated secrets locker." },
-  { id: "playdoh", name: "Play-Doh Sets", desc: "The smell alone takes me back." },
-  { id: "easybake", name: "Easy Bake Oven", desc: "Tiny light-bulb powered cakes." },
-  { id: "wagon", name: "Red Wagon", desc: "The original ride on toy." },
-  { id: "wand", name: "Alex's Magic Wand", desc: "Aunt Alex brought it from the UK." },
-  { id: "remote", name: "iCarly remote", desc: "Random dancing!" },
-  { id: "shopkins", name: "Shopkins", desc: "Tiny collectible figures." },
+  { id: "bottle", name: "Disappearing Liquid Bottles",
+  { id: "skeebo", name: "Skeebo Beebo",
+  { id: "doodle", name: "Doodle Bear (Purple)",
+  { id: "fijit", name: "Fijit Friend (Purple)",
+  { id: "furby", name: "Furby (Orange)",
+  { id: "journal", name: "Password Journal",
+  { id: "playdoh", name: "Play-Doh Sets",
+  { id: "easybake", name: "Easy Bake Oven",
+  { id: "wagon", name: "Red Wagon",
+  { id: "wand", name: "Alex's Magic Wand",
+  { id: "remote", name: "iCarly remote",
+  { id: "shopkins", name: "Shopkins",
 ];
 
 export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => void }) {
@@ -25,7 +25,7 @@ export default function MyRoom({ onEnterGameRoom }: { onEnterGameRoom?: () => vo
       <div className="relative w-[1000px] h-[800px] border-4 border-white/20 shadow-2xl overflow-hidden bg-[#160f24]">
         <div 
           className="absolute inset-0 bg-contain bg-center bg-no-repeat opacity-90" 
-          style={{ backgroundImage: "url('https://lh3.googleusercontent.com/pw/AP1GczMrQVW-IhmRPV8OkC4WZfCVmU92UZOFAcNnelTRtMYfT0j-MsOawe1isXAzQ_CLro9jaPNg_znMvty0TemdM-GURDKLsby4aXTTgQ__DcB4NsOg2pTUooraz358DXnPzvakS2OBqdfdEu1RewOwmwVqhg=w1262-h947-s-no-gm')" }} 
+          style={{ backgroundImage: "url('https://lh3.googleusercontent.com/pw/AP1GczNqdMwbbKVtKjjz32kkKDPmv3-_vFAs6V3D3sAyxtmM5GI1Wu7EkxVYCuaTRKfyKHYYcntUUUdLFFE7yZHrFZ2bY39nmK0klkQpmm8mFd-Ku_l2iXiEoICJHIwJlnP9awy1quFuQ9uBFrHjjQSTjGWlDg=w1350-h900-s-no-gm" }} 
         />
 
         {/* Computer Clickable Area - Moved further left */}
